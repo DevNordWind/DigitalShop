@@ -1,0 +1,3 @@
+from typing import Final
+
+SEND_NOTIFICATION_TASK_NAME: Final[str] = "SEND_NOTIFICATION_TASK_NAME"

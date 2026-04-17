@@ -1,0 +1,13 @@
+from domain.common.exception import DomainError
+
+
+class PaymentCommissionRuleError(DomainError): ...
+
+
+class PaymentCommissionRuleNotCreated(PaymentCommissionRuleError): ...
+
+
+class PaymentCommissionRuleAlreadyExists(PaymentCommissionRuleError): ...
+
+
+class CommissionCoefficientRequired(PaymentCommissionRuleError): ...

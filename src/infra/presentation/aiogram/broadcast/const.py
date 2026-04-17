@@ -1,0 +1,5 @@
+from typing import Final
+
+SEND_MSG_TASK_NAME: Final[str] = "SEND_BROADCAST_MSG"
+
+UPDATE_PROGRESS_TASK_NAME: Final[str] = "UPDATE_PROGRESS"

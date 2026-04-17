@@ -1,0 +1,218 @@
+name: digital-shop
+
+x-app-base: &app-base
+  image: myapp:latest
+  build:
+    context: ..
+    dockerfile: docker/Dockerfile
+  restart: unless-stopped
+  init: true
+  environment:
+    PYTHONPATH: /app/src
+  volumes:
+    - ../config.yaml:/app/config.yaml:ro
+    - ../data:/app/data
+  networks:
+    - app
+
+services:
+  init-permissions:
+    image: busybox
+    user: root
+    volumes:
+      - ../data:/app/data
+    command: [ "chown", "-R", "999:999", "/app/data" ]
+    restart: "no"
+
+  postgres:
+    image: postgres:18.3-alpine3.23
+    restart: unless-stopped
+    env_file:
+      - ./postgres/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/18/docker
+      - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    command: >
+      postgres -c config_file=/etc/postgresql/postgresql.conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app
+
+  redis:
+    image: redis:8.6.2-alpine3.23
+    restart: unless-stopped
+    command: redis-server /etc/redis/redis.conf --appendonly yes
+    volumes:
+      - ./redis/redis.conf:/etc/redis/redis.conf:ro
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app
+
+  traefik:
+    image: traefik:v3.6.13
+    command:
+      - --providers.docker=true
+      - --providers.docker.network=app
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+
+      - --certificatesresolvers.le.acme.tlschallenge=true
+      - --certificatesresolvers.le.acme.email=some_email@email.com
+      - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    networks:
+      - app
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_letsencrypt:/letsencrypt
+
+    profiles: [ webhook, payment ]
+
+    restart: unless-stopped
+
+  taskiq-worker-priority:
+    <<: *app-base
+    command: taskiq worker src.main.taskiq.priority_broker:priority_broker --workers 1
+    depends_on:
+      init-permissions:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  taskiq-worker:
+    <<: *app-base
+    command: taskiq worker src.main.taskiq.broker:broker --workers 1
+    depends_on:
+      init-permissions:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  taskiq-scheduler:
+    <<: *app-base
+    command: taskiq scheduler src.main.taskiq.scheduler:scheduler
+    depends_on:
+      init-permissions:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  payment-webhook:
+    <<: *app-base
+    command: >
+      uvicorn src.main.payment:main
+      --factory
+      --host 0.0.0.0
+      --port 8080
+      --proxy-headers
+      --forwarded-allow-ips="172.16.0.0/12"
+    profiles: [payment]
+    expose:
+      - "8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.payment.rule=Host(`payment.yourdomain.com`)"
+      - "traefik.http.routers.payment.entrypoints=websecure"
+      - "traefik.http.routers.payment.tls.certresolver=le"
+      - "traefik.http.services.payment.loadbalancer.server.port=8080"
+
+    depends_on:
+      init-permissions:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  bot-polling:
+    <<: *app-base
+    profiles: [ polling ]
+    command: python -m src.main.bot.polling
+    depends_on:
+      init-permissions:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  bot-webhook:
+    <<: *app-base
+    profiles: [ webhook ]
+    command: >
+      python -m uvicorn src.main.bot.webhook:main
+      --factory
+      --host 0.0.0.0
+      --port 8090
+      --workers 2
+      --proxy-headers
+      --forwarded-allow-ips="172.16.0.0/12"
+    expose:
+      - "8090"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bot.rule=Host(`bot.yourdomain.com`)"
+      - "traefik.http.routers.bot.entrypoints=websecure"
+      - "traefik.http.routers.bot.tls.certresolver=le"
+      - "traefik.http.services.bot.loadbalancer.server.port=8090"
+    depends_on:
+      init-permissions:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  migrations:
+    <<: *app-base
+    command: alembic upgrade head
+    restart: "on-failure"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      init-permissions:
+        condition: service_completed_successfully
+volumes:
+  postgres_data:
+  redis_data:
+  traefik_letsencrypt:
+
+networks:
+  app:
+    driver: bridge

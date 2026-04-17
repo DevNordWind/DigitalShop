@@ -1,0 +1,1 @@
+BroadcastTextsAsymmetrically = ❌ Языки текстов и кнопок должны совпадать

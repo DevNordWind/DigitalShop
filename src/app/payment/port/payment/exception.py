@@ -1,0 +1,13 @@
+from app.common.exception import ApplicationError
+
+
+class PaymentMethodGatewayError(ApplicationError): ...
+
+
+class UnsupportedPaymentMethod(PaymentMethodGatewayError): ...
+
+
+class InvalidInvoiceId(PaymentMethodGatewayError): ...
+
+
+class InvoiceNotFound(PaymentMethodGatewayError): ...

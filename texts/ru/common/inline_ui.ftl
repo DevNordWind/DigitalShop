@@ -1,0 +1,14 @@
+inl-ui = inl-ui
+    .back = ⬅️ Назад
+    .create = ➕ Создать
+    .clear = 🗑 Очистить
+    .delete = ✖️ Удалить
+    .close = X Закрыть
+    .confirm = ✅ Подтвердить
+    .hide = 🚫 Скрыть
+    .show = 👁 Показывать
+    .archive = 🗄 Архивировать
+    .recover = 💡 Восстановить
+    .archive-all = 🗄 Архивировать всё
+    .delete-all = ✖️ Удалить всё
+    .copy = 📎 Скопировать

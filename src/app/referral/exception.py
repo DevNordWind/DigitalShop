@@ -1,0 +1,13 @@
+from app.common.exception import ApplicationError
+
+
+class ReferrerProfileApplicationError(ApplicationError): ...
+
+
+class ReferrerProfileNotFound(ReferrerProfileApplicationError): ...
+
+
+class ReferralAwardApplicationError(ApplicationError): ...
+
+
+class ReferralAwardNotFound(ReferralAwardApplicationError): ...

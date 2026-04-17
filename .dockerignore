@@ -1,0 +1,14 @@
+# Ignore everything
+**
+
+# Except
+!docker-entrypoint.sh
+!pyproject.toml
+!README.md
+!uv.lock
+!alembic.ini
+!src/**
+!tests/**
+!data
+!texts/**
+!config.yaml

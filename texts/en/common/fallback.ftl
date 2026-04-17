@@ -1,0 +1,2 @@
+unknown = Unknown
+    .emoji = ❓

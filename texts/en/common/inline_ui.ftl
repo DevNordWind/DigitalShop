@@ -1,0 +1,14 @@
+inl-ui = inl-ui
+    .back = ⬅️ Back
+    .create = ➕ Create
+    .clear = 🗑 Clear
+    .delete = ✖️ Delete
+    .close = ❌ Close
+    .confirm = ✅ Confirm
+    .hide = 🚫 Hide
+    .show = 👁 Show
+    .archive = 🗄 Archive
+    .recover = 💡 Restore
+    .archive-all = 🗄 Archive all
+    .delete-all = ✖️ Delete all
+    .copy = 📎 Copy

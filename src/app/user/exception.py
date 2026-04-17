@@ -1,0 +1,16 @@
+from app.common.exception import ApplicationError
+
+
+class UserApplicationError(ApplicationError): ...
+
+
+class UserNotFound(UserApplicationError): ...
+
+
+class UserAuthenticationError(UserApplicationError): ...
+
+
+class UserReporterError(UserApplicationError): ...
+
+
+class UserReporterPermissionDenied(UserApplicationError): ...
