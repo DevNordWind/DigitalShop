@@ -8,7 +8,7 @@ x-app-base: &app-base
   restart: unless-stopped
   init: true
   environment:
-    PYTHONPATH: /app/src
+    PYTHONPATH: /app/src/digital_shop
   volumes:
     - ../config.yaml:/app/config.yaml:ro
     - ../data:/app/data
@@ -89,7 +89,7 @@ services:
 
   taskiq-worker-priority:
     !!merge <<: *app-base
-    command: taskiq worker src.main.taskiq.priority_broker:priority_broker --workers 1
+    command: taskiq worker main.taskiq.priority_broker:priority_broker --workers 1
     depends_on:
       init-permissions:
         condition: service_completed_successfully
@@ -102,7 +102,7 @@ services:
 
   taskiq-worker:
     !!merge <<: *app-base
-    command: taskiq worker src.main.taskiq.broker:broker --workers 1
+    command: taskiq worker main.taskiq.broker:broker --workers 1
     depends_on:
       init-permissions:
         condition: service_completed_successfully
@@ -115,7 +115,7 @@ services:
 
   taskiq-scheduler:
     !!merge <<: *app-base
-    command: taskiq scheduler src.main.taskiq.scheduler:scheduler
+    command: taskiq scheduler main.taskiq.scheduler:scheduler
     depends_on:
       init-permissions:
         condition: service_completed_successfully
@@ -129,7 +129,7 @@ services:
   payment-webhook:
     !!merge <<: *app-base
     command: >
-      uvicorn src.main.payment:main
+      uvicorn main.payment:main
       --factory
       --host 0.0.0.0
       --port 8080
@@ -159,7 +159,7 @@ services:
   bot-polling:
     !!merge <<: *app-base
     profiles: [polling]
-    command: python -m src.main.bot.polling
+    command: python -m main.bot.polling
     depends_on:
       init-permissions:
         condition: service_completed_successfully
@@ -174,7 +174,7 @@ services:
     !!merge <<: *app-base
     profiles: [webhook]
     command: >
-      python -m uvicorn src.main.bot.webhook:main
+      python -m uvicorn main.bot.webhook:main
       --factory
       --host 0.0.0.0
       --port 8090

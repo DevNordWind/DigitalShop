@@ -1,7 +1,7 @@
 from app.user.cmd import AssignUserRole, RegisterUser
 from app.user.query import GetUserProfileReport
 from app.user.service import GetCurrentUser
-from dishka import Provider, Scope, provide_all
+from dishka import Provider, Scope, provide, provide_all
 
 
 class UserHandlersProvider(Provider):
@@ -11,4 +11,4 @@ class UserHandlersProvider(Provider):
 
     queries = provide_all(GetUserProfileReport)
 
-    service = GetCurrentUser
+    service = provide(GetCurrentUser)

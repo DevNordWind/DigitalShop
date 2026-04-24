@@ -2,7 +2,6 @@
 **
 
 # Except
-!docker-entrypoint.sh
 !pyproject.toml
 !README.md
 !uv.lock
@@ -11,4 +10,3 @@
 !tests/**
 !data
 !texts/**
-!config.yaml
