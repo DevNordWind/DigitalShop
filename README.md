@@ -188,5 +188,5 @@ All settings are stored in `config.yaml`. A full example with all available para
 > [!NOTE]
 > Webhook mode requires the `webhook` section to be filled in the configuration file.
 
-[!WARNING]
-This is a pet project built for learning purposes. I am not responsible for any losses, data corruption, or other consequences resulting from use in a production environment. **Use at your own risk.**
+> [!WARNING]
+> This is a pet project built for learning purposes. I am not responsible for any losses, data corruption, or other consequences resulting from use in a production environment. **Use at your own risk.**
