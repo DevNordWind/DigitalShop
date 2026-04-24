@@ -71,7 +71,7 @@ editing-mode = { $mode ->
     *[other] { unknown }
 }
 
-admin-position-edit-media = <b>{ -media-emoji } Редактрование медиа</b>
+admin-position-edit-media = <b>{ -media-emoji } Редактирование медиа</b>
 
     <blockquote>ℹ️ Отправь фото, видео или GIF</blockquote>
     .mode-btn = Режим редактирования

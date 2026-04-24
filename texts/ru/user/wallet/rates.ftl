@@ -20,4 +20,3 @@ user-related-rates =
         [True] { -current } { $currency } { -current }
         *[False] { $currency }
     }
-

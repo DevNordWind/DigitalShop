@@ -11,4 +11,3 @@ coupon-type = { $type ->
     [COEFFICIENT] Процент от суммы заказа
     *[other] { unknown }
 }
-

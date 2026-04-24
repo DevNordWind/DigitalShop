@@ -1,0 +1,23 @@
+{
+  "language": "en,ru",
+  "import": ["@cspell/dict-ru_ru/cspell-ext.json"],
+  "ignorePaths": [
+    "node_modules",
+    "__pycache__"
+  ],
+  "ignoreRegExpList": [
+    "\\{[^}]*\\}",
+    "\\[[^\\]]*\\]",
+    "[\\uFE0F]"
+  ],
+  "words": [
+    "digital_shop",
+    "Рефералка",
+    "Archivation",
+    "реферер",
+    "медиафайлов",
+    "Медиафайл",
+    "медиафайл",
+    "предпросмотра"
+  ]
+}

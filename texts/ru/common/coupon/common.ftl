@@ -3,4 +3,3 @@ coupon-discount = { $type ->
     [COEFFICIENT] Скидка { $percent }% от суммы заказа
     *[other] { unknown }
 }
-

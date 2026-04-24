@@ -1,12 +1,12 @@
 bot:
-  token: your_token
+  token: YOUR_BOT_TOKEN
 
   super_admins:
-    - 123321
+    - 123123 # Telegram ID
 
   webhook:
     base_url: https://example.com
-    secret: your_secret_token
+    secret: SUPER_SECRET_KEY
     with_ip_filter: false # This option available only with reverse proxy
 
 file_storage:
@@ -14,11 +14,11 @@ file_storage:
 
 payment:
   crypto_pay:
-    token: your_token
-    network: https://pay.crypt.bot/
+    token: YOUR_CRYPTO_PAY_TOKEN
+    network: https://pay.crypt.bot
 
 postgres:
-  db: YourDatabaseName
+  db: DigitalShopDB
   host: postgres
   port: 5432
   username: postgres
@@ -36,7 +36,7 @@ postgres:
 
 redis:
   db: 0
-  host: localhost
+  host: redis
   port: 6379
   password: null
   username: null

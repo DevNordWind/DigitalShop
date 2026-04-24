@@ -15,7 +15,7 @@ admin-position-warehouse-stock-filters = <b>{ -filter-emoji } Фильтры</b>
 
 admin-position-warehouse-add-stock = <b>➕ Добавление товаров</b>
 
-    { -current } <b>Товары</b> разделяются одной пустой строчкой, наример:
+    { -current } <b>Товары</b> разделяются одной пустой строчкой, например:
 
     <code>Данные товара...</code>
 

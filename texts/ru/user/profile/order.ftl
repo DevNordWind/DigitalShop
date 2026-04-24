@@ -45,4 +45,3 @@ user-order = <b>{ -order-emoji } Заказ <code>{ $order_id }</code></b>
         *[other] { unknown }
     }</blockquote>
     .upload-items = 💾 Выгрузить
-

@@ -2,4 +2,3 @@ referral-award-notification = <b>👥 Получена реферальная н
 
     <b>💸 Сумма вознаграждения: <code>{ $amount }{ currency.symbol }</code></b>
     └ Процент: <code>{ $percent }%</code>
-
