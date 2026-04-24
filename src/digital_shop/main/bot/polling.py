@@ -8,7 +8,9 @@ from dishka import AsyncContainer, make_async_container
 from dishka.integrations.aiogram import setup_dishka
 from infra.common.bootstrap import Bootstrap
 from infra.framework.sql_alchemy.table import map_all
+from infra.framework.taskiq.tp import PriorityBroker
 from main.ioc import PROVIDERS
+from taskiq import AsyncBroker
 
 _APP_NAME: Final[str] = "bot_polling"
 
@@ -21,6 +23,9 @@ async def main() -> None:
     setup_root_logger(logging_config, app_name=_APP_NAME)
     bot: Bot = await container.get(Bot)
     dp: Dispatcher = await container.get(Dispatcher)
+    _ = await container.get(AsyncBroker)
+    __ = await container.get(PriorityBroker)
+
     async with container() as cont:
         bootstrap: Bootstrap = await cont.get(Bootstrap)
         await bootstrap.check()

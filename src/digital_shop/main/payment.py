@@ -10,6 +10,7 @@ from dishka.integrations.fastapi import setup_dishka as setup_fastapi
 from fastapi import FastAPI
 from infra.common.bootstrap import Bootstrap
 from infra.framework.sql_alchemy.table import map_all
+from infra.framework.taskiq.tp import PriorityBroker
 from main.ioc.providers import PROVIDERS
 from presentation.http.webhook.payment import payments_router
 from redis.asyncio import Redis
@@ -24,12 +25,14 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, Any]:
 
     redis: Redis = await container.get(Redis)
     _ = await container.get(AsyncBroker)
+    __ = await container.get(PriorityBroker)
 
     async with redis.lock("bootstrap_check"), container() as scope:
         bootstrap = await scope.get(Bootstrap)
         await bootstrap.check()
 
     yield
+    await container.close()
 
 
 def main() -> FastAPI:

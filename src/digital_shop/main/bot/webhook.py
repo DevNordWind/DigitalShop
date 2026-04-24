@@ -14,6 +14,7 @@ from dishka.integrations.fastapi import setup_dishka as setup_fastapi
 from fastapi import FastAPI
 from infra.common.bootstrap import Bootstrap
 from infra.framework.sql_alchemy.table import map_all
+from infra.framework.taskiq.tp import PriorityBroker
 from infra.presentation.aiogram.webhook import (
     IpFilterMiddleware,
     SimpleRequestHandler,
@@ -39,6 +40,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, Any]:
     bot, dp = await container.get(Bot), await container.get(Dispatcher)
     redis: Redis = await container.get(Redis)
     _ = await container.get(AsyncBroker)
+    __ = await container.get(PriorityBroker)
 
     setup_dishka(container, dp)
 
