@@ -12,7 +12,7 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![mypy](https://img.shields.io/badge/mypy-checked-2A6DB2?logo=python&logoColor=white)](https://mypy-lang.org)
 
-[🇷🇺 Russian](docs/README_ru.md) | [🇬🇧 English](README.en.md)
+[🇷🇺 Russian](docs/README_ru.md) | [🇬🇧 English](#)
 
 </div>
 
