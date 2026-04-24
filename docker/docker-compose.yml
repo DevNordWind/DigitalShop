@@ -21,7 +21,7 @@ services:
     user: root
     volumes:
       - ../data:/app/data
-    command: [ "chown", "-R", "999:999", "/app/data" ]
+    command: ["chown", "-R", "999:999", "/app/data"]
     restart: "no"
 
   postgres:
@@ -45,12 +45,11 @@ services:
   redis:
     image: redis:8.6.2-alpine3.23
     restart: unless-stopped
-    command: redis-server /etc/redis/redis.conf --appendonly yes
+    command: redis-server --appendonly yes
     volumes:
-      - ./redis/redis.conf:/etc/redis/redis.conf:ro
       - redis_data:/data
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -84,12 +83,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik_letsencrypt:/letsencrypt
 
-    profiles: [ webhook, payment ]
+    profiles: [webhook, payment]
 
     restart: unless-stopped
 
   taskiq-worker-priority:
-    <<: *app-base
+    !!merge <<: *app-base
     command: taskiq worker src.main.taskiq.priority_broker:priority_broker --workers 1
     depends_on:
       init-permissions:
@@ -102,7 +101,7 @@ services:
         condition: service_completed_successfully
 
   taskiq-worker:
-    <<: *app-base
+    !!merge <<: *app-base
     command: taskiq worker src.main.taskiq.broker:broker --workers 1
     depends_on:
       init-permissions:
@@ -115,7 +114,7 @@ services:
         condition: service_completed_successfully
 
   taskiq-scheduler:
-    <<: *app-base
+    !!merge <<: *app-base
     command: taskiq scheduler src.main.taskiq.scheduler:scheduler
     depends_on:
       init-permissions:
@@ -128,13 +127,14 @@ services:
         condition: service_completed_successfully
 
   payment-webhook:
-    <<: *app-base
+    !!merge <<: *app-base
     command: >
       uvicorn src.main.payment:main
       --factory
       --host 0.0.0.0
       --port 8080
       --proxy-headers
+      --loop uvloop
       --forwarded-allow-ips="172.16.0.0/12"
     profiles: [payment]
     expose:
@@ -157,8 +157,8 @@ services:
         condition: service_completed_successfully
 
   bot-polling:
-    <<: *app-base
-    profiles: [ polling ]
+    !!merge <<: *app-base
+    profiles: [polling]
     command: python -m src.main.bot.polling
     depends_on:
       init-permissions:
@@ -171,14 +171,15 @@ services:
         condition: service_completed_successfully
 
   bot-webhook:
-    <<: *app-base
-    profiles: [ webhook ]
+    !!merge <<: *app-base
+    profiles: [webhook]
     command: >
       python -m uvicorn src.main.bot.webhook:main
       --factory
       --host 0.0.0.0
       --port 8090
       --workers 2
+      --loop uvloop
       --proxy-headers
       --forwarded-allow-ips="172.16.0.0/12"
     expose:
@@ -200,7 +201,7 @@ services:
         condition: service_completed_successfully
 
   migrations:
-    <<: *app-base
+    !!merge <<: *app-base
     command: alembic upgrade head
     restart: "on-failure"
     depends_on:

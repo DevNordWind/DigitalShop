@@ -36,7 +36,7 @@ admin-statistic = <b>📊 Статистика</b>
         [True] { -current } { admin-statistic-period-unit } { -current }
         *[False] { admin-statistic-period-unit }
     }
-    .period-btn = 🕰 Свой пероид
+    .period-btn = 🕰 Свой период
     .convert-btn = 💱 Конвертировать
 
 -admin-statistic-period-title = <b>✏️ Введи период статистики</b>
@@ -46,7 +46,7 @@ admin-statistic-period =
         [False] { -admin-statistic-period-title }
         *[True] { -admin-statistic-period-title }
             {""}
-            <b>{ -current } Текщий период:</b> <code>{ $from_date } - { $to_date }</code>
+            <b>{ -current } Текущий период:</b> <code>{ $from_date } - { $to_date }</code>
     }
 
     <blockquote>ℹ️ Формат: <code>ММ:ДД:ГГ - ММ:ДД:ГГ</code></blockquote>
@@ -59,4 +59,3 @@ admin-statistic-convert = <b>💱 Конвертация статистики</b
         [True] { -current } { $currency } { -current }
         *[False] { $currency }
     }
-

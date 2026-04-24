@@ -39,9 +39,20 @@ build:
 ps:
 	$(COMPOSE) ps
 
+check:
+	ruff check --fix
+	ruff format
+	typos
+	tombi format
+	tombi lint
+	mypy .
+	pytest -v
+
+
 .PHONY: \
 	polling-up polling-down polling-logs \
 	webhook-up webhook-down webhook-logs \
 	payment-up payment-down payment-logs \
 	full-up full-down \
-	build ps
+	build ps \
+	check

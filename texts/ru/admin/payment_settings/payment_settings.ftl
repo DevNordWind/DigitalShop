@@ -13,7 +13,7 @@ admin-payment-settings =
         [True] { -current } { commission-type } { -current }
         *[False] { commission-type }
     }
-    .status-btn = Стаутс
+    .status-btn = Статус
     .switch-status-btn = { $is_active ->
         [True] ✅ Включено
         *[False] ❌ Выключено

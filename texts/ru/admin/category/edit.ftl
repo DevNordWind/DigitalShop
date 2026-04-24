@@ -47,6 +47,6 @@ admin-category-edit-description-default-lang = <b>{ -langs-emoji } Язык по
     }
 
 
-admin-category-edit-media = <b>{ -media-emoji } Редактрование медиа</b>
+admin-category-edit-media = <b>{ -media-emoji } Редактирование медиа</b>
 
     <blockquote>ℹ️ Отправь фото, видео или GIF</blockquote>

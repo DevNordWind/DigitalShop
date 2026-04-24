@@ -30,7 +30,3 @@ wallet-change-wallet = <b>👝 Смена кошелька</b>
         [True] { -current } { $currency } { -current }
         *[False] { $currency }
     }
-
-
-
-

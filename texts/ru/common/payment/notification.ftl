@@ -4,5 +4,3 @@ payment-confirmed-admin-notification = <b>💳 Обнаружен подтвер
     └ Способ оплаты: <code>{ payment-method }</code>
     ➖➖➖➖➖➖➖➖➖➖
     💸 Сумма: <code>{ $amount }{ currency.symbol }</code>
-
-

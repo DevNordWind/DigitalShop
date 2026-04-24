@@ -74,4 +74,3 @@ admin-coupon-create-valid-from = <b>✏️ Введи когда начнёт д
 admin-coupon-create-valid-until = <b>✏️ Введи когда купон закончит действовать</b>
 
     <blockquote>ℹ️ Формат даты: <code>ДД.ММ.ГГ ЧЧ:ММ</code></blockquote>
-
