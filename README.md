@@ -134,7 +134,7 @@ Admins can:
 
 **1. Clone the repository:**
 ```bash
-https://github.com/DevNordWind/DigitalShop
+https://github.com/DevNordWind/DigitalShop.git
 cd DigitalShop
 ```
 
