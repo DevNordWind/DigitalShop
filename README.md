@@ -134,8 +134,8 @@ Admins can:
 
 **1. Clone the repository:**
 ```bash
-git clone https://github.com/your-username/digitalshop.git
-cd digitalshop
+https://github.com/DevNordWind/DigitalShop
+cd DigitalShop
 ```
 
 **2. Fill in the configuration file:**
