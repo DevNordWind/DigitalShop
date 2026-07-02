@@ -3,6 +3,8 @@ from typing import Final
 from adaptix import Retort
 from dishka import AsyncContainer, make_async_container
 from dishka.integrations.taskiq import setup_dishka
+from taskiq import ScheduleSource, TaskiqScheduler
+from taskiq.schedule_sources import LabelScheduleSource
 
 from app.config import Configuration
 from app.infra.framework.sql_alchemy.table import map_all
@@ -12,8 +14,6 @@ from app.infra.framework.taskiq import (
 )
 from app.infra.framework.taskiq.tp import PriorityBroker
 from app.main.ioc import PROVIDERS, DishkaTaskIqActorProvider
-from taskiq import ScheduleSource, TaskiqScheduler
-from taskiq.schedule_sources import LabelScheduleSource
 
 CONTAINER: Final[AsyncContainer] = make_async_container(
     *(*PROVIDERS, DishkaTaskIqActorProvider())

@@ -9,14 +9,21 @@ from app.config import LoggingConfig
 from app.infra.common.bootstrap import Bootstrap
 from app.infra.framework.sql_alchemy.table import map_all
 from app.main.ioc import PROVIDERS
-from app.main.ioc.presentation import AiogramAdaptersProvider
+from app.main.ioc.presentation import (
+    AiogramAdaptersProvider,
+    TelegramAuthenticationHandlersProvider,
+)
 
 
 async def main() -> None:
     map_all()
 
     container: AsyncContainer = make_async_container(
-        *(*PROVIDERS, AiogramAdaptersProvider())
+        *(
+            *PROVIDERS,
+            AiogramAdaptersProvider(),
+            TelegramAuthenticationHandlersProvider(),
+        )
     )
     logging_config: LoggingConfig = await container.get(LoggingConfig)
     logging_config.setup_logging()

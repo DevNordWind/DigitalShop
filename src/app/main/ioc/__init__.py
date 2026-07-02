@@ -25,6 +25,11 @@ from .payment import (
     PaymentDomainServicesProvider,
     PaymentHandlersProvider,
 )
+from .presentation import (
+    AiogramAdaptersProvider,
+    TelegramAdaptersProvider,
+    TelegramAuthenticationHandlersProvider,
+)
 from .providers import PROVIDERS
 from .referral import (
     ReferralAdaptersProvider,
@@ -42,6 +47,7 @@ from .wallet import WalletAdaptersProvider, WalletHandlersProvider
 
 __all__ = (
     "PROVIDERS",
+    "AiogramAdaptersProvider",
     "AiogramProvider",
     "CommonAdaptersProvider",
     "ConfigurationProvider",
@@ -69,6 +75,8 @@ __all__ = (
     "ShoppingHandlersProvider",
     "SqlAlchemyProvider",
     "TaskIqProvider",
+    "TelegramAdaptersProvider",
+    "TelegramAuthenticationHandlersProvider",
     "UserAdaptersProvider",
     "UserDomainServicesProvider",
     "UserHandlersProvider",

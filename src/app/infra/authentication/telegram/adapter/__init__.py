@@ -1,7 +1,7 @@
 from .admins import DefaultSuperAdminsProvider
-from .gateway import TelegramContextGatewayImpl
+from .gateway import SqlATelegramContextGateway
 
 __all__ = (
     "DefaultSuperAdminsProvider",
-    "TelegramContextGatewayImpl",
+    "SqlATelegramContextGateway",
 )

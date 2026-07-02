@@ -16,7 +16,7 @@ from app.infra.framework.sql_alchemy.table.telegram_context import (
 from app.infra.framework.sql_alchemy.table.user import user_table
 
 
-class TelegramContextGatewayImpl(TelegramContextGateway):
+class SqlATelegramContextGateway(TelegramContextGateway):
     def __init__(self, session: AsyncSession):
         self._session = session
 

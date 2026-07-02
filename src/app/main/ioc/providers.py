@@ -26,7 +26,9 @@ from .payment import (
     PaymentDomainServicesProvider,
     PaymentHandlersProvider,
 )
-from .presentation import TelegramAuthenticationAdaptersProvider
+from .presentation import (
+    TelegramAdaptersProvider,
+)
 from .referral import (
     ReferralAdaptersProvider,
     ReferralDomainServicesProvider,
@@ -73,5 +75,5 @@ PROVIDERS: tuple[Provider, ...] = (
     CouponHandlersProvider(),
     ConfigurationProvider(),
     CommonAdaptersProvider(),
-    TelegramAuthenticationAdaptersProvider(),
+    TelegramAdaptersProvider(),
 )

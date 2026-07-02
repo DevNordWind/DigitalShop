@@ -9,7 +9,7 @@ from app.app.common.port.actor_provider import ActorProvider
 from app.app.user.port import UserIdentifyResolver
 from app.infra.authentication.telegram.adapter import (
     DefaultSuperAdminsProvider,
-    TelegramContextGatewayImpl,
+    SqlATelegramContextGateway,
 )
 from app.infra.authentication.telegram.adapter.resolver import (
     TelegramIdentifyResolver,
@@ -83,7 +83,13 @@ from app.presentation.aiogram.util.error_translator import (
 )
 
 
-class AiogramAdaptersProvider(Provider):
+class TelegramAdaptersProvider(Provider):
+    """General telegram dependencies without regard to Telegram Update context"""
+
+    @provide(scope=Scope.APP)
+    async def get_t_hub(self) -> TranslatorHub:
+        return FluentTranslatorHub()
+
     @provide(scope=Scope.APP)
     async def get_general_settings_gw(
         self, redis: Redis, retort: Retort
@@ -106,54 +112,9 @@ class AiogramAdaptersProvider(Provider):
     ) -> PaymentSettingsGateway:
         return RedisPaymentSettingsGateway(redis, retort)
 
-    @provide(scope=Scope.REQUEST)
-    async def get_aio_user(
-        self,
-        middleware_data: AiogramMiddlewareData,
-    ) -> AioUser:
-        return middleware_data["event_from_user"]  # type: ignore[no-any-return]
-
-    @provide(scope=Scope.REQUEST)
-    async def get_context(
-        self,
-        event: TelegramObject,
-        aio_user: AioUser,
-        handler: EnsureTelegramContextHandler,
-    ) -> TelegramContextDTO:
-        return await handler.execute(
-            data=EnsureTelegramContextData(
-                tg_id=aio_user.id,
-                tg_username=aio_user.username,
-                tg_first_name=aio_user.first_name,
-                referrer_tg_id=extract_ref_deeplink(event=event),
-            )
-        )
-
-    actor_provider = provide(
-        AiogramActorProvider,
-        provides=ActorProvider,
-        scope=Scope.REQUEST,
-    )
-
-    file_factory = provide(FileDTOFactory, scope=Scope.APP)
-
     file_mapper = provide(FileKeyMapper, scope=Scope.APP)
-
+    file_factory = provide(FileDTOFactory, scope=Scope.APP)
     file_sender = provide(FileSender, scope=Scope.APP)
-
-    service_keyboard = provide(ServiceKeyboard, scope=Scope.REQUEST)
-
-    @provide(scope=Scope.APP)
-    async def get_t_hub(self) -> TranslatorHub:
-        return FluentTranslatorHub()
-
-    @provide(scope=Scope.REQUEST)
-    async def get_text(
-        self,
-        t_hub: TranslatorHub,
-        ctx: TelegramContextDTO,
-    ) -> Text:
-        return t_hub(ctx.lang)
 
     @provide(scope=Scope.REQUEST)
     async def get_general_settings(
@@ -194,9 +155,60 @@ class AiogramAdaptersProvider(Provider):
         TelegramBroadcasterImpl, provides=TelegramBroadcaster, scope=Scope.APP
     )
 
+    admins = provide(
+        DefaultSuperAdminsProvider,
+        provides=SuperAdminsProvider,
+        scope=Scope.APP,
+    )
+
+    idr = provide(
+        TelegramIdentifyResolver, provides=UserIdentifyResolver, scope=Scope.REQUEST
+    )
+
+    gateway = provide(
+        SqlATelegramContextGateway, provides=TelegramContextGateway, scope=Scope.REQUEST
+    )
+
+
+class AiogramAdaptersProvider(Provider):
     @provide(scope=Scope.REQUEST)
-    async def get_error_translator(self, text: Text) -> ErrorTranslator:
-        return ErrorTranslator(text=text, config=ErrorTranslatorConfig())
+    async def get_aio_user(
+        self,
+        middleware_data: AiogramMiddlewareData,
+    ) -> AioUser:
+        return middleware_data["event_from_user"]  # type: ignore[no-any-return]
+
+    @provide(scope=Scope.REQUEST)
+    async def get_context(
+        self,
+        event: TelegramObject,
+        aio_user: AioUser,
+        handler: EnsureTelegramContextHandler,
+    ) -> TelegramContextDTO:
+        return await handler.execute(
+            data=EnsureTelegramContextData(
+                tg_id=aio_user.id,
+                tg_username=aio_user.username,
+                tg_first_name=aio_user.first_name,
+                referrer_tg_id=extract_ref_deeplink(event=event),
+            )
+        )
+
+    actor_provider = provide(
+        AiogramActorProvider,
+        provides=ActorProvider,
+        scope=Scope.REQUEST,
+    )
+
+    service_keyboard = provide(ServiceKeyboard, scope=Scope.REQUEST)
+
+    @provide(scope=Scope.REQUEST)
+    async def get_text(
+        self,
+        t_hub: TranslatorHub,
+        ctx: TelegramContextDTO,
+    ) -> Text:
+        return t_hub(ctx.lang)
 
     commands = provide_all(
         ChangePositionDefaultCurrency,
@@ -210,8 +222,12 @@ class AiogramAdaptersProvider(Provider):
         scope=Scope.REQUEST,
     )
 
+    @provide(scope=Scope.REQUEST)
+    async def get_error_translator(self, text: Text) -> ErrorTranslator:
+        return ErrorTranslator(text=text, config=ErrorTranslatorConfig())
 
-class TelegramAuthenticationAdaptersProvider(Provider):
+
+class TelegramAuthenticationHandlersProvider(Provider):
     scope = Scope.REQUEST
 
     handlers = provide_all(
@@ -219,20 +235,4 @@ class TelegramAuthenticationAdaptersProvider(Provider):
         UpdateTelegramLangHandler,
         DeactivateTelegramContext,
         UpdateTelegramCurrency,
-    )
-
-    admins = provide(
-        DefaultSuperAdminsProvider,
-        provides=SuperAdminsProvider,
-        scope=Scope.APP,
-    )
-
-    idr = provide(
-        TelegramIdentifyResolver,
-        provides=UserIdentifyResolver,
-    )
-
-    gateway = provide(
-        TelegramContextGatewayImpl,
-        provides=TelegramContextGateway,
     )
