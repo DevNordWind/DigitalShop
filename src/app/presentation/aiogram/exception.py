@@ -1,0 +1,16 @@
+from app.presentation.exception import PresentationError
+
+
+class TelegramBotError(PresentationError): ...
+
+
+class TelegramBotValidationError(TelegramBotError): ...
+
+
+class TelegramBotSettingsError(TelegramBotError): ...
+
+
+class TelegramBotSettingsBootstrapError(TelegramBotSettingsError): ...
+
+
+class TelegramBotSettingsPermissionDeniedError(TelegramBotSettingsError): ...

@@ -25,7 +25,7 @@ repos:
       - id: check-json
       - id: check-toml
       - id: check-yaml
-        exclude: docker-compose.test.yml
+        exclude: deployment-compose.test.yml
       - id: detect-private-key
       - id: debug-statements
       - id: check-merge-conflict
