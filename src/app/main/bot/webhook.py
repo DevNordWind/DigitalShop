@@ -14,6 +14,7 @@ from redis.asyncio import Redis
 from taskiq import AsyncBroker
 
 from app.config import Configuration
+from app.config.log import shutdown_logging
 from app.infra.common.bootstrap import Bootstrap
 from app.infra.framework.sql_alchemy.table import map_all
 from app.infra.framework.taskiq.tp import PriorityBroker
@@ -24,7 +25,6 @@ from app.infra.presentation.aiogram.webhook import (
 from app.main.ioc import PROVIDERS
 
 WEBHOOK_CONFIG_MISSED: Final[str] = "Make sure the webhook configuration is complete!"
-_APP_NAME: Final[str] = "bot_webhook"
 
 
 @asynccontextmanager
@@ -55,7 +55,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, Any]:
         await bootstrap.check()
 
     yield
-
+    shutdown_logging()
     await container.close()
 
 

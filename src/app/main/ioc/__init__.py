@@ -8,11 +8,11 @@ from .coupon import (
 from .framework import (
     AiogramProvider,
     CryptoBotProvider,
+    DishkaTaskIqActorProvider,
     GoogleTranslatorProvider,
     RedisProvider,
     RetortProvider,
     SqlAlchemyProvider,
-    TaskIqActorProvider,
     TaskIqProvider,
 )
 from .order import (
@@ -49,6 +49,7 @@ __all__ = (
     "CouponDomainServicesProvider",
     "CouponHandlersProvider",
     "CryptoBotProvider",
+    "DishkaTaskIqActorProvider",
     "GoogleTranslatorProvider",
     "OrderAdaptersProvider",
     "OrderDomainServicesProvider",
@@ -67,7 +68,6 @@ __all__ = (
     "ShoppingDomainServicesProvider",
     "ShoppingHandlersProvider",
     "SqlAlchemyProvider",
-    "TaskIqActorProvider",
     "TaskIqProvider",
     "UserAdaptersProvider",
     "UserDomainServicesProvider",

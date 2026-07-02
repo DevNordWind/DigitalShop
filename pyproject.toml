@@ -12,9 +12,10 @@ dependencies = [
   "adaptix>=3.0.0b12",
   "aiocryptopay>=0.4.8",
   "aiofile>=3.9.0",
-  "aiogram[fast]>=3.27.0",
   "aiogram-dialog>=2.6.0",
+  "aiogram[fast]>=3.27.0",
   "alembic>=1.18.4",
+  "asgi-correlation-id>=5.0.1",
   "dishka>=1.9.1",
   "fastapi>=0.136.0",
   "fluent-compiler>=1.1",
@@ -25,11 +26,10 @@ dependencies = [
   "pyaml>=26.2.1",
   "redis[hiredis]>=7.4.0",
   "sqlalchemy>=2.0.49",
+  "structlog>=26.1.0",
   "taskiq-redis>=1.2.2",
   "uvicorn>=0.44.0",
   "uvloop>=0.22.1",
-  "structlog>=26.1.0",
-  "asgi-correlation-id>=5.0.1",
 ]
 
 [dependency-groups]
@@ -37,6 +37,7 @@ dev = [
   "pre-commit>=4.6.0",
   "pyrefly>=1.1.1",
   "pytest>=9.0.2",
+  "pytest-asyncio>=1.4.0",
   "ruff>=0.15.1",
   "tombi>=0.9.22",
   "types-pyyaml>=6.0.12.20250915",

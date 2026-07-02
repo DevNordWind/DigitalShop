@@ -11,12 +11,13 @@ from app.infra.framework.taskiq import (
     get_schedule_source,
 )
 from app.infra.framework.taskiq.tp import PriorityBroker
-from app.main.ioc import PROVIDERS
+from app.main.ioc import PROVIDERS, DishkaTaskIqActorProvider
 from taskiq import ScheduleSource, TaskiqScheduler
 from taskiq.schedule_sources import LabelScheduleSource
 
-CONTAINER: Final[AsyncContainer] = make_async_container(*PROVIDERS)
-
+CONTAINER: Final[AsyncContainer] = make_async_container(
+    *(*PROVIDERS, DishkaTaskIqActorProvider())
+)
 
 config: Final[Configuration] = Configuration.from_yaml(
     retort=Retort(strict_coercion=False),

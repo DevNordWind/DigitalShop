@@ -53,7 +53,7 @@ from app.presentation.aiogram.dialog.admin.position.edit.getter import (
 from app.presentation.aiogram.dialog.error import on_decimal_error, on_html_error
 from app.presentation.aiogram.state import EditPositionState
 from app.presentation.aiogram.util.mapper import map_decimal
-from app.presentation.aiogram.util.mapper.html import map_html
+from app.presentation.aiogram.util.mapper.html import validate_html
 from app.presentation.aiogram.widget import GetText, GetTextSelect
 
 edit_name = Window(
@@ -120,7 +120,7 @@ edit_description = Window(
         on_success=on_edit_description,
         id="input_description",
         on_error=on_html_error,
-        type_factory=map_html,
+        type_factory=validate_html,
     ),
     SwitchTo(
         GetText("admin-position-edit-description.default-lang-btn"),

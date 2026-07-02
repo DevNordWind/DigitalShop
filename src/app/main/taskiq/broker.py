@@ -9,10 +9,12 @@ from app.infra.framework.sql_alchemy.table import map_all
 from app.infra.framework.taskiq import (
     get_broker,
 )
-from app.main.ioc import PROVIDERS
+from app.main.ioc import PROVIDERS, DishkaTaskIqActorProvider
 from taskiq import AsyncBroker
 
-CONTAINER: Final[AsyncContainer] = make_async_container(*PROVIDERS)
+CONTAINER: Final[AsyncContainer] = make_async_container(
+    *(*PROVIDERS, DishkaTaskIqActorProvider())
+)
 
 
 config: Final[Configuration] = Configuration.from_yaml(

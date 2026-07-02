@@ -10,10 +10,11 @@ from app.infra.framework.taskiq import (
     get_priority_broker,
 )
 from app.infra.framework.taskiq.tp import PriorityBroker
-from app.main.ioc import PROVIDERS
+from app.main.ioc import PROVIDERS, DishkaTaskIqActorProvider
 
-CONTAINER: Final[AsyncContainer] = make_async_container(*PROVIDERS)
-
+CONTAINER: Final[AsyncContainer] = make_async_container(
+    *(*PROVIDERS, DishkaTaskIqActorProvider())
+)
 
 config: Final[Configuration] = Configuration.from_yaml(
     retort=Retort(strict_coercion=False),

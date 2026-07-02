@@ -19,7 +19,7 @@ from app.domain.shopping.position.enums import WarehouseType
 from app.presentation.aiogram.dialog.error import on_decimal_error, on_html_error
 from app.presentation.aiogram.state import CreatePositionState
 from app.presentation.aiogram.util.mapper import map_decimal
-from app.presentation.aiogram.util.mapper.html import map_html
+from app.presentation.aiogram.util.mapper.html import validate_html
 from app.presentation.aiogram.widget import GetText, GetTextSelect
 
 from .callable import (
@@ -148,7 +148,7 @@ input_description = Window(
     TextInput(
         on_success=on_input_description,
         on_error=on_html_error,
-        type_factory=map_html,
+        type_factory=validate_html,
         id="input_description",
     ),
     Group(

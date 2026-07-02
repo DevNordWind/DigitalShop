@@ -8,7 +8,7 @@ from aiogram_dialog.widgets.media import DynamicMedia
 from app.domain.common.localized import Language
 from app.presentation.aiogram.dialog.error import on_html_error
 from app.presentation.aiogram.state import CreateCategoryState
-from app.presentation.aiogram.util.mapper.html import map_html
+from app.presentation.aiogram.util.mapper.html import validate_html
 from app.presentation.aiogram.widget import GetText, GetTextSelect
 
 from .callable import (
@@ -112,7 +112,7 @@ input_description = Window(
     GetText("admin-category-create-description"),
     TextInput(
         on_success=on_input_description,  # type: ignore[arg-type]
-        type_factory=map_html,
+        type_factory=validate_html,
         on_error=on_html_error,
         id="input_description",
     ),

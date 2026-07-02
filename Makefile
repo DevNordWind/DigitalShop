@@ -45,7 +45,7 @@ check:
 	typos
 	tombi format
 	tombi lint
-	mypy .
+	pyrefly check src/
 	pytest -v
 
 

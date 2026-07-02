@@ -2,8 +2,7 @@ FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim AS builder
 
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
-    UV_PYTHON_DOWNLOADS=0 \
-    UV_PYTHON=3.14.4
+    UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /app
 
@@ -18,7 +17,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
 
-FROM python:3.14.4-slim-trixie
+FROM python:3.14.6-slim-trixie
 
 RUN groupadd --system --gid 999 nonroot \
  && useradd --system --gid 999 --uid 999 --create-home nonroot

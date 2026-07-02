@@ -9,7 +9,7 @@ from aiogram_dialog.widgets.style import Style
 from app.domain.common.localized import Language
 from app.presentation.aiogram.dialog.error import on_html_error
 from app.presentation.aiogram.state import EditCategoryState
-from app.presentation.aiogram.util.mapper.html import map_html
+from app.presentation.aiogram.util.mapper.html import validate_html
 from app.presentation.aiogram.widget import GetText, GetTextSelect
 
 from .callable import (
@@ -116,7 +116,7 @@ edit_description = Window(
     TextInput(
         on_success=on_edit_description,  # type: ignore[arg-type]
         id="input_new_name",
-        type_factory=map_html,
+        type_factory=validate_html,
         on_error=on_html_error,
     ),
     Button(

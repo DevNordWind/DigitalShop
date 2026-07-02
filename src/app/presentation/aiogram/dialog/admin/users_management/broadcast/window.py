@@ -35,7 +35,7 @@ from app.presentation.aiogram.dialog.admin.users_management.broadcast.getter imp
 )
 from app.presentation.aiogram.dialog.error import on_html_error
 from app.presentation.aiogram.state import BroadcastState, CreateUrlButtonState
-from app.presentation.aiogram.util.mapper.html import map_html
+from app.presentation.aiogram.util.mapper.html import validate_html
 from app.presentation.aiogram.widget import (
     GetText,
     GetTextSelect,
@@ -134,7 +134,7 @@ input_texts = Window(
     TextInput(
         on_success=on_input_text,
         id="input_text",
-        type_factory=map_html,
+        type_factory=validate_html,
         on_error=on_html_error,
     ),
     SwitchTo(GetText("inl-ui.back"), id="back", state=BroadcastState.broadcast),

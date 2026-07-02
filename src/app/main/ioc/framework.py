@@ -189,7 +189,7 @@ class TaskIqProvider(Provider):
             await source.shutdown()
 
 
-class TaskIqActorProvider(Provider):
+class DishkaTaskIqActorProvider(Provider):
     scope = Scope.APP
 
     actor_provider = provide(TaskIqActorProvider, provides=ActorProvider)

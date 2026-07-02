@@ -8,6 +8,7 @@ from taskiq_redis import (
 
 from app.config.redis import RedisConfig
 from app.infra.common.telegram_notification import register_send_notification_task
+from app.infra.framework.taskiq.middleware import LoggingMiddleware
 from app.infra.framework.taskiq.tp import PriorityBroker
 from app.infra.order.task import register_auto_cancel_task
 from app.infra.presentation.aiogram.broadcast.task import (
@@ -34,7 +35,7 @@ def get_broker(redis_config: RedisConfig) -> AsyncBroker:
             maxlen=99_999,
         )
         .with_result_backend(backend)
-        .with_middlewares(SimpleRetryMiddleware())
+        .with_middlewares(LoggingMiddleware(), SimpleRetryMiddleware())
     )
 
     register_send_msg_task(broker)
@@ -57,7 +58,7 @@ def get_priority_broker(redis_config: RedisConfig) -> PriorityBroker:
             consumer_group_name="taskiq_priority",
         )
         .with_result_backend(backend)
-        .with_middlewares(SimpleRetryMiddleware())
+        .with_middlewares(LoggingMiddleware(), SimpleRetryMiddleware())
     )
 
     register_update_progress_task(broker)

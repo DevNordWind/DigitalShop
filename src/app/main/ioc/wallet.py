@@ -9,6 +9,7 @@ from app.app.wallet.cmd import (
 from app.app.wallet.port import WalletReader
 from app.app.wallet.query import (
     GetWalletsByUserId,
+    GetWalletsByUserIdWithTotal,
     ListWalletsByUserId,
 )
 from app.domain.wallet.port import WalletRepository
@@ -22,7 +23,12 @@ class WalletHandlersProvider(Provider):
         ConfirmTopUp, CreateTopUpPayment, TopUpWalletManually, CancelTopUp
     )
 
-    queries = provide_all(GetWalletsByUserId, GetWalletsByUserId, ListWalletsByUserId)
+    queries = provide_all(
+        GetWalletsByUserId,
+        GetWalletsByUserId,
+        ListWalletsByUserId,
+        GetWalletsByUserIdWithTotal,
+    )
 
 
 class WalletAdaptersProvider(Provider):

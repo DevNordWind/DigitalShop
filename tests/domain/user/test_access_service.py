@@ -1,11 +1,24 @@
+from typing import Final
+from uuid import UUID
+
 import pytest
-from domain.user.enums import UserRole
-from domain.user.service import UserAccessService
+
+from app.domain.common.actor import UserActor
+from app.domain.user.enums import UserRole
+from app.domain.user.exception import UserPermissionDeniedError
+from app.domain.user.service import UserAccessService
+from app.domain.user.value_object import UserId
+
+FIXED_UUID: Final[UUID] = UUID("019f20ff-62b9-720b-8e19-3171139ddd0d")
+
+
+def make_user_actor(role: UserRole) -> UserActor:
+    return UserActor(id=UserId(value=FIXED_UUID), role=role)
 
 
 class TestUserAccessService:
     @pytest.mark.parametrize(
-        "assigner_role, target_current_role, target_role",  # noqa: PT006
+        "actor_role, target_current_role, target_role",  # noqa: PT006
         [
             pytest.param(
                 UserRole.SUPER_ADMIN,
@@ -29,19 +42,18 @@ class TestUserAccessService:
     )
     def test_can_assign_role_permitted(
         self,
-        assigner_role: UserRole,
+        actor_role: UserRole,
         target_current_role: UserRole,
         target_role: UserRole,
     ) -> None:
-        assert (
-            UserAccessService.can_assign_role(
-                assigner_role, target_current_role, target_role
-            )
-            is True
+        UserAccessService.ensure_can_assign_role(
+            actor=make_user_actor(role=actor_role),
+            target_current_role=target_current_role,
+            target_role=target_role,
         )
 
     @pytest.mark.parametrize(
-        "assigner_role, target_current_role, target_role",  # noqa: PT006
+        "actor_role, target_current_role, target_role",  # noqa: PT006
         [
             pytest.param(
                 UserRole.ADMIN,
@@ -101,13 +113,13 @@ class TestUserAccessService:
     )
     def test_can_assign_role_denied(
         self,
-        assigner_role: UserRole,
+        actor_role: UserRole,
         target_current_role: UserRole,
         target_role: UserRole,
     ) -> None:
-        assert (
-            UserAccessService.can_assign_role(
-                assigner_role, target_current_role, target_role
+        with pytest.raises(UserPermissionDeniedError):
+            UserAccessService.ensure_can_assign_role(
+                actor=make_user_actor(role=actor_role),
+                target_current_role=target_current_role,
+                target_role=target_role,
             )
-            is False
-        )
