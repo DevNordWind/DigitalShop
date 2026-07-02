@@ -144,7 +144,7 @@ class SqlAPositionRepository(PositionRepository):
         item_status: GenericItemStatus | None,
     ) -> tuple[UUID, ...]:
         stmt = select(stock_item_table.c.id).where(
-            stock_item_table.c.position_id == position_id.value
+            stock_item_table.c.position_id == position_id
         )
         if item_status is not None:
             stmt = stmt.where(
@@ -160,7 +160,7 @@ class SqlAPositionRepository(PositionRepository):
         item_status: GenericItemStatus | None,
     ) -> tuple[UUID, ...]:
         stmt = select(fixed_item_table.c.id).where(
-            fixed_item_table.c.position_id == position_id.value
+            fixed_item_table.c.position_id == position_id
         )
         if item_status is not None:
             stmt = stmt.where(

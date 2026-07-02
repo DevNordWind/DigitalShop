@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import time
 import uuid
 from collections.abc import Awaitable, Callable
@@ -19,29 +21,31 @@ class LoggingContextMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
-        request_id = correlation_id.get() or uuid.uuid7().hex
+        request_id = correlation_id.get() or uuid.uuid4().hex
         cid_token = correlation_id.set(request_id)
         ctx_token = structlog.contextvars.bind_contextvars(
             trace_id=request_id,
-            **_extract_context(event, data),
+            **_extract_context(data),
         )
 
         start = time.perf_counter()
+        status = "ok"
         try:
             return await handler(event, data)
         except Exception:
-            logger.exception("update_processing_failed")
+            status = "error"
             raise
         finally:
             logger.info(
                 "update_processed",
                 duration_ms=round((time.perf_counter() - start) * 1000, 2),
+                status=status,
             )
             correlation_id.reset(cid_token)
             structlog.contextvars.reset_contextvars(**ctx_token)
 
 
-def _extract_context(event: TelegramObject, data: dict[str, Any]) -> dict[str, Any]:
+def _extract_context(data: dict[str, Any]) -> dict[str, Any]:
     update: Update | None = data.get("event_update")
     user: User | None = data.get("event_from_user")
     chat: Chat | None = data.get("event_chat")

@@ -107,7 +107,7 @@ class SqlAReporter(Reporter):
                 fixed_item_table.c.created_at.between(period.from_date, period.to_date)
             )
             stock_items_stmt = stock_items_stmt.where(
-                stock_items_stmt.c.created_at.between(period.from_date, period.to_date)
+                stock_item_table.c.created_at.between(period.from_date, period.to_date)
             )
             positions_stmt = positions_stmt.where(
                 position_table.c.created_at.between(period.from_date, period.to_date)

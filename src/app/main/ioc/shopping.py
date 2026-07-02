@@ -32,6 +32,7 @@ from app.app.shopping.position.cmd import (
     ArchiveAllPositionItems,
     ArchiveAllPositionsByCategory,
     ArchivePosition,
+    ArchivePositionItem,
     ChangePositionDescriptionDefaultLang,
     ChangePositionNameDefaultLang,
     ChangePositionPriceBaseCurrency,
@@ -143,6 +144,7 @@ class ShoppingHandlersProvider(Provider):
         SetCategoryMedia,
         TranslateCategoryNameToOthers,
         TranslateCategoryDescriptionToOthers,
+        ArchivePositionItem,
     )
 
     category_queries = provide_all(

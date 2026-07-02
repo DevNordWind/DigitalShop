@@ -54,11 +54,27 @@ from app.presentation.aiogram.kb import ServiceKeyboard
 from app.presentation.aiogram.port import Text, TranslatorHub
 from app.presentation.aiogram.port.broadcast import TelegramBroadcaster
 from app.presentation.aiogram.referral import extract_ref_deeplink
+from app.presentation.aiogram.setting.category import (
+    ChangeCategoryDefaultLang,
+    SwitchWithNoItemsCategory,
+)
 from app.presentation.aiogram.setting.category.model import CategorySettings
 from app.presentation.aiogram.setting.category.port import CategorySettingsGateway
+from app.presentation.aiogram.setting.general import (
+    SetSupportUsername,
+    SwitchTechWorkStatus,
+)
 from app.presentation.aiogram.setting.general.model import GeneralBotSettings
 from app.presentation.aiogram.setting.general.port import GeneralBotSettingsGateway
-from app.presentation.aiogram.setting.payment import PaymentSettingsGateway
+from app.presentation.aiogram.setting.payment import (
+    PaymentSettingsGateway,
+    SwitchPaymentSettingStatus,
+)
+from app.presentation.aiogram.setting.position import (
+    ChangePositionDefaultCurrency,
+    ChangePositionDefaultLang,
+    SwitchShowPositionWithNoItems,
+)
 from app.presentation.aiogram.setting.position.model import PositionSettings
 from app.presentation.aiogram.setting.position.port import PositionSettingsGateway
 from app.presentation.aiogram.util.error_translator import (
@@ -181,6 +197,18 @@ class AiogramAdaptersProvider(Provider):
     @provide(scope=Scope.REQUEST)
     async def get_error_translator(self, text: Text) -> ErrorTranslator:
         return ErrorTranslator(text=text, config=ErrorTranslatorConfig())
+
+    commands = provide_all(
+        ChangePositionDefaultCurrency,
+        ChangePositionDefaultLang,
+        SwitchShowPositionWithNoItems,
+        SwitchPaymentSettingStatus,
+        SetSupportUsername,
+        SwitchTechWorkStatus,
+        ChangeCategoryDefaultLang,
+        SwitchWithNoItemsCategory,
+        scope=Scope.REQUEST,
+    )
 
 
 class TelegramAuthenticationAdaptersProvider(Provider):

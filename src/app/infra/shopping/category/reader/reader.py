@@ -41,15 +41,13 @@ class SqlACategoryReader(CategoryReader):
 
     @override
     async def read(self, category_id: CategoryId) -> CategoryDTO | None:
-        stmt = select(*CATEGORY_SELECT).where(category_table.c.id == category_id.value)
+        stmt = select(*CATEGORY_SELECT).where(category_table.c.id == category_id)
         row = (await self._session.execute(stmt)).first()
         return CategoryReaderMapper.to_dto(row=row) if row else None
 
     @override
     async def read_short(self, category_id: CategoryId) -> CategoryShortDTO | None:
-        stmt = select(*CATEGORY_SHORT_SELECT).where(
-            category_table.c.id == category_id.value
-        )
+        stmt = select(*CATEGORY_SHORT_SELECT).where(category_table.c.id == category_id)
         row = (await self._session.execute(stmt)).first()
         return CategoryReaderMapper.to_short_dto(row=row) if row else None
 
@@ -61,7 +59,7 @@ class SqlACategoryReader(CategoryReader):
             *CATEGORY_SELECT,
             POSITIONS_COUNT_SUBQ,
             ITEMS_COUNT_SUBQ,
-        ).where(category_table.c.id == category_id.value)
+        ).where(category_table.c.id == category_id)
 
         row = (await self._session.execute(stmt)).first()
         return CategoryReaderMapper.to_with_goods_amount_dto(row=row) if row else None

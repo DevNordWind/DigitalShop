@@ -52,7 +52,7 @@ class TelegramContextGatewayImpl(TelegramContextGateway):
     @override
     async def get_by_user_id(self, user_id: UserId) -> TelegramContext | None:
         stmt = select(TelegramContext).where(
-            telegram_context_table.c.user_id == user_id.value,
+            telegram_context_table.c.user_id == user_id,
         )
         result = await self._session.scalar(stmt)
 

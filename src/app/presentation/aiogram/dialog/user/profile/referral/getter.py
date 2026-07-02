@@ -31,6 +31,7 @@ from app.app.referral.query import (
 from app.domain.common.money import Currency
 from app.domain.common.time_period import TimePeriod
 from app.domain.referral.enums.status import ReferralAwardStatus
+from app.domain.referral.exception import ReferrerProfileNotFoundError
 from app.infra.authentication.telegram.dto import TelegramContextDTO
 from app.presentation.aiogram.dialog.user.profile.referral.ctx import (
     AWARDS_HEIGHT,
@@ -84,10 +85,11 @@ async def referral_getter(
     )
     coefficient: CoefficientDTO = await coefficient_handler()
 
-    profile: ReferrerProfileDTO | None = await profile_handler(
-        GetReferrerProfileQuery(target_user_id=tg_ctx.user_id)
-    )
-    if not profile:
+    try:
+        profile: ReferrerProfileDTO = await profile_handler(
+            GetReferrerProfileQuery(target_user_id=tg_ctx.user_id)
+        )
+    except ReferrerProfileNotFoundError:
         return {"is_referrer": False, "percent": coefficient.as_percent}
 
     period: TimePeriod | None = None

@@ -30,7 +30,7 @@ class SqlAOrderReader(OrderReader):
     async def read_by_id(self, order_id: OrderId) -> OrderDTO | None:
         stmt = (
             select(*ORDER_SELECT)
-            .where(order_table.c.id == order_id.value)
+            .where(order_table.c.id == order_id)
             .outerjoin(
                 coupon_table,
                 coupon_table.c.id == order_table.c.applied_coupon_id,
@@ -70,7 +70,7 @@ class SqlAOrderReader(OrderReader):
                 *ORDER_SELECT,
                 func.count().over().label("total"),
             )
-            .where(order_table.c.customer_id == customer_id.value)
+            .where(order_table.c.customer_id == customer_id)
             .outerjoin(
                 coupon_table,
                 coupon_table.c.id == order_table.c.applied_coupon_id,

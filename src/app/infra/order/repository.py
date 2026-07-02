@@ -26,7 +26,7 @@ class SqlAOrderRepository(OrderRepository):
 
     @override
     async def acquire(self, order_id: OrderId) -> Order | None:
-        stmt = select(Order).where(order_table.c.id == order_id.value).with_for_update()
+        stmt = select(Order).where(order_table.c.id == order_id).with_for_update()
         return await self._session.scalar(stmt)
 
     @override

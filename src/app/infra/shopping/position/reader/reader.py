@@ -35,6 +35,7 @@ from app.domain.shopping.position.item.enums import (
     FixedItemStatus,
     StockItemStatus,
 )
+from app.domain.shopping.position.item.value_object import FixedItemId, StockItemId
 from app.domain.shopping.position.value_object import PositionId
 from app.infra.framework.sql_alchemy.table.position import (
     fixed_item_table,
@@ -72,15 +73,13 @@ class SqlAPositionReader(PositionReader):
 
     @override
     async def read(self, position_id: PositionId) -> PositionDTO | None:
-        stmt = select(*POSITION_SELECT).where(position_table.c.id == position_id.value)
+        stmt = select(*POSITION_SELECT).where(position_table.c.id == position_id)
         row = (await self._session.execute(stmt)).first()
         return PositionReaderMapper.to_dto(row=row) if row else None
 
     @override
     async def read_short(self, position_id: PositionId) -> PositionShortDTO | None:
-        stmt = select(*POSITION_SHORT_SELECT).where(
-            position_table.c.id == position_id.value
-        )
+        stmt = select(*POSITION_SHORT_SELECT).where(position_table.c.id == position_id)
         row = (await self._session.execute(stmt)).first()
         return PositionReaderMapper.to_short_dto(row=row) if row else None
 
@@ -88,7 +87,7 @@ class SqlAPositionReader(PositionReader):
     async def read_with_items_amount(
         self, position_id: PositionId
     ) -> PositionWithItemsAmount | None:
-        stmt = select(*POSITION_SELECT).where(position_table.c.id == position_id.value)
+        stmt = select(*POSITION_SELECT).where(position_table.c.id == position_id)
         row = (await self._session.execute(stmt)).first()
         if not row:
             return None
@@ -190,7 +189,10 @@ class SqlAPositionReader(PositionReader):
         for fulfillment_type, table in _ITEM_TABLES.items():
             select_columns = _ITEM_SELECTS[fulfillment_type]
 
-            stmt = select(*select_columns).where(table.c.id == item_id)
+            stmt = select(*select_columns).where(
+                table.c.id == self._resolve_item_id(fulfillment_type, item_id)
+            )
+
             row = (await self._session.execute(stmt)).first()
             if row:
                 return PositionReaderMapper.to_item_dto(
@@ -209,7 +211,7 @@ class SqlAPositionReader(PositionReader):
     ) -> PositionItemsPaginated:
         fulfillment_type: FulfillmentType | None = await self._session.scalar(
             select(position_table.c.fulfillment_type).where(
-                position_table.c.id == position_id.value
+                position_table.c.id == position_id
             )
         )
         if fulfillment_type is None:
@@ -231,7 +233,7 @@ class SqlAPositionReader(PositionReader):
         stmt = select(
             *select_columns,
             func.count().over().label("total"),
-        ).where(table.c.position_id == position_id.value)
+        ).where(table.c.position_id == position_id)
 
         if status is not None:
             status_enum = _ITEM_STATUS_ENUMS[fulfillment_type]
@@ -275,7 +277,7 @@ class SqlAPositionReader(PositionReader):
         stmt = select(
             *select_columns,
             func.count().over().label("total"),
-        ).where(position_table.c.category_id == category_id.value)
+        ).where(position_table.c.category_id == category_id)
 
         if status is not None:
             stmt = stmt.where(position_table.c.status == status)
@@ -289,9 +291,7 @@ class SqlAPositionReader(PositionReader):
         self, fulfillment_type: FulfillmentType, position_id: PositionId
     ) -> int:
         table = self._resolve_item_table(fulfillment_type)
-        stmt = select(func.count(table.c.id)).where(
-            table.c.position_id == position_id.value
-        )
+        stmt = select(func.count(table.c.id)).where(table.c.position_id == position_id)
         return await self._session.scalar(stmt) or 0
 
     @staticmethod
@@ -300,3 +300,13 @@ class SqlAPositionReader(PositionReader):
             return _ITEM_TABLES[fulfillment_type]
         except KeyError as e:
             raise ValueError(f"Unknown fulfillment type: {fulfillment_type}") from e
+
+    @staticmethod
+    def _resolve_item_id(
+        fulfillment_type: FulfillmentType, item_id: UUID
+    ) -> StockItemId | FixedItemId:
+        match fulfillment_type:
+            case FulfillmentType.FIXED:
+                return FixedItemId(item_id)
+            case FulfillmentType.STOCK:
+                return StockItemId(item_id)

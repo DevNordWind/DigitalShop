@@ -240,7 +240,7 @@ async def on_confirm(
             media=position_media,
             price=ctx.price,
             warehouse_type=ctx.warehouse_type,
-            fulfillment_type=FulfillmentType.STOCK,
+            fulfillment_type=_FULFILLMENT[ctx.warehouse_type],
         ),
     )
 
@@ -411,3 +411,9 @@ async def on_select_warehouse(
     ctx.warehouse_type = tp
 
     dialog_manager.dialog_data[CTX_KEY] = retort.dump(ctx)
+
+
+_FULFILLMENT: dict[WarehouseType, FulfillmentType] = {
+    WarehouseType.UNLIMITED: FulfillmentType.STOCK,
+    WarehouseType.FIXED: FulfillmentType.FIXED,
+}

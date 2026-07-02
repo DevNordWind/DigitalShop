@@ -48,7 +48,7 @@ class FileSystemStorageSession(FileStorageSession):
         self._guard()
         temp_key = self._make_temp_key(file.key)
 
-        await self._writer.put(file)
+        await self._writer.put(File(key=temp_key, content=file.content))
 
         self._puts.append(PendingPut(temp_key=temp_key, final_key=file.key))
         logger.debug(
