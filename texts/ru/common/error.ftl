@@ -1,9 +1,0 @@
-fallback-error = <b>❌ Неожиданная ошибка</b>
-    .call = ❌ Неожиданная ошибка
-
-unexpected-error = <b>🤯 Произошла неожиданная ошибка</b>
-
-    <blockquote>🔧 Перезапускаю бота...</blockquote>
-    .call = 🤯 Произошла неожиданная ошибка. Перезапускаю бота...
-
-error-template = Ошибка: { $traceback }

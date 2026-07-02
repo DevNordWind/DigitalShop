@@ -7,6 +7,7 @@ from app.app.order.cmd import (
     ChangeOrderItemsAmount,
     ConfirmOrder,
     ConfirmOrderWithDiscount,
+    CreateOrder,
     ExpireOutdatedOrders,
     PayOrderWithPayment,
     PayOrderWithWallet,
@@ -37,6 +38,7 @@ class OrderHandlersProvider(Provider):
         ExpireOutdatedOrders,
         PayOrderWithPayment,
         PayOrderWithWallet,
+        CreateOrder,
     )
 
     queries = provide_all(GetOrder, ListOrders)

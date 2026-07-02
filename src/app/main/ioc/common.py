@@ -13,6 +13,8 @@ from app.config import FileStorageConfig
 from app.domain.common.exchange_rate import ExchangeRateGateway
 from app.domain.common.port import Clock, UUIDProvider
 from app.infra.common.bootstrap import Bootstrap
+from app.infra.common.bootstrap.entities import DefaultEntitiesBootstrap
+from app.infra.common.bootstrap.infrastructure import InfrastructureBootstrap
 from app.infra.common.clock import SystemClock
 from app.infra.common.file_storage.reader import FileSystemReader
 from app.infra.common.file_storage.session.session import FileSystemStorageSession
@@ -105,5 +107,8 @@ class CommonAdaptersProvider(Provider):
             cache=cache,
             clock=clock,
         )
+
+    infrastructure_bootstrap = provide(InfrastructureBootstrap, scope=Scope.APP)
+    entities_bootstrap = provide(DefaultEntitiesBootstrap, scope=Scope.REQUEST)
 
     bootstrap = provide(Bootstrap, scope=Scope.REQUEST)

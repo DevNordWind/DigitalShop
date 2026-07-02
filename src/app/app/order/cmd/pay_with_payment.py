@@ -117,6 +117,8 @@ class PayOrderWithPayment:
             await self._session.commit()
             raise created_payment.e
 
+        await self._session.flush()
+
         order.await_payment(items=items, payment_id=created_payment.payment.id, now=now)
         await self._session.commit()
 

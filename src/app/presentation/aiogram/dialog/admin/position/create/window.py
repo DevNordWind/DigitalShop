@@ -230,7 +230,7 @@ input_media = Window(
         id="input_media",
     ),
     StubScroll(id=MEDIA_SCROLL, pages="pages"),
-    NumberedPager(scroll=MEDIA_SCROLL, when=F["pages"] > 0),
+    NumberedPager(scroll=MEDIA_SCROLL, when=F["pages"] > 0, length=5),
     Button(
         GetText("inl-ui.delete"),
         on_click=on_remove_media,

@@ -53,7 +53,7 @@ payment_table: Table = Table(
     Column("commission_type", Enum(CommissionType), nullable=False),
     Column(
         "commission_coefficient",
-        CoefficientType,
+        Numeric(precision=4, scale=3),
         nullable=True,
     ),
     Column("commission_amount", Numeric(19, 4), nullable=False),

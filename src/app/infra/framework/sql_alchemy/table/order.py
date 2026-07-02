@@ -12,6 +12,7 @@ from sqlalchemy import (
     Table,
     event,
 )
+from sqlalchemy import UUID as SaUUID  # noqa: N811
 from sqlalchemy.orm import attributes, composite
 
 from app.domain.common.money import Currency, Money
@@ -25,7 +26,6 @@ from .base import mapper_registry, metadata
 from .custom_type import (
     ItemsAmountType,
     OrderIdType,
-    PaymentIdType,
     PositionSnapshotType,
     UserIdType,
 )
@@ -48,7 +48,7 @@ order_table: Table = Table(
     Column("source_type", Enum(PaymentSourceType), nullable=True),
     Column(
         "source_payment_id",
-        PaymentIdType,
+        SaUUID,
         ForeignKey("Payment.id"),
         nullable=True,
     ),

@@ -29,7 +29,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, Any]:
 
     async with redis.lock("bootstrap_check"), container() as scope:
         bootstrap = await scope.get(Bootstrap)
-        await bootstrap.check()
+        await bootstrap.startup()
 
     yield
     await container.close()
