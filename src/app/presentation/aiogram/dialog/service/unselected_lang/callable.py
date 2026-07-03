@@ -12,8 +12,8 @@ from app.domain.common.localized import Language
 from app.domain.user.enums import UserRole
 from app.infra.authentication.telegram.dto import TelegramContextDTO
 from app.infra.authentication.telegram.handler import (
-    UpdateTelegramLangCmd,
-    UpdateTelegramLangHandler,
+    SetTelegramLangCmd,
+    SetTelegramLangHandler,
 )
 from app.presentation.aiogram.cmd import set_commands
 from app.presentation.aiogram.kb import ServiceKeyboard
@@ -27,13 +27,13 @@ async def on_select_lang(
     event: CallbackQuery,
     widget: Button,
     dialog_manager: DialogManager,
-    new_lang: Language,
-    handler: FromDishka[UpdateTelegramLangHandler],
+    lang: Language,
+    handler: FromDishka[SetTelegramLangHandler],
     settings: FromDishka[GeneralBotSettings],
     container: FromDishka[AsyncContainer],
     kb: FromDishka[ServiceKeyboard],
 ) -> None:
-    await handler.execute(UpdateTelegramLangCmd(new_lang=new_lang))
+    await handler.execute(SetTelegramLangCmd(lang=lang))
     await container.close()
 
     bot: Bot = dialog_manager.middleware_data["bot"]

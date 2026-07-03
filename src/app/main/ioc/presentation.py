@@ -19,6 +19,7 @@ from app.infra.authentication.telegram.handler import (
     DeactivateTelegramContext,
     EnsureTelegramContextData,
     EnsureTelegramContextHandler,
+    SetTelegramLangHandler,
     UpdateTelegramCurrency,
     UpdateTelegramLangHandler,
 )
@@ -227,7 +228,10 @@ class AiogramAdaptersProvider(Provider):
         return ErrorTranslator(text=text, config=ErrorTranslatorConfig())
 
     handlers = provide_all(
-        UpdateTelegramLangHandler, UpdateTelegramCurrency, scope=Scope.REQUEST
+        UpdateTelegramLangHandler,
+        UpdateTelegramCurrency,
+        SetTelegramLangHandler,
+        scope=Scope.REQUEST,
     )
 
 
