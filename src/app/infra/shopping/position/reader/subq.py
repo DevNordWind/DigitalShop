@@ -28,6 +28,12 @@ ITEMS_COUNT_SUBQ: Label[int | float | Decimal | Any] = (
 ).label("items_amount")
 
 ITEM_EXISTS_SUBQ: ColumnElement[bool] = or_(
-    exists().where(fixed_item_table.c.position_id == position_table.c.id),
-    exists().where(stock_item_table.c.position_id == position_table.c.id),
+    exists().where(
+        fixed_item_table.c.position_id == position_table.c.id,
+        fixed_item_table.c.status == "AVAILABLE",
+    ),
+    exists().where(
+        stock_item_table.c.position_id == position_table.c.id,
+        stock_item_table.c.status == "AVAILABLE",
+    ),
 )

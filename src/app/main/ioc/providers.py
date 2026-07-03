@@ -1,5 +1,6 @@
 from dishka import Provider
 
+from . import TelegramAuthenticationHandlersProvider
 from .common import CommonAdaptersProvider
 from .config import ConfigurationProvider
 from .coupon import (
@@ -76,4 +77,5 @@ PROVIDERS: tuple[Provider, ...] = (
     ConfigurationProvider(),
     CommonAdaptersProvider(),
     TelegramAdaptersProvider(),
+    TelegramAuthenticationHandlersProvider(),
 )

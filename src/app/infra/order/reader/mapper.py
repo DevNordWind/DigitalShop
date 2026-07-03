@@ -76,7 +76,7 @@ class OrderReaderMapper:
         return CouponDTO(
             id=row.coupon_id.value,
             creator_id=row.coupon_creator_id.value,
-            code=row.coupon_code,
+            code=row.coupon_code.value,
             discount=DiscountMapper.to_dto(src=row.coupon_discount),
             valid_from=row.coupon_valid_from,
             valid_until=row.coupon_valid_until,

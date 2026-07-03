@@ -226,13 +226,15 @@ class AiogramAdaptersProvider(Provider):
     async def get_error_translator(self, text: Text) -> ErrorTranslator:
         return ErrorTranslator(text=text, config=ErrorTranslatorConfig())
 
+    handlers = provide_all(
+        UpdateTelegramLangHandler, UpdateTelegramCurrency, scope=Scope.REQUEST
+    )
+
 
 class TelegramAuthenticationHandlersProvider(Provider):
     scope = Scope.REQUEST
 
     handlers = provide_all(
         EnsureTelegramContextHandler,
-        UpdateTelegramLangHandler,
         DeactivateTelegramContext,
-        UpdateTelegramCurrency,
     )

@@ -59,6 +59,7 @@ class ApplyCouponToOrder:
         )
         if not coupon:
             raise CouponNotFoundError
+
         now: datetime = self._clock.now()
 
         redemption = self._redemption_service.create(

@@ -14,4 +14,4 @@ InsufficientFundsError =
     <b>❌ Недостаточно средств на кошельке</b>
 
     <blockquote>ℹ️ Доступный баланс: <code>{ $available_amount }{ currency.symbol }</code>.</blockquote>
-    .call = ❌ Недостаточно средств
+    .call = ❌ Недостаточно средств. Доступно: { $available_amount }{ currency.symbol }

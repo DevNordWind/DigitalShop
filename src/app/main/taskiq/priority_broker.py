@@ -4,7 +4,7 @@ from adaptix import Retort
 from dishka import AsyncContainer, make_async_container
 from dishka.integrations.taskiq import setup_dishka
 from redis.asyncio import Redis
-from taskiq import TaskiqEvents, TaskiqState
+from taskiq import TaskiqState
 
 from app.config import Configuration
 from app.infra.common.bootstrap.entities import DefaultEntitiesBootstrap
@@ -36,7 +36,7 @@ def setup_priority_broker() -> PriorityBroker:
     map_all()
     config.log.setup_logging()
     broker = get_priority_broker(config.redis)
-    broker.add_event_handler(event=TaskiqEvents.WORKER_STARTUP, handler=on_startup)
+    # broker.add_event_handler(event=TaskiqEvents.WORKER_STARTUP, handler=on_startup)
     setup_dishka(container=CONTAINER, broker=broker)
     return broker
 

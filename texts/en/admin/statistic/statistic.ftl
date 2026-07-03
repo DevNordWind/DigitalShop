@@ -49,7 +49,7 @@ admin-statistic-period =
             <b>{ -current } Current period:</b> <code>{ $from_date } - { $to_date }</code>
     }
 
-    <blockquote>ℹ️ Format: <code>MM:DD:YY - MM:DD:YY</code></blockquote>
+    <blockquote>ℹ️ Format: <code>MM.DD.YY - MM.DD.YY</code></blockquote>
     .invalid = <b>❌ Invalid period format</b>
 
 admin-statistic-convert = <b>💱 Statistics conversion</b>

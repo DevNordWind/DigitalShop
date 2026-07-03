@@ -14,7 +14,7 @@ from app.app.coupon.dto.paginated import CouponsPaginated
 from app.app.coupon.dto.sorting import CouponSortingParams
 from app.app.coupon.port import CouponReader
 from app.domain.coupon.enums import CouponStatus
-from app.domain.coupon.value_object import CouponId
+from app.domain.coupon.value_object import CouponId, CouponValidity
 from app.infra.coupon.reader.mapper import CouponReaderMapper
 from app.infra.coupon.reader.select import COUPON_SELECT
 from app.infra.framework.sql_alchemy.table.coupon import coupon_table
@@ -80,12 +80,14 @@ class SqlACouponReader(CouponReader):
         now: datetime,
     ) -> tuple[Any, ...]:
         c = coupon_table.c
+
         match status:
             case CouponStatus.ACTIVE:
                 return (
                     c.is_revoked.is_(False),
-                    c.valid_from <= now,
-                    (c.valid_until.is_(None)) | (c.valid_until > now),
+                    c.valid_from <= CouponValidity(value=now),
+                    (c.valid_until.is_(None))
+                    | (c.valid_until > CouponValidity(value=now)),
                 )
             case CouponStatus.REVOKED:
                 return (c.is_revoked.is_(True),)
@@ -93,10 +95,10 @@ class SqlACouponReader(CouponReader):
                 return (
                     c.is_revoked.is_(False),
                     c.valid_until.is_not(None),
-                    c.valid_until <= now,
+                    c.valid_until <= CouponValidity(value=now),
                 )
             case CouponStatus.NOT_STARTED:
                 return (
                     c.is_revoked.is_(False),
-                    c.valid_from > now,
+                    c.valid_from > CouponValidity(value=now),
                 )

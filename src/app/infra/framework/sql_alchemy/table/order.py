@@ -121,7 +121,7 @@ composite_coupon = composite(
     order_table.c.discount_currency,
 )
 composite_coupon._generated_composite_accessor = lambda obj: (  # noqa: SLF001
-    obj.coupon_id.value,  # type: ignore[union-attr]
+    obj.coupon_id,  # type: ignore[union-attr]
     obj.discount.amount,  # type: ignore[union-attr]
     obj.discount.currency,  # type: ignore[union-attr]
 )

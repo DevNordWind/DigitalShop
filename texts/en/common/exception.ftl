@@ -1,32 +1,38 @@
 DefaultLanguageMissingError =
     <b>❌ Default language is not set</b>
 
-    <blockquote>ℹ️ Default language not specified: { lang }.</blockquote>
-    .call = ❌ Default language missing
+    <blockquote>ℹ️ No default language specified: { lang }.</blockquote>
+    .call = ❌ Default language is missing
 
-CannotRemoveDefaultLanguage =
-    <b>❌ Cannot remove default language</b>
+DefaultLanguageDeletionForbiddenError =
+    <b>❌ Cannot delete default language</b>
 
-    <blockquote>ℹ️ The default language is used in the system and cannot be removed.</blockquote>
-    .call = ❌ Cannot remove default language
+    <blockquote>ℹ️ The default language is used by the system and cannot be deleted.</blockquote>
+    .call = ❌ Cannot delete default language
 
-CoefficientTooSmall =
-    <b>❌ Percentage is too small</b>
+CoefficientTooSmallError =
+    <b>❌ Percentage too small</b>
 
-    <blockquote>ℹ️ Minimum allowed coefficient is { $min_percent }%.</blockquote>
+    <blockquote>ℹ️ Minimum allowed percentage is { $min_percent }%.</blockquote>
     .call = ❌ Coefficient too small
 
-CoefficientTooBig =
-    <b>❌ Percentage is too large</b>
+CoefficientTooBigError =
+    <b>❌ Percentage too large</b>
 
-    <blockquote>ℹ️ Maximum allowed coefficient is { $max_percent }%.</blockquote>
+    <blockquote>ℹ️ Maximum allowed percentage is { $max_percent }%.</blockquote>
     .call = ❌ Coefficient too large
 
+TimePeriodFromDateGreaterThanToDateError =
+    <b>❌ Invalid time period</b>
+
+    <blockquote>ℹ️ Start date cannot be later than end date.</blockquote>
+    .call = ❌ Invalid period
+
 DecimalError =
-    <b>❌ Enter a number</b>
+    <b>❌ Please enter a number</b>
 
 IntegerError =
-    <b>❌ Enter an integer</b>
+    <b>❌ Please enter an integer</b>
 
 HTMLValidationError =
     <b>❌ HTML formatting error</b>

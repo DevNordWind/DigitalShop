@@ -1,5 +1,5 @@
 warehouse-type = { $type ->
-    [STOCK] Refillable
+    [UNLIMITED] Refillable
     [FIXED] Fixed
     *[other] { unknown }
 }
