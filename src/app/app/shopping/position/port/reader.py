@@ -37,8 +37,7 @@ class PositionReader(ABC):
 
     @abstractmethod
     async def read_with_items_amount(
-        self,
-        position_id: PositionId,
+        self, position_id: PositionId, item_status: ItemStatus | None = None
     ) -> PositionWithItemsAmount | None:
         raise NotImplementedError
 
@@ -72,6 +71,7 @@ class PositionReader(ABC):
         pagination: OffsetPaginationParams,
         status: PositionStatus | None,
         show_with_no_items: bool | None,
+        item_status: ItemStatus | None,
     ) -> PositionWithItemsAmountPaginated:
         raise NotImplementedError
 

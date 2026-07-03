@@ -1,5 +1,3 @@
-from aiogram import F
-from aiogram.enums import ContentType
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import MessageInput, TextInput
 from aiogram_dialog.widgets.kbd import (
@@ -13,6 +11,8 @@ from aiogram_dialog.widgets.kbd import (
 )
 from aiogram_dialog.widgets.media import DynamicMedia
 
+from aiogram import F
+from aiogram.enums import ContentType
 from app.domain.common.localized import Language
 from app.domain.common.money import Currency
 from app.domain.shopping.position.enums import WarehouseType

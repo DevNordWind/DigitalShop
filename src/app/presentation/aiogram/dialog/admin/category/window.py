@@ -1,7 +1,5 @@
 from uuid import UUID
 
-from aiogram import F
-from aiogram.enums import ButtonStyle
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.kbd import (
     Button,
@@ -14,6 +12,8 @@ from aiogram_dialog.widgets.kbd import (
 from aiogram_dialog.widgets.media import DynamicMedia
 from aiogram_dialog.widgets.style import Style
 
+from aiogram import F
+from aiogram.enums import ButtonStyle
 from app.domain.common.localized import Language
 from app.domain.shopping.category.enums import CategoryStatus
 from app.presentation.aiogram.dialog.admin.category.const import (

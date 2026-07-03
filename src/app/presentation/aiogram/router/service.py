@@ -1,16 +1,16 @@
 from contextlib import suppress
 from uuid import UUID
 
+from aiogram_dialog import DialogManager
+from dishka import FromDishka
+from dishka.integrations.aiogram import inject
+
 from aiogram import F, Router
 from aiogram.exceptions import TelegramAPIError
 from aiogram.types import (
     CallbackQuery,
     Message,
 )
-from aiogram_dialog import DialogManager
-from dishka import FromDishka
-from dishka.integrations.aiogram import inject
-
 from app.presentation.aiogram.filter import IsSelectLanguage, IsTechWork
 from app.presentation.aiogram.kb import ServiceKeyboard
 from app.presentation.aiogram.port import Text
@@ -26,14 +26,13 @@ def make_service_router() -> Router:
 
     service_router.callback_query.register(on_close, F.data == "service:close")
 
-    service_router.message.register(on_tech_work_msg, IsTechWork())
-    service_router.callback_query.register(on_tech_work_callback, IsTechWork())
-
     service_router.message.register(on_unselect_lang, ~IsSelectLanguage())
     service_router.callback_query.register(
         on_unselect_lang,
         ~IsSelectLanguage(),
     )
+    service_router.message.register(on_tech_work_msg, IsTechWork())
+    service_router.callback_query.register(on_tech_work_callback, IsTechWork())
     service_router.callback_query.register(on_to_order, F.data.startswith("to_order:"))
 
     return service_router

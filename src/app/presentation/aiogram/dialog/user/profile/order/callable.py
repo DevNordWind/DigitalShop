@@ -1,13 +1,13 @@
 from uuid import UUID
 
 from adaptix import Retort
-from aiogram import Bot
-from aiogram.types import CallbackQuery
 from aiogram_dialog import Data, DialogManager, ShowMode
 from aiogram_dialog.widgets.kbd import Button, Select
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram import Bot
+from aiogram.types import CallbackQuery
 from app.app.common.dto.query_params import SortingOrder
 from app.app.order.dto.order import OrderDTO, PublicOrderDTO
 from app.app.order.query import GetOrder, GetOrderQuery

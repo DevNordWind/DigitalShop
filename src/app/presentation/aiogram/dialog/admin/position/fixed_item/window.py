@@ -1,12 +1,12 @@
 from uuid import UUID
 
-from aiogram import F
-from aiogram.enums import ButtonStyle
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import Cancel, Group, Select, SwitchTo
 from aiogram_dialog.widgets.style import Style
 
+from aiogram import F
+from aiogram.enums import ButtonStyle
 from app.presentation.aiogram.dialog.admin.position.fixed_item.callable import (
     on_add_item_text,
     on_archive_item,

@@ -6,9 +6,10 @@ from collections.abc import Awaitable, Callable
 from typing import Any, override
 
 import structlog
+from asgi_correlation_id import correlation_id
+
 from aiogram import BaseMiddleware
 from aiogram.types import Chat, TelegramObject, Update, User
-from asgi_correlation_id import correlation_id
 
 logger = structlog.get_logger("aiogram")
 

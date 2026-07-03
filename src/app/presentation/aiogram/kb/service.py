@@ -6,7 +6,6 @@ from aiogram.types import (
     InlineKeyboardMarkup,
 )
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-
 from app.presentation.aiogram.port import Text
 
 COPY_TEXT_LEN: Final[int] = 256

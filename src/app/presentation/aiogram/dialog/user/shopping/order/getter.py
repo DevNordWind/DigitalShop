@@ -22,6 +22,7 @@ from app.app.shopping.position.query import (
 )
 from app.domain.common.money import Currency
 from app.domain.payment.enums import PaymentMethod
+from app.domain.shopping.position.item.enums import GenericItemStatus
 from app.infra.authentication.telegram.dto import TelegramContextDTO
 from app.presentation.aiogram.dialog.user.shopping.order.ctx import (
     CTX_KEY,
@@ -50,7 +51,6 @@ async def order_getter(
     order: PublicOrderDTO | OrderDTO = await query_handler(
         GetOrderQuery(id=ctx.order_id),
     )
-
     return {
         "order_id": order.id,
         "items_amount": order.items_amount,
@@ -104,7 +104,9 @@ async def input_new_items_amount_getter(
         GetOrderQuery(id=ctx.order_id),
     )
     position: PositionWithItemsAmount = await position_handler(
-        GetPositionWithItemsAmountQuery(id=order.position.position_id),
+        GetPositionWithItemsAmountQuery(
+            id=order.position.position_id, item_status=GenericItemStatus.AVAILABLE
+        ),
     )
 
     return {"available": position.items_amount}

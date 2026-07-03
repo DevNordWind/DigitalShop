@@ -1,4 +1,3 @@
-from aiogram import F
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import (
@@ -10,6 +9,7 @@ from aiogram_dialog.widgets.kbd import (
     SwitchTo,
 )
 
+from aiogram import F
 from app.domain.common.money import Currency
 from app.domain.user.enums import UserRole
 from app.presentation.aiogram.dialog.error import on_decimal_error

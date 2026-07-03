@@ -1,6 +1,5 @@
 from aiogram import Bot
 from aiogram.types import BotCommand
-
 from app.domain.user.enums import UserRole
 from app.presentation.aiogram.port import Text
 

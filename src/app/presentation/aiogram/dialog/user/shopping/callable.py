@@ -2,13 +2,13 @@ from typing import Any
 from uuid import UUID
 
 from adaptix import Retort
-from aiogram.types import CallbackQuery, Message
-from aiogram_dialog import DialogManager, ShowMode, StartMode
+from aiogram_dialog import DialogManager, ShowMode
 from aiogram_dialog.widgets.input import ManagedTextInput
 from aiogram_dialog.widgets.kbd import Button, Select
 from dishka import AsyncContainer, FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery, Message
 from app.app.order.cmd import CreateOrder, CreateOrderCmd
 from app.domain.order.value_object import OrderId
 from app.domain.shopping.position.enums import WarehouseType
@@ -131,6 +131,5 @@ async def on_input_items_amount(
     return await dialog_manager.start(
         state=OrderState.order,
         data={"order_id": order_id.value},
-        mode=StartMode.RESET_STACK,
         show_mode=ShowMode.EDIT,
     )

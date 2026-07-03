@@ -1,12 +1,12 @@
 from uuid import UUID
 
-from aiogram import F
-from aiogram.enums import ButtonStyle
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import Button, Cancel, Group, Select, SwitchTo
 from aiogram_dialog.widgets.style import Style
 
+from aiogram import F
+from aiogram.enums import ButtonStyle
 from app.domain.shopping.position.item.enums import (
     StockItemStatus,
 )

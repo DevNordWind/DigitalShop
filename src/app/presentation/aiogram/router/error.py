@@ -3,6 +3,11 @@ from contextlib import suppress
 from typing import cast
 
 import structlog
+from aiogram_dialog import DialogManager, ShowMode
+from asgi_correlation_id import correlation_id
+from dishka import FromDishka
+from dishka.integrations.aiogram import inject
+
 from aiogram import Bot, Router
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import ExceptionTypeFilter
@@ -12,11 +17,6 @@ from aiogram.types import (
     Message,
     ReplyKeyboardRemove,
 )
-from aiogram_dialog import DialogManager, ShowMode
-from asgi_correlation_id import correlation_id
-from dishka import FromDishka
-from dishka.integrations.aiogram import inject
-
 from app.app.common.exception import (
     AppError,
     AppExternalServiceError,

@@ -1,9 +1,9 @@
-from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Select
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery
 from app.app.referral.cmd import CreateReferrerProfile, CreateReferrerProfileCmd
 from app.domain.common.money import Currency
 

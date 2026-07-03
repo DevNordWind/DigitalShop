@@ -1,7 +1,7 @@
-from aiogram import F
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.kbd import Group, Start
 
+from aiogram import F
 from app.domain.user.enums import UserRole
 from app.presentation.aiogram.state import (
     AdminRootState,

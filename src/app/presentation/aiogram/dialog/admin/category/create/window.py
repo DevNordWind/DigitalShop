@@ -1,10 +1,10 @@
-from aiogram import F
-from aiogram.enums import ContentType
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import MessageInput, TextInput
 from aiogram_dialog.widgets.kbd import Button, Cancel, Group, Select, SwitchTo
 from aiogram_dialog.widgets.media import DynamicMedia
 
+from aiogram import F
+from aiogram.enums import ContentType
 from app.domain.common.localized import Language
 from app.presentation.aiogram.dialog.error import on_html_error
 from app.presentation.aiogram.state import CreateCategoryState

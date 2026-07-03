@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from typing import Any, override
 from uuid import UUID
 
-from sqlalchemy import Column, Table, func, select
+from sqlalchemy import Column, Table, func, literal, select, union_all
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import ColumnElement
 from sqlalchemy.sql.selectable import Select
@@ -85,7 +85,9 @@ class SqlAPositionReader(PositionReader):
 
     @override
     async def read_with_items_amount(
-        self, position_id: PositionId
+        self,
+        position_id: PositionId,
+        item_status: ItemStatus | None = None,
     ) -> PositionWithItemsAmount | None:
         stmt = select(*POSITION_SELECT).where(position_table.c.id == position_id)
         row = (await self._session.execute(stmt)).first()
@@ -93,7 +95,9 @@ class SqlAPositionReader(PositionReader):
             return None
 
         items_amount = await self._count_items_amount(
-            fulfillment_type=row.fulfillment_type, position_id=position_id
+            fulfillment_type=row.fulfillment_type,
+            position_id=position_id,
+            item_status=item_status,
         )
         return PositionWithItemsAmount(
             position=PositionReaderMapper.to_dto(row=row),
@@ -134,9 +138,13 @@ class SqlAPositionReader(PositionReader):
         pagination: OffsetPaginationParams,
         status: PositionStatus | None,
         show_with_no_items: bool | None,
+        item_status: ItemStatus | None = None,
     ) -> PositionWithItemsAmountPaginated:
+        items_amount_column = self._build_items_count_column(item_status).label(
+            "items_amount"
+        )
         stmt = self._build_position_query(
-            select_columns=(*POSITION_SELECT, ITEMS_COUNT_SUBQ),
+            select_columns=(*POSITION_SELECT, items_amount_column),
             category_id=category_id,
             sorting=sorting,
             pagination=pagination,
@@ -288,11 +296,70 @@ class SqlAPositionReader(PositionReader):
         return stmt.order_by(order_by).limit(pagination.limit).offset(pagination.offset)
 
     async def _count_items_amount(
-        self, fulfillment_type: FulfillmentType, position_id: PositionId
+        self,
+        fulfillment_type: FulfillmentType,
+        position_id: PositionId,
+        item_status: ItemStatus | None = None,
     ) -> int:
         table = self._resolve_item_table(fulfillment_type)
         stmt = select(func.count(table.c.id)).where(table.c.position_id == position_id)
+
+        if item_status is not None:
+            resolved_status = self._try_resolve_item_status(
+                fulfillment_type, item_status
+            )
+            if resolved_status is None:
+                return 0
+            stmt = stmt.where(table.c.status == resolved_status)
+
         return await self._session.scalar(stmt) or 0
+
+    def _build_items_count_column(
+        self, item_status: ItemStatus | None
+    ) -> ColumnElement[Any]:
+        if item_status is None:
+            return ITEMS_COUNT_SUBQ
+
+        count_selects: list[Select[Any]] = []
+        for fulfillment_type, table in _ITEM_TABLES.items():
+            resolved_status = self._try_resolve_item_status(
+                fulfillment_type, item_status
+            )
+            if resolved_status is None:
+                continue
+            count_selects.append(
+                select(func.count().label("cnt"))
+                .select_from(table)
+                .where(
+                    table.c.position_id == position_table.c.id,
+                    table.c.status == resolved_status,
+                )
+                .correlate(position_table)
+            )
+
+        if not count_selects:
+            return literal(0)
+
+        if len(count_selects) == 1:
+            return count_selects[0].scalar_subquery()
+
+        union_subq = union_all(*count_selects).subquery()
+        return (
+            select(func.coalesce(func.sum(union_subq.c.cnt), 0))
+            .select_from(union_subq)
+            .correlate(position_table)
+            .scalar_subquery()
+        )
+
+    @staticmethod
+    def _try_resolve_item_status(
+        fulfillment_type: FulfillmentType, item_status: ItemStatus
+    ) -> FixedItemStatus | StockItemStatus | None:
+        status_enum = _ITEM_STATUS_ENUMS[fulfillment_type]
+        try:
+            return status_enum(item_status.value)
+        except ValueError:
+            return None
 
     @staticmethod
     def _resolve_item_table(fulfillment_type: FulfillmentType) -> Table:

@@ -2,12 +2,12 @@ from dataclasses import dataclass
 from typing import Any
 
 from adaptix import Retort
-from aiogram.types import InlineKeyboardMarkup
 from aiogram_dialog import DialogManager
 from aiogram_dialog.api.entities import MediaAttachment, MediaId
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import InlineKeyboardMarkup
 from app.domain.common.localized import Language
 from app.infra.authentication.telegram.dto import TelegramContextDTO
 from app.infra.presentation.aiogram.broadcast.kb_builder import (

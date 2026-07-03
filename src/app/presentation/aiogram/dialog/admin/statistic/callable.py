@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from adaptix import Retort
-from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import Data, DialogManager, ShowMode
 from aiogram_dialog.widgets.input import ManagedTextInput
 from aiogram_dialog.widgets.kbd import Select
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery, Message
 from app.domain.common.money import Currency
 from app.domain.common.time_period import TimePeriod
 from app.infra.authentication.telegram.dto import TelegramContextDTO

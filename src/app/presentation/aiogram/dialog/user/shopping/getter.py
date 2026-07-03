@@ -41,6 +41,7 @@ from app.domain.common.file_key import FileKey
 from app.domain.common.money import Currency
 from app.domain.shopping.category.enums import CategoryStatus
 from app.domain.shopping.position.enums import PositionStatus, WarehouseType
+from app.domain.shopping.position.item.enums import GenericItemStatus
 from app.infra.authentication.telegram.dto import TelegramContextDTO
 from app.infra.presentation.aiogram import FileKeyMapper
 from app.presentation.aiogram.dialog.user.shopping.ctx import (
@@ -159,6 +160,7 @@ async def select_position_getter(
             show_with_no_items=settings.show_with_no_items,
             category_id=category.id,
             status=PositionStatus.AVAILABLE,
+            item_status=GenericItemStatus.AVAILABLE,
         ),
     )
     buttons: list[PositionButton] = []
@@ -211,7 +213,9 @@ async def position_getter(
         return None
 
     position_with_items: PositionWithItemsAmount = await query_handler(
-        GetPositionWithItemsAmountQuery(id=ctx.current_position_id),
+        GetPositionWithItemsAmountQuery(
+            id=ctx.current_position_id, item_status=GenericItemStatus.AVAILABLE
+        ),
     )
     position: PositionDTO = position_with_items.position
 
@@ -257,7 +261,9 @@ async def input_items_amount_getter(
         return {}
 
     position: PositionWithItemsAmount = await query_handler(
-        GetPositionWithItemsAmountQuery(id=ctx.current_position_id),
+        GetPositionWithItemsAmountQuery(
+            id=ctx.current_position_id, item_status=GenericItemStatus.AVAILABLE
+        ),
     )
 
     return {"count": position.items_amount}

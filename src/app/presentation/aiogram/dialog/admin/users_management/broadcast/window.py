@@ -1,5 +1,3 @@
-from aiogram import F
-from aiogram.enums import ContentType
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import MessageInput, TextInput
 from aiogram_dialog.widgets.kbd import (
@@ -15,6 +13,8 @@ from aiogram_dialog.widgets.kbd import (
 from aiogram_dialog.widgets.media import DynamicMedia
 from aiogram_dialog.widgets.text import Const, Format
 
+from aiogram import F
+from aiogram.enums import ContentType
 from app.domain.common.localized import Language
 from app.presentation.aiogram.dialog.admin.users_management.broadcast.callable import (
     on_delete_url_button,

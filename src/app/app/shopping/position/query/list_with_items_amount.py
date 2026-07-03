@@ -3,6 +3,7 @@ from uuid import UUID
 
 from app.app.common.dto.query_params import OffsetPaginationParams
 from app.app.common.port.actor_provider import ActorProvider
+from app.app.shopping.position.dto.item import ItemStatus
 from app.app.shopping.position.dto.paginated import PositionWithItemsAmountPaginated
 from app.app.shopping.position.dto.sorting import PositionSortingParams
 from app.app.shopping.position.port import PositionReader
@@ -18,6 +19,7 @@ class ListPositionsWithItemsAmountByCategoryQuery:
     sorting: PositionSortingParams
     status: PositionStatus | None
     show_with_no_items: bool | None
+    item_status: ItemStatus | None
 
 
 class ListPositionsWithItemsAmountByCategory:
@@ -41,4 +43,5 @@ class ListPositionsWithItemsAmountByCategory:
             sorting=query.sorting,
             show_with_no_items=query.show_with_no_items,
             status=resolved_status,
+            item_status=query.item_status,
         )

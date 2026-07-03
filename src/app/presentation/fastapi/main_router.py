@@ -1,7 +1,6 @@
-from fastapi import APIRouter, FastAPI
-
 from app.presentation.fastapi.health import health_router
 from app.presentation.fastapi.webhook import payments_router
+from fastapi import APIRouter, FastAPI
 
 main_router = APIRouter(prefix="/api/v1")
 

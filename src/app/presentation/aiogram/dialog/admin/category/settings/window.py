@@ -1,8 +1,8 @@
-from aiogram.enums import ButtonStyle
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.kbd import Button, Cancel, Group, Select, SwitchTo
 from aiogram_dialog.widgets.style import Style
 
+from aiogram.enums import ButtonStyle
 from app.domain.common.localized import Language
 from app.presentation.aiogram.dialog.admin.category.settings.callable import (
     on_change_default_lang,

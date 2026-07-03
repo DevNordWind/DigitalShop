@@ -242,7 +242,7 @@ async def position_getter(
         return {}
 
     dto: PositionWithItemsAmount = await query_handler(
-        GetPositionWithItemsAmountQuery(id=ctx.current_position_id),
+        GetPositionWithItemsAmountQuery(id=ctx.current_position_id, item_status=None),
     )
     current_page: int = await dialog_manager.find(  # type: ignore[union-attr]
         POSITION_MEDIA_SCROLL,

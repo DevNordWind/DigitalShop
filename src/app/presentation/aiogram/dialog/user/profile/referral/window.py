@@ -1,6 +1,5 @@
 from uuid import UUID
 
-from aiogram import F
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.kbd import (
     Button,
@@ -11,6 +10,7 @@ from aiogram_dialog.widgets.kbd import (
     SwitchTo,
 )
 
+from aiogram import F
 from app.domain.common.money import Currency
 from app.presentation.aiogram.dialog.user.profile.referral.callable import (
     on_change_currency,

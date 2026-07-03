@@ -1,11 +1,11 @@
 from decimal import Decimal
 
-from aiogram.types import Message
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.input import ManagedTextInput
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import Message
 from app.presentation.aiogram.port import Text
 
 

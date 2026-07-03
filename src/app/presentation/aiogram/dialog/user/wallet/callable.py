@@ -1,12 +1,12 @@
 from typing import Any
 
 from adaptix import Retort
-from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Button, Select
 from dishka import AsyncContainer, FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery
 from app.domain.common.money import Currency
 from app.infra.authentication.telegram.handler import (
     UpdateTelegramCurrency,

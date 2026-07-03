@@ -1,11 +1,11 @@
 from uuid import UUID
 
-from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Button, Select
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery
 from app.app.common.dto.query_params import SortingOrder
 from app.domain.common.localized import Language
 from app.presentation.aiogram.setting.category.cmd import (

@@ -2,13 +2,13 @@ from typing import Any
 from uuid import UUID
 
 from adaptix import Retort
-from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.common import ManagedScroll
 from aiogram_dialog.widgets.kbd import Button, Select
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery
 from app.app.common.dto.query_params import SortingOrder
 from app.app.shopping.position.cmd import (
     ArchiveAllPositionsByCategory,

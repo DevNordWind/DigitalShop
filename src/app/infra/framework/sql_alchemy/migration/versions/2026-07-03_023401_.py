@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 32ae6b45c847
+Revision ID: c9cc75a3158a
 Revises:
-Create Date: 2026-07-01 21:45:57.783281
+Create Date: 2026-07-03 02:34:01.299474
 
 """
 
@@ -40,7 +40,7 @@ from app.infra.framework.sql_alchemy.table.custom_type import (
 )
 
 # revision identifiers, used by Alembic.
-revision: str = "32ae6b45c847"
+revision: str = "c9cc75a3158a"
 down_revision: str | Sequence[str] | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -228,9 +228,7 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column(
-            "commission_coefficient",
-            CoefficientType(precision=4, scale=3),
-            nullable=True,
+            "commission_coefficient", sa.Numeric(precision=4, scale=3), nullable=True
         ),
         sa.Column(
             "commission_amount", sa.Numeric(precision=19, scale=4), nullable=False
@@ -426,11 +424,7 @@ def upgrade() -> None:
             sa.Enum("WALLET", "PAYMENT", name="paymentsourcetype"),
             nullable=True,
         ),
-        sa.Column(
-            "source_payment_id",
-            PaymentIdType(),
-            nullable=True,
-        ),
+        sa.Column("source_payment_id", sa.UUID(), nullable=True),
         sa.Column(
             "position",
             PositionSnapshotType(astext_type=Text()),

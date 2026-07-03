@@ -1,8 +1,8 @@
+from aiogram_dialog import DialogManager
+
 from aiogram import Router
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
-from aiogram_dialog import DialogManager
-
 from app.presentation.aiogram.filter import IsAdmin
 from app.presentation.aiogram.state import (
     AdminRootState,

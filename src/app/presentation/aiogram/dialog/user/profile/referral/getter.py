@@ -5,11 +5,11 @@ from typing import Any
 from uuid import UUID
 
 from adaptix import Retort
-from aiogram import Bot
 from aiogram_dialog import DialogManager
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram import Bot
 from app.app.common.dto.coefficient import CoefficientDTO
 from app.app.common.dto.query_params import OffsetPaginationParams
 from app.app.referral.dto.award import ReferralAwardDTO

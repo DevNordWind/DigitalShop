@@ -1,13 +1,13 @@
 from typing import Any
 
 from adaptix import Retort
-from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import DialogManager, ShowMode, StartMode
 from aiogram_dialog.widgets.input import ManagedTextInput
 from aiogram_dialog.widgets.kbd import Button, Select
 from dishka import AsyncContainer, FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery, Message
 from app.app.order.cmd import (
     ApplyCouponToOrder,
     ApplyCouponToOrderCmd,
@@ -65,16 +65,13 @@ async def on_cancel(
         await handler(CancelOrderCmd(id=ctx.order_id))
     except OrderCancellationForbiddenError as e:
         await event.answer(text=text(f"{e.__class__.__name__}.call"), show_alert=True)
-        await dialog_manager.done()
-        await event.message.delete()  # type: ignore[union-attr]
-        return
+        return await dialog_manager.done()
 
     await event.answer(
         text=text("user-shopping-order.order-cancelled-call"),
         show_alert=True,
     )
     await dialog_manager.done()
-    await event.message.delete()  # type: ignore[union-attr]
 
 
 @inject

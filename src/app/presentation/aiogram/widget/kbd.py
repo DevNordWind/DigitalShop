@@ -1,7 +1,5 @@
 from typing import Any, override
 
-from aiogram import F
-from aiogram.types import InlineKeyboardMarkup
 from aiogram_dialog import DialogManager
 from aiogram_dialog.api.internal import RawKeyboard
 from aiogram_dialog.widgets.common import WhenCondition
@@ -16,6 +14,9 @@ from aiogram_dialog.widgets.kbd import (
     StubScroll,
 )
 from aiogram_dialog.widgets.text import Format
+
+from aiogram import F
+from aiogram.types import InlineKeyboardMarkup
 
 
 class Pagination(Row):

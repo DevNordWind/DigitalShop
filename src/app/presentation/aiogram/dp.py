@@ -1,7 +1,7 @@
-from aiogram import Dispatcher
-from aiogram.fsm.storage.base import BaseEventIsolation, BaseStorage
 from aiogram_dialog import setup_dialogs
 
+from aiogram import Dispatcher
+from aiogram.fsm.storage.base import BaseEventIsolation, BaseStorage
 from app.presentation.aiogram.dialog import (
     get_admins_dialogs,
     get_root_dialog,

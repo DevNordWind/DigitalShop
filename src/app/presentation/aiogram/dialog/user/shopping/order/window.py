@@ -1,9 +1,9 @@
-from aiogram import F
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import Button, Group, Select, SwitchTo, Url
 from aiogram_dialog.widgets.text import Format
 
+from aiogram import F
 from app.domain.payment.enums import PaymentMethod
 from app.presentation.aiogram.dialog.error import on_integer_error
 from app.presentation.aiogram.dialog.user.shopping.order.callable import (

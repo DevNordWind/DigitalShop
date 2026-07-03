@@ -1,13 +1,13 @@
 from decimal import Decimal
 
 from adaptix import Retort
-from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import Data, DialogManager, ShowMode
 from aiogram_dialog.widgets.input import ManagedTextInput
 from aiogram_dialog.widgets.kbd import Button, Select
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery, Message
 from app.app.common.dto.money import MoneyDTO
 from app.app.user.cmd import AssignUserRole, AssignUserRoleCmd
 from app.app.user.dto.profile import UserProfileDTO

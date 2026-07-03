@@ -1,8 +1,8 @@
-from aiogram.filters import Filter
-from aiogram.types import TelegramObject
 from dishka import FromDishka
 from dishka.integrations.aiogram import inject
 
+from aiogram.filters import Filter
+from aiogram.types import TelegramObject
 from app.infra.authentication.telegram.dto import TelegramContextDTO
 from app.presentation.aiogram.setting.general.model import GeneralBotSettings
 

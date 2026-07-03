@@ -1,9 +1,9 @@
 from uuid import UUID
 
-from aiogram import F
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.kbd import Button, Cancel, Group, Select, SwitchTo
 
+from aiogram import F
 from app.domain.order.enums import OrderStatus
 from app.presentation.aiogram.dialog.user.profile.order.callable import (
     on_order_status,

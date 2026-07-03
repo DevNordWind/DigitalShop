@@ -1,4 +1,3 @@
-from aiogram import F
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import (
@@ -11,6 +10,7 @@ from aiogram_dialog.widgets.kbd import (
 )
 from aiogram_dialog.widgets.text import Format
 
+from aiogram import F
 from app.presentation.aiogram.state import CreateUrlButtonState
 from app.presentation.aiogram.widget import GetText, GetTextSelect
 

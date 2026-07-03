@@ -1,9 +1,9 @@
-from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Button, Select
 from dishka import FromDishka
 from dishka.integrations.aiogram_dialog import inject
 
+from aiogram.types import CallbackQuery
 from app.domain.common.localized import Language
 from app.domain.common.money import Currency
 from app.presentation.aiogram.setting.position.cmd import (

@@ -38,7 +38,7 @@ class OrderReaderMapper:
             cancelled_at=row.cancelled_at,
             applied_coupon=cls._map_applied_coupon(row=row),
             position=PositionSnapshotMapper.to_dto(src=row.position),
-            items_amount=row.items_amount,
+            items_amount=row.items_amount.value,
             failed_at=row.failed_at,
             coupon=cls._map_coupon(row=row),
             awaited_payment_at=row.awaited_payment_at,

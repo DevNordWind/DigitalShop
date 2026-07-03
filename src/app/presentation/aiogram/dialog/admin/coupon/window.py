@@ -1,6 +1,5 @@
 from uuid import UUID
 
-from aiogram import F
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.kbd import (
     Button,
@@ -11,6 +10,7 @@ from aiogram_dialog.widgets.kbd import (
     SwitchTo,
 )
 
+from aiogram import F
 from app.domain.coupon.enums import CouponStatus
 from app.presentation.aiogram.state import AdminCouponState, CreateCouponState
 from app.presentation.aiogram.widget import GetText, GetTextSelect, Pagination

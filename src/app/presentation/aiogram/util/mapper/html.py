@@ -1,9 +1,13 @@
+from __future__ import annotations
+
 import re
-from html import escape
+from html import escape, unescape
 from html.parser import HTMLParser
 from typing import NamedTuple, override
 
-_ALLOWED_TAGS = frozenset(
+__all__ = ("validate_html",)
+
+_ALLOWED_TAGS: frozenset[str] = frozenset(
     {
         "b",
         "strong",
@@ -24,9 +28,9 @@ _ALLOWED_TAGS = frozenset(
     }
 )
 
-_HREF_ALLOWED_SCHEMES = frozenset({"http", "https", "tg", "mailto"})
-_LANGUAGE_CLASS_RE = re.compile(r"^language-[\w+-]+$")
-_EMOJI_ID_RE = re.compile(r"^\d+$")
+_HREF_ALLOWED_SCHEMES: frozenset[str] = frozenset({"http", "https", "tg", "mailto"})
+_LANGUAGE_CLASS_RE: re.Pattern[str] = re.compile(r"^language-[\w+-]+$")
+_EMOJI_ID_RE: re.Pattern[str] = re.compile(r"^\d+$")
 
 
 class _OpenTag(NamedTuple):
@@ -109,5 +113,11 @@ class _TelegramHTMLParser(HTMLParser):
 def validate_html(value: str) -> str:
     parser = _TelegramHTMLParser()
     parser.feed(value)
+
+    leftover = parser.rawdata
+    if leftover:
+        parser.handle_data(unescape(leftover))
+        parser.rawdata = ""
+
     parser.close()
     return parser.get_html()

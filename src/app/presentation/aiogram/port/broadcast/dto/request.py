@@ -2,7 +2,6 @@ from dataclasses import dataclass, field
 from typing import Literal
 
 from aiogram.enums import ContentType
-
 from app.domain.common.localized import Language
 from app.infra.authentication.telegram.model import TelegramId
 from app.presentation.aiogram.port.broadcast.dto.button import (
