@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import NewType
+from zoneinfo import ZoneInfo
 
 from app.domain.common.localized import Language
 from app.domain.common.money import Currency
@@ -19,6 +20,7 @@ class TelegramContext:
 
     lang: Language | None
     currency: Currency
+    timezone: ZoneInfo
 
     is_active: bool
 

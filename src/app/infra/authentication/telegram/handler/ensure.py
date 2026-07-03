@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from zoneinfo import ZoneInfo
 
 from app.app.common.exception import DataCorruptionError
 from app.app.common.port.session import DatabaseSession
@@ -18,6 +19,8 @@ from app.infra.authentication.telegram.port import (
     SuperAdminsProvider,
     TelegramContextGateway,
 )
+
+_DEFAULT_ZONE_INFO = ZoneInfo("Europe/Moscow")
 
 
 @dataclass(slots=True, frozen=True)
@@ -105,5 +108,6 @@ class EnsureTelegramContextHandler:
             lang=None,
             is_active=True,
             currency=Currency.RUB,
+            timezone=_DEFAULT_ZONE_INFO,
         )
         return TelegramContextData(ctx=ctx, role=role)

@@ -24,6 +24,7 @@ from .localized_text import LocalizedTextType
 from .payment_external import PaymentExternalIdType
 from .position_price import PositionPriceType
 from .position_snapshot import PositionSnapshotType
+from .zone_info import ZoneInfoType
 
 __all__ = (
     "CategoryIdType",
@@ -50,4 +51,5 @@ __all__ = (
     "StockItemIdType",
     "UserIdType",
     "WalletIdType",
+    "ZoneInfoType",
 )

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from uuid import UUID
+from zoneinfo import ZoneInfo
 
 from app.domain.common.localized import Language
 from app.domain.common.money import Currency
@@ -25,5 +26,6 @@ class TelegramContextDTO:
 
     lang: Language | None
     currency: Currency
+    timezone: ZoneInfo
 
     is_active: bool

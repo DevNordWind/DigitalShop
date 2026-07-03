@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: c9cc75a3158a
+Revision ID: 67b4864119f1
 Revises:
-Create Date: 2026-07-03 02:34:01.299474
+Create Date: 2026-07-03 19:11:26.257471
 
 """
 
@@ -37,10 +37,11 @@ from app.infra.framework.sql_alchemy.table.custom_type import (
     StockItemIdType,
     UserIdType,
     WalletIdType,
+    ZoneInfoType,
 )
 
 # revision identifiers, used by Alembic.
-revision: str = "c9cc75a3158a"
+revision: str = "67b4864119f1"
 down_revision: str | Sequence[str] | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -351,6 +352,11 @@ def upgrade() -> None:
         sa.Column(
             "currency",
             sa.Enum("USD", "RUB", "UAH", "KZT", name="currency"),
+            nullable=False,
+        ),
+        sa.Column(
+            "timezone",
+            ZoneInfoType(length=64),
             nullable=False,
         ),
         sa.Column("is_active", sa.Boolean(), nullable=False),

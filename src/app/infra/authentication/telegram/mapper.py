@@ -15,4 +15,5 @@ class TelegramContextMapper:
             lang=src.lang,
             is_active=src.is_active,
             currency=src.currency,
+            timezone=src.timezone,
         )

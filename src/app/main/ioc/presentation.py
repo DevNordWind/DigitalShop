@@ -82,6 +82,7 @@ from app.presentation.aiogram.util.error_translator import (
     ErrorTranslator,
     ErrorTranslatorConfig,
 )
+from app.presentation.aiogram.util.timezone_processor import TimeZoneProcessor
 
 
 class TelegramAdaptersProvider(Provider):
@@ -233,6 +234,8 @@ class AiogramAdaptersProvider(Provider):
         SetTelegramLangHandler,
         scope=Scope.REQUEST,
     )
+
+    timezone_processor = provide(TimeZoneProcessor, scope=Scope.REQUEST)
 
 
 class TelegramAuthenticationHandlersProvider(Provider):
