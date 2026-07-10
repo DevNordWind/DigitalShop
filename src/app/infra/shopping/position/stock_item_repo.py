@@ -40,7 +40,7 @@ class SqlAStockItemRepository(StockItemRepository):
             select(StockItem)
             .join(position_table, position_table.c.id == stock_item_table.c.position_id)
             .where(position_table.c.id == position_id)
-            .with_for_update()
+            .with_for_update(skip_locked=True)
         )
         if status is not None:
             stmt = stmt.where(stock_item_table.c.status == status)

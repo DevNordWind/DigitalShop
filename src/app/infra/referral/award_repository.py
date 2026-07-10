@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.referral.entity import ReferralAward
 from app.domain.referral.port import ReferralAwardRepository
 from app.domain.referral.value_object import ReferralAwardId
-from app.infra.framework.sql_alchemy.table.referral import referrer_profile_table
+from app.infra.framework.sql_alchemy.table.referral import referral_award_table
 
 
 class SqlAReferralAwardRepository(ReferralAwardRepository):
@@ -20,6 +20,6 @@ class SqlAReferralAwardRepository(ReferralAwardRepository):
     @override
     async def get(self, award_id: ReferralAwardId) -> ReferralAward | None:
         stmt = select(ReferralAward).where(
-            referrer_profile_table.c.id == award_id,
+            referral_award_table.c.id == award_id,
         )
         return await self._session.scalar(stmt)
