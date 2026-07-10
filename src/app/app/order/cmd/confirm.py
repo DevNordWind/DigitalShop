@@ -1,21 +1,16 @@
 import logging
-from copy import copy
 from datetime import datetime
+from typing import override
 
 from app.app.common.exception import DataCorruptionError
 from app.app.common.port.session import DatabaseSession
 from app.app.common.port.telegram_notification import (
-    Button,
-    NotificationRequest,
     TelegramNotification,
 )
-from app.app.common.port.telegram_notification.dto import DEFAULT_BUTTON
+from app.app.order.port import OrderNotifier, OrderReader
 from app.app.payment.dto.payment import PaymentDTO
 from app.app.payment.port import PaymentPurposeHandler
-from app.app.referral.cmd import (
-    CreateReferralAwardFromOrder,
-    CreateReferralAwardFromOrderCmd,
-)
+from app.app.referral.cmd import CreateReferralAwardFromOrder
 from app.domain.common.port import Clock
 from app.domain.coupon.entity import CouponRedemption
 from app.domain.coupon.port import CouponRedemptionRepository
@@ -44,8 +39,10 @@ class ConfirmOrder(PaymentPurposeHandler):
         fulfillment_service: PositionFulfillmentDomainService,
         session: DatabaseSession,
         clock: Clock,
-        create_award: CreateReferralAwardFromOrder,
         notification: TelegramNotification,
+        order_reader: OrderReader,
+        notifier: OrderNotifier,
+        create_award: CreateReferralAwardFromOrder,
     ):
         self._position_repo = position_repo
         self._order_repo = order_repo
@@ -54,10 +51,13 @@ class ConfirmOrder(PaymentPurposeHandler):
         self._fulfillment_service = fulfillment_service
         self._session = session
         self._clock = clock
-        self._create_award = create_award
         self._notification = notification
+        self._order_reader = order_reader
+        self._order_notifier = notifier
+        self._create_award = create_award
 
-    async def __call__(self, payment: PaymentDTO) -> None:
+    @override
+    async def apply(self, payment: PaymentDTO) -> None:
         order: Order | None = await self._order_repo.acquire(
             order_id=OrderId(payment.purpose.reference_id),
         )
@@ -88,31 +88,15 @@ class ConfirmOrder(PaymentPurposeHandler):
                 position=position, snapshots=order.items, ctx=SellContext(now=now)
             )
 
-        order_copy: Order = copy(order)
+        await self._create_award.apply(order=order)
 
-        await self._session.commit()
-
-        await self._notification.send(
-            user_id=order_copy.customer_id,
-            request=NotificationRequest(
-                key="order-confirmed-notification",
-                buttons=[
-                    Button(
-                        key="order-confirmed-notification.to-order-btn",
-                        data=f"to_order:{order_copy.id.value}",
-                    ),
-                    DEFAULT_BUTTON,
-                ],
-            ),
-            order_id=order_copy.id.value,
-            amount=order_copy.total.amount,
-            currency=order_copy.total.currency,
+    @override
+    async def notify(self, payment: PaymentDTO) -> None:
+        order = await self._order_reader.read_by_id(
+            order_id=OrderId(payment.purpose.reference_id)
         )
-        try:
-            await self._create_award(
-                CreateReferralAwardFromOrderCmd(
-                    order_id=payment.purpose.reference_id,
-                ),
-            )
-        except Exception as e:
-            logger.error(e)
+        if order is None:
+            raise DataCorruptionError
+
+        await self._order_notifier.notify_confirmed(order=order)
+        await self._create_award.notify(order=order)

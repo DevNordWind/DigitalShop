@@ -1,4 +1,6 @@
-from aiogram_dialog import setup_dialogs
+from typing import NamedTuple
+
+from aiogram_dialog import BgManagerFactory, setup_dialogs
 
 from aiogram import Dispatcher
 from aiogram.fsm.storage.base import BaseEventIsolation, BaseStorage
@@ -17,12 +19,17 @@ from app.presentation.aiogram.router import (
 )
 
 
+class DispatcherBundle(NamedTuple):
+    dp: Dispatcher
+    bg_factory: BgManagerFactory
+
+
 def make_dispatcher(
     storage: BaseStorage,
     events_isolation: BaseEventIsolation,
-) -> Dispatcher:
+) -> DispatcherBundle:
     dp = Dispatcher(storage=storage, events_isolation=events_isolation)
-    setup_dialogs(router=dp, events_isolation=events_isolation)
+    bg_factory = setup_dialogs(router=dp, events_isolation=events_isolation)
     for observer in dp.observers.values():
         observer.outer_middleware(LoggingContextMiddleware())
 
@@ -38,7 +45,7 @@ def make_dispatcher(
 
     dp.include_router(make_error_router())
 
-    return dp
+    return DispatcherBundle(dp=dp, bg_factory=bg_factory)
 
 
 def register_admins_dialogs(dp: Dispatcher) -> None:

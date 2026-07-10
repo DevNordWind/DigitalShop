@@ -13,8 +13,6 @@ from app.app.order.cmd import (
     ApplyCouponToOrderCmd,
     CancelOrder,
     CancelOrderCmd,
-    ChangeOrderItemsAmount,
-    ChangeOrderItemsAmountCmd,
     ConfirmOrderWithDiscount,
     ConfirmOrderWithDiscountCmd,
     PayOrderWithPayment,
@@ -61,6 +59,7 @@ async def on_cancel(
     text: FromDishka[Text],
 ) -> None:
     ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+
     try:
         await handler(CancelOrderCmd(id=ctx.order_id))
     except OrderCancellationForbiddenError as e:
@@ -109,19 +108,10 @@ async def on_pay_with_wallet(
 
     try:
         await handler(cmd=PayOrderWithWalletCmd(order_id=ctx.order_id))
-    except OutOfStockError as e:
-        if e.available == 0:
-            await event.answer(
-                text=text(
-                    "user-shopping-order-payment.no-items-available-call",
-                ),
-            )
-            await event.message.delete()  # type: ignore[union-attr]
-            return await dialog_manager.done()
+    except OutOfStockError:
+        await dialog_manager.done()
+        raise
 
-        return await dialog_manager.switch_to(
-            state=OrderState.input_new_items_amount,
-        )
     return await dialog_manager.start(
         state=OrdersState.order,
         data={"order_id": ctx.order_id},
@@ -136,27 +126,17 @@ async def on_select_payment_method(
     dialog_manager: DialogManager,
     method: PaymentMethod,
     handler: FromDishka[PayOrderWithPayment],
-    text: FromDishka[Text],
     retort: FromDishka[Retort],
 ) -> None:
     ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+
     try:
         invoice: Invoice = await handler(
             PayOrderWithPaymentCmd(order_id=ctx.order_id, method=method),
         )
-    except OutOfStockError as e:
-        if e.available == 0:
-            await event.answer(
-                text=text(
-                    "user-shopping-order-payment.no-items-available-call",
-                ),
-            )
-            await event.message.delete()  # type: ignore[union-attr]
-            return await dialog_manager.done()
-
-        return await dialog_manager.switch_to(
-            state=OrderState.input_new_items_amount,
-        )
+    except OutOfStockError:
+        await dialog_manager.done()
+        raise
 
     ctx.invoice = invoice
     dialog_manager.dialog_data[CTX_KEY] = retort.dump(ctx)
@@ -164,45 +144,6 @@ async def on_select_payment_method(
     return await dialog_manager.switch_to(
         state=OrderState.payment,
     )
-
-
-@inject
-async def on_input_new_items_amount(
-    event: Message,
-    widget: ManagedTextInput[int],
-    dialog_manager: DialogManager,
-    items_amount: int,
-    handler: FromDishka[ChangeOrderItemsAmount],
-    retort: FromDishka[Retort],
-    t: FromDishka[Text],
-) -> Message | None:
-    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
-
-    try:
-        await handler(
-            ChangeOrderItemsAmountCmd(
-                id=ctx.order_id,
-                new_items_amount=items_amount,
-            ),
-        )
-    except OutOfStockError as e:
-        if e.available == 0:
-            await event.reply(
-                text=t("user-shopping-order-new-items.cancel-msg"),
-            )
-            await dialog_manager.done()
-            return None
-
-        return await event.reply(
-            text=t(key=e.__class__.__name__, available=e.available)
-        )
-
-    await event.delete()
-    await dialog_manager.switch_to(
-        state=OrderState.order,
-        show_mode=ShowMode.EDIT,
-    )
-    return None
 
 
 @inject
@@ -218,6 +159,7 @@ async def on_check(
     ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
     if ctx.invoice is None:
         return None
+
     try:
         invoice: Invoice = await handler(
             CheckPaymentCmd(id=ctx.invoice.payment_id),
@@ -260,4 +202,20 @@ async def on_confirm_order_with_discount(
         state=OrdersState.order,
         data={"order_id": ctx.order_id},
         mode=StartMode.RESET_STACK,
+    )
+
+
+@inject
+async def on_to_order(
+    event: CallbackQuery,
+    widget: Button,
+    dialog_manager: DialogManager,
+    retort: FromDishka[Retort],
+) -> None:
+    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+
+    await dialog_manager.done()
+    await dialog_manager.start(
+        state=OrdersState.order,
+        data={"order_id": ctx.order_id},
     )

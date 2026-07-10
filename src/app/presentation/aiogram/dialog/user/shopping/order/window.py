@@ -1,23 +1,22 @@
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import TextInput
-from aiogram_dialog.widgets.kbd import Button, Group, Select, SwitchTo, Url
+from aiogram_dialog.widgets.kbd import Button, Cancel, Group, Select, SwitchTo, Url
 from aiogram_dialog.widgets.text import Format
 
 from aiogram import F
 from app.domain.payment.enums import PaymentMethod
-from app.presentation.aiogram.dialog.error import on_integer_error
 from app.presentation.aiogram.dialog.user.shopping.order.callable import (
     on_cancel,
     on_check,
     on_confirm_order_with_discount,
     on_input_coupon_code,
-    on_input_new_items_amount,
     on_pay_with_wallet,
     on_select_payment_method,
+    on_to_order,
 )
 from app.presentation.aiogram.dialog.user.shopping.order.getter import (
-    input_new_items_amount_getter,
     order_getter,
+    payment_confirmed_getter,
     payment_getter,
     select_payment_method_getter,
 )
@@ -59,22 +58,6 @@ input_coupon_code = Window(
     state=OrderState.input_coupon_code,
 )
 
-input_new_items_amount = Window(
-    GetText("user-shopping-order-new-items"),
-    TextInput(
-        on_success=on_input_new_items_amount,
-        on_error=on_integer_error,
-        type_factory=int,
-        id="input_new_items_amount",
-    ),
-    Button(
-        GetText("user-shopping-order-new-items.cancel-btn"),
-        id="cancel",
-        on_click=on_cancel,  # type: ignore[bad-argument-type]
-    ),
-    state=OrderState.input_new_items_amount,
-    getter=input_new_items_amount_getter,
-)
 
 select_payment_method = Window(
     GetText("user-shopping-order-select-payment"),
@@ -119,4 +102,12 @@ payment = Window(
     ),
     getter=payment_getter,
     state=OrderState.payment,
+)
+
+payment_confirmed = Window(
+    Format("{text}"),
+    Button(Format("{to_order_text}"), id="to_order", on_click=on_to_order),
+    Cancel(Format("{cancel_text}")),
+    getter=payment_confirmed_getter,
+    state=OrderState.payment_confirmed,
 )

@@ -12,6 +12,7 @@ top-up-select-payment-method = <b>{ -payment-method-emoji } Выбери спо�
 
 payment-warning = { $method ->
     [CRYPTO_PAY] ℹ️ Если оплата не зачислилась автоматически, нажмите на <code>Проверить оплату</code>
+    [LOLZ_TEAM] ℹ️ Если оплата не зачислилась автоматически, нажмите на <code>Проверить оплату</code>
     *[other] Неизвестно
 }
 
@@ -30,3 +31,7 @@ top-up-payment = <b>📥 Пополнение баланса</b>
     }
     .cancel-btn = ❌ Отменить
     .cancel = ❌ Заказ отменён
+
+top-up-payment-confirmed = <b>✅ Баланс успешно пополнен на <code>{ $amount }{ currency.symbol }</code></b>
+
+    🧾 Платёж <code>{ $payment_id }</code>

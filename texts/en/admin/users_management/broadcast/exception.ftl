@@ -1,1 +1,1 @@
-BroadcastTextsAsymmetrically = ❌ The languages of the texts and buttons must match.
+BroadcastTextsAsymmetricallyError = ❌ The languages of the texts and buttons must match.

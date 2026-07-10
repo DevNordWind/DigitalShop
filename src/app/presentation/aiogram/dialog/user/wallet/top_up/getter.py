@@ -90,3 +90,13 @@ async def select_currency_getter(
             for currency in Currency
         ],
     }
+
+
+async def payment_confirmed_getter(
+    dialog_manager: DialogManager,
+    **_: Any,
+) -> dict[str, Any]:
+    return {
+        "text": dialog_manager.dialog_data["text"],
+        "cancel_text": dialog_manager.dialog_data["cancel_text"],
+    }

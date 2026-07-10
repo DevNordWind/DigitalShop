@@ -21,6 +21,7 @@ from app.presentation.aiogram.dialog.user.wallet.top_up.callable import (
 )
 from app.presentation.aiogram.dialog.user.wallet.top_up.getter import (
     input_amount_getter,
+    payment_confirmed_getter,
     payment_getter,
     select_currency_getter,
     select_payment_method_getter,
@@ -101,4 +102,13 @@ payment = Window(
     ),
     state=TopUpState.payment,
     getter=payment_getter,
+)
+
+payment_confirmed = Window(
+    Format("{text}"),
+    Cancel(
+        Format("{cancel_text}"),
+    ),
+    getter=payment_confirmed_getter,
+    state=TopUpState.payment_confirmed,
 )

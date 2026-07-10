@@ -1,9 +1,7 @@
-import asyncio
-from asyncio import Task
 from dataclasses import dataclass
-from typing import Any
 from uuid import UUID
 
+from app.app.common.background import BackgroundTasks
 from app.app.common.port.session import DatabaseSession
 from app.app.common.port.telegram_notification import (
     NotificationRequest,
@@ -38,14 +36,15 @@ class CheckPayment:
         factory: PaymentMethodGatewayFactory,
         notification: TelegramNotification,
         handlers_registry: PaymentPurposeHandlersRegistry,
+        background: BackgroundTasks,
     ):
-        self._repo: PaymentRepository = repo
-        self._session: DatabaseSession = session
-        self._clock: Clock = clock
-        self._factory: PaymentMethodGatewayFactory = factory
-        self._handlers_registry: PaymentPurposeHandlersRegistry = handlers_registry
-        self._notification: TelegramNotification = notification
-        self._tasks: set[Task[Any]] = set()
+        self._repo = repo
+        self._session = session
+        self._clock = clock
+        self._factory = factory
+        self._handlers_registry = handlers_registry
+        self._notification = notification
+        self._background = background
 
     async def __call__(self, cmd: CheckPaymentCmd) -> Invoice:
         payment: Payment | None = await self._repo.acquire(
@@ -61,32 +60,29 @@ class CheckPayment:
         invoice: Invoice = await gateway.get(
             data=GetInvoice(invoice_id=external_id.value),
         )
+        if invoice.status != InvoiceStatus.PAID:
+            return invoice
 
-        if invoice.status == InvoiceStatus.PAID:
-            payment.confirm(now=self._clock.now())
+        payment.confirm(now=self._clock.now())
 
-            payment_dto = PaymentMapper.to_dto(src=payment)
+        payment_dto = PaymentMapper.to_dto(src=payment)
 
-            await self._session.commit()
+        handler: PaymentPurposeHandler = await self._handlers_registry.get(
+            purpose_type=payment_dto.purpose.type,
+        )
+        await handler.apply(payment=payment_dto)
 
-            handler: PaymentPurposeHandler | None = await self._handlers_registry.get(
-                purpose_type=payment_dto.purpose.type,
+        await self._session.commit()
+        self._background.spawn(handler.notify(payment=payment_dto))
+
+        self._background.spawn(
+            self._notification.send_admins(
+                request=NotificationRequest(key="payment-confirmed-admin-notification"),
+                payment_id=payment_dto.id,
+                method=payment_dto.method,
+                amount=payment_dto.to_pay.amount,
+                currency=payment_dto.to_pay.currency,
             )
-            if handler:
-                await handler(payment=payment_dto)
-
-            self._tasks.add(
-                asyncio.create_task(
-                    self._notification.send_admins(
-                        request=NotificationRequest(
-                            key="payment-confirmed-admin-notification"
-                        ),
-                        payment_id=payment_dto.id,
-                        method=payment_dto.method,
-                        amount=payment_dto.to_pay.amount,
-                        currency=payment_dto.to_pay.currency,
-                    )
-                )
-            )
+        )
 
         return invoice

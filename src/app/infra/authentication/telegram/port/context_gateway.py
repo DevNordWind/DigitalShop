@@ -17,6 +17,10 @@ class TelegramContextGateway(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def get_data_by_user_id(self, user_id: UserId) -> TelegramContextData | None:
+        raise NotImplementedError
+
+    @abstractmethod
     async def get(self, telegram_id: TelegramId) -> TelegramContext | None:
         raise NotImplementedError
 

@@ -6,9 +6,9 @@ from uuid import UUID
 from app.app.common.exception import DataCorruptionError
 from app.app.common.port.actor_provider import ActorProvider
 from app.app.common.port.session import DatabaseSession
+from app.app.order.port import OrderReader
 from app.app.referral.cmd import (
     CreateReferralAwardFromOrder,
-    CreateReferralAwardFromOrderCmd,
 )
 from app.domain.common.money import Money
 from app.domain.common.port import Clock
@@ -50,6 +50,7 @@ class PayOrderWithWallet:
         self,
         position_repo: PositionRepository,
         order_repo: OrderRepository,
+        order_reader: OrderReader,
         redemption_repo: CouponRedemptionRepository,
         fulfillment_service: PositionFulfillmentDomainService,
         session: DatabaseSession,
@@ -60,6 +61,7 @@ class PayOrderWithWallet:
     ):
         self._position_repo = position_repo
         self._order_repo = order_repo
+        self._order_reader = order_reader
         self._redemption_repo = redemption_repo
         self._fulfillment_service = fulfillment_service
         self._session = session
@@ -124,12 +126,12 @@ class PayOrderWithWallet:
             position=position, snapshots=items, ctx=SellContext(now=now)
         )
         order.confirm_with_wallet(now=now, items=items)
+        await self._create_award.apply(order=order)
 
         await self._session.commit()
 
-        try:
-            await self._create_award(
-                CreateReferralAwardFromOrderCmd(order_id=cmd.order_id),
-            )
-        except Exception as e:
-            logger.error(e)
+        order_dto = await self._order_reader.read_by_id(order_id=order.id)
+        if not order_dto:
+            raise DataCorruptionError
+
+        await self._create_award.notify(order=order_dto)

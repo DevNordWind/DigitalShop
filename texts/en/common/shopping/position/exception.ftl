@@ -1,113 +1,113 @@
 PositionPermissionDeniedError =
-    <b>❌ Insufficient permissions</b>
+    <b>❌ Insufficient Permissions</b>
 
-    <blockquote>ℹ️ You do not have permission to perform this action on the position.</blockquote>
-    .call = ❌ Insufficient permissions
+    <blockquote>ℹ️ You do not have permission to perform this action on this position.</blockquote>
+    .call = ❌ Insufficient Permissions
 
 PositionMediaNotFoundError =
-    <b>❌ Media file not found</b>
+    <b>❌ Media File Not Found</b>
 
     <blockquote>ℹ️ The requested position media file was not found.</blockquote>
-    .call = ❌ Media file not found
+    .call = ❌ Media File Not Found
 
 PositionNotFoundError =
-    <b>❌ Position not found</b>
+    <b>❌ Position Not Found</b>
 
     <blockquote>ℹ️ The requested position does not exist or has been deleted.</blockquote>
-    .call = ❌ Position not found
+    .call = ❌ Position Not Found
 
 PositionAlreadyArchivedError =
-    <b>❌ Position already archived</b>
+    <b>❌ Position Already Archived</b>
 
-    <blockquote>ℹ️ This position is already archived.</blockquote>
-    .call = ❌ Already archived
+    <blockquote>ℹ️ The position is already in the archive.</blockquote>
+    .call = ❌ Already Archived
 
 PositionNotArchivedError =
-    <b>❌ Position is not archived</b>
+    <b>❌ Position Not Archived</b>
 
-    <blockquote>ℹ️ This action is available only for archived positions.</blockquote>
-    .call = ❌ Not archived
+    <blockquote>ℹ️ This action is only available for archived positions.</blockquote>
+    .call = ❌ Not Archived
 
 PositionDescriptionEmptyError =
-    <b>❌ Description is missing</b>
+    <b>❌ Description Missing</b>
 
-    <blockquote>ℹ️ The position description has not been provided.</blockquote>
-    .call = ❌ Description is missing
+    <blockquote>ℹ️ The position description is not filled in.</blockquote>
+    .call = ❌ Description Missing
 
 PositionNameAlreadyTakenError =
-    <b>❌ Name already taken</b>
+    <b>❌ Name Already Taken</b>
 
     <blockquote>ℹ️ The position name for language <b>{ $lang }</b> is already in use.</blockquote>
-    .call = ❌ Name already taken
+    .call = ❌ Name Taken
 
 PositionMediaLimitReachedError =
-    <b>❌ Media file limit reached</b>
+    <b>❌ Media Limit Reached</b>
 
     <blockquote>ℹ️ Maximum number of media files: { $limit }.</blockquote>
-    .call = ❌ Media file limit reached
+    .call = ❌ Media Limit Reached
 
 PositionChangingForbiddenError =
-    <b>❌ Modification forbidden</b>
+    <b>❌ Modification Forbidden</b>
 
-    <blockquote>ℹ️ Modifying this position is not allowed.</blockquote>
-    .call = ❌ Modification forbidden
+    <blockquote>ℹ️ Modifying this position is forbidden.</blockquote>
+    .call = ❌ Modification Forbidden
 
 PositionArchivedError =
-    <b>❌ Position is archived</b>
+    <b>❌ Position Archived</b>
 
-    <blockquote>ℹ️ This action cannot be performed because the position is archived.</blockquote>
-    .call = ❌ Position is archived
+    <blockquote>ℹ️ Action cannot be performed because the position is in the archive.</blockquote>
+    .call = ❌ Position Archived
 
 PositionDeletionForbiddenError =
-    <b>❌ Deletion forbidden</b>
+    <b>❌ Deletion Forbidden</b>
 
     <blockquote>ℹ️ Only archived positions can be deleted.</blockquote>
-    .call = ❌ Only archived positions can be deleted
+    .call = ❌ Only archived positions can be deleted.
 
 PositionWarehouseFullError =
-    <b>❌ Warehouse is full</b>
+    <b>❌ Warehouse Full</b>
 
-    <blockquote>ℹ️ Unable to add the item because the warehouse is full.</blockquote>
-    .call = ❌ Warehouse is full
-
-OutOfStockError =
-    <b>❌ Insufficient stock</b>
-
-    <blockquote>ℹ️ Only { $available } item(s) available.</blockquote>
-    .call = ❌ Insufficient stock
+    <blockquote>ℹ️ Cannot add items because the warehouse is full.</blockquote>
+    .call = ❌ Warehouse Full
 
 PositionItemNotFoundError =
-    <b>❌ Item not found</b>
+    <b>❌ Item Not Found</b>
 
     <blockquote>ℹ️ The requested position item was not found.</blockquote>
-    .call = ❌ Item not found
+    .call = ❌ Item Not Found
 
 PositionDescriptionTooShortError =
-    <b>❌ Description is too short</b>
+    <b>❌ Description Too Short</b>
 
     <blockquote>ℹ️ Minimum description length is { $min_length } characters.</blockquote>
-    .call = ❌ Description is too short
+    .call = ❌ Description Too Short
 
 PositionDescriptionTooLongError =
-    <b>❌ Description is too long</b>
+    <b>❌ Description Too Long</b>
 
     <blockquote>ℹ️ Maximum description length is { $max_length } characters.</blockquote>
-    .call = ❌ Description is too long
+    .call = ❌ Description Too Long
 
 PositionNameTooShortError =
-    <b>❌ Name is too short</b>
+    <b>❌ Name Too Short</b>
 
     <blockquote>ℹ️ Minimum name length is { $min_length } characters.</blockquote>
-    .call = ❌ Name is too short
+    .call = ❌ Name Too Short
 
 PositionNameTooLongError =
-    <b>❌ Name is too long</b>
+    <b>❌ Name Too Long</b>
 
     <blockquote>ℹ️ Maximum name length is { $max_length } characters.</blockquote>
-    .call = ❌ Name is too long
+    .call = ❌ Name Too Long
 
 CurrencyMissingError =
-    <b>❌ Price missing for one of the currencies</b>
+    <b>❌ Price Missing for One of the Currencies</b>
 
-    <blockquote>ℹ️ No price has been set for <b>{ currency }</b>.</blockquote>
+    <blockquote>ℹ️ No price set for currency <b>{ currency }</b>.</blockquote>
     .call = ❌ Price for { currency } is not set
+
+OutOfStockError =
+    <b>❌ Insufficient Stock</b>
+
+    <blockquote>ℹ️ Only { $available } pcs. available.</blockquote>
+    .call = ❌ Insufficient Stock

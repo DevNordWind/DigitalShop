@@ -23,6 +23,10 @@ from app.app.wallet.cmd import (
 )
 from app.domain.common.money import Currency
 from app.domain.payment.enums import PaymentMethod
+from app.domain.payment.exception import (
+    PaymentCancellationForbiddenError,
+    PaymentCheckForbiddenError,
+)
 from app.infra.authentication.telegram.dto import TelegramContextDTO
 from app.presentation.aiogram.dialog.user.wallet.top_up.ctx import (
     CTX_KEY,
@@ -85,6 +89,7 @@ async def on_select_payment_method(
     method: PaymentMethod,
     handler: FromDishka[CreateTopUpPayment],
     retort: FromDishka[Retort],
+    tg_ctx: FromDishka[TelegramContextDTO],
 ) -> None:
     ctx: TopUpCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], TopUpCtx)
     if ctx.top_up_amount is None:
@@ -118,9 +123,15 @@ async def on_check(
     if ctx.invoice is None:
         return
 
-    invoice: Invoice = await handler(
-        CheckPaymentCmd(id=ctx.invoice.payment_id),
-    )
+    try:
+        invoice: Invoice = await handler(
+            CheckPaymentCmd(
+                id=ctx.invoice.payment_id,
+            ),
+        )
+    except PaymentCheckForbiddenError:
+        await dialog_manager.done()
+        raise
 
     await event.answer(
         text=text("top-up-payment.check", status=invoice.status),
@@ -142,11 +153,15 @@ async def on_cancel(
     ctx: TopUpCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], TopUpCtx)
     if ctx.invoice is None:
         return
+    try:
+        await handler(
+            CancelTopUpCmd(
+                payment_id=ctx.invoice.payment_id,
+            ),
+        )
+    except PaymentCancellationForbiddenError:
+        await dialog_manager.done()
 
-    await handler(
-        CancelTopUpCmd(
-            payment_id=ctx.invoice.payment_id,
-        ),
-    )
+        raise
     await event.answer(text=text("top-up-payment.cancel"))
     await dialog_manager.done()

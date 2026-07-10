@@ -70,12 +70,6 @@ PositionWarehouseFullError =
     <blockquote>ℹ️ Невозможно добавить товар, так как склад переполнен.</blockquote>
     .call = ❌ Склад переполнен
 
-OutOfStockError =
-    <b>❌ Недостаточно товара</b>
-
-    <blockquote>ℹ️ Доступно только { $available } шт.</blockquote>
-    .call = ❌ Недостаточно товара
-
 PositionItemNotFoundError =
     <b>❌ Товар не найден</b>
 
@@ -111,3 +105,9 @@ CurrencyMissingError =
 
     <blockquote>ℹ️ Для валюты <b>{ currency }</b> не задана цена.</blockquote>
     .call = ❌ Цена для { currency } не указана
+
+OutOfStockError =
+    <b>❌ Недостаточно товара</b>
+
+    <blockquote>ℹ️ Доступно только { $available } шт.</blockquote>
+    .call = ❌ Недостаточно товара

@@ -15,14 +15,8 @@ from app.app.coupon.dto.discount import (
 )
 from app.app.order.dto.order import OrderDTO, PublicOrderDTO
 from app.app.order.query import GetOrder, GetOrderQuery
-from app.app.shopping.position.dto.position import PositionWithItemsAmount
-from app.app.shopping.position.query import (
-    GetPositionWithItemsAmount,
-    GetPositionWithItemsAmountQuery,
-)
 from app.domain.common.money import Currency
 from app.domain.payment.enums import PaymentMethod
-from app.domain.shopping.position.item.enums import GenericItemStatus
 from app.infra.authentication.telegram.dto import TelegramContextDTO
 from app.presentation.aiogram.dialog.user.shopping.order.ctx import (
     CTX_KEY,
@@ -92,27 +86,6 @@ async def payment_getter(
 
 
 @inject
-async def input_new_items_amount_getter(
-    dialog_manager: DialogManager,
-    retort: FromDishka[Retort],
-    order_handler: FromDishka[GetOrder],
-    position_handler: FromDishka[GetPositionWithItemsAmount],
-    **_: Any,
-) -> dict[str, Any]:
-    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
-    order: OrderDTO | PublicOrderDTO = await order_handler(
-        GetOrderQuery(id=ctx.order_id),
-    )
-    position: PositionWithItemsAmount = await position_handler(
-        GetPositionWithItemsAmountQuery(
-            id=order.position.position_id, item_status=GenericItemStatus.AVAILABLE
-        ),
-    )
-
-    return {"available": position.items_amount}
-
-
-@inject
 async def select_payment_method_getter(
     settings_gw: FromDishka[PaymentSettingsGateway],
     **_: Any,
@@ -125,6 +98,17 @@ async def select_payment_method_getter(
             for setting in settings
             if setting.is_active
         ],
+    }
+
+
+@inject
+async def payment_confirmed_getter(
+    dialog_manager: DialogManager, **_: Any
+) -> dict[str, Any]:
+    return {
+        "cancel_text": dialog_manager.dialog_data["cancel_text"],
+        "text": dialog_manager.dialog_data["text"],
+        "to_order_text": dialog_manager.dialog_data["to_order_text"],
     }
 
 

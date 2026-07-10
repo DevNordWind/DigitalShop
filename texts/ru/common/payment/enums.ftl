@@ -1,5 +1,6 @@
 payment-method = { $method ->
     [CRYPTO_PAY] Crypto Bot
+    [LOLZ_TEAM] LolzTeam
     *[other] { unknown }
 }
 

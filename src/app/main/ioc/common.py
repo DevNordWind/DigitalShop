@@ -5,6 +5,7 @@ from adaptix import Retort
 from dishka import Provider, Scope, provide
 from redis.asyncio import Redis
 
+from app.app.common.background import BackgroundTasks
 from app.app.common.port.file_storage import FileStorageReader, FileStorageSession
 from app.app.common.port.session import DatabaseSession
 from app.app.common.port.telegram_notification import TelegramNotification
@@ -112,3 +113,5 @@ class CommonAdaptersProvider(Provider):
     entities_bootstrap = provide(DefaultEntitiesBootstrap, scope=Scope.REQUEST)
 
     bootstrap = provide(Bootstrap, scope=Scope.REQUEST)
+
+    background = provide(BackgroundTasks, scope=Scope.APP)

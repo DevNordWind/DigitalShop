@@ -19,7 +19,9 @@ class TopUpState(StatesGroup):
     input_amount = State()
     select_payment_method = State()
     select_currency = State()
+
     payment = State()
+    payment_confirmed = State()
 
 
 class ShoppingState(StatesGroup):
@@ -37,6 +39,7 @@ class OrderState(StatesGroup):
     input_new_items_amount = State()
 
     payment = State()
+    payment_confirmed = State()
 
 
 class ReferralState(StatesGroup):

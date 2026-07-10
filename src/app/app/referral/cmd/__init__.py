@@ -4,7 +4,6 @@ from .change_award_currency import (
 )
 from .create_from_order import (
     CreateReferralAwardFromOrder,
-    CreateReferralAwardFromOrderCmd,
 )
 from .create_profile import CreateReferrerProfile, CreateReferrerProfileCmd
 from .set_referral_coefficient import (
@@ -17,7 +16,6 @@ __all__ = (
     "ChangeReferrerProfileAwardCurrency",
     "ChangeReferrerProfileAwardCurrencyCmd",
     "CreateReferralAwardFromOrder",
-    "CreateReferralAwardFromOrderCmd",
     "CreateReferrerProfile",
     "CreateReferrerProfileCmd",
     "SetReferralCoefficient",

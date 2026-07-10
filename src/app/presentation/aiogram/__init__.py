@@ -1,3 +1,3 @@
-from .dp import make_dispatcher
+from .dp import DispatcherBundle, make_dispatcher
 
-__all__ = ("make_dispatcher",)
+__all__ = ("DispatcherBundle", "make_dispatcher")

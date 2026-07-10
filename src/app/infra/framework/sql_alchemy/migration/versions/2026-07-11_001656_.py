@@ -348,7 +348,7 @@ def upgrade() -> None:
         ),
         sa.Column("tg_username", sa.String(length=64), nullable=True),
         sa.Column("tg_first_name", sa.String(length=64), nullable=False),
-        sa.Column("lang", sa.Enum("RU", "EN", name="language"), nullable=True),
+        sa.Column("lang", sa.Enum("RU", "EN", "UK", name="language"), nullable=True),
         sa.Column(
             "currency",
             sa.Enum("USD", "RUB", "UAH", "KZT", name="currency"),

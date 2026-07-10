@@ -12,11 +12,11 @@ from app.app.order.cmd import (
     PayOrderWithPayment,
     PayOrderWithWallet,
 )
-from app.app.order.port import OrderReader
+from app.app.order.port import OrderNotifier, OrderReader
 from app.app.order.query import GetOrder, ListOrders
 from app.domain.order.port import OrderRepository
 from app.domain.order.service import OrderDomainService
-from app.infra.order import SqlAOrderReader, SqlAOrderRepository
+from app.infra.order import AiogdOrderNotifier, SqlAOrderReader, SqlAOrderRepository
 
 
 class OrderDomainServicesProvider(Provider):
@@ -50,3 +50,5 @@ class OrderAdaptersProvider(Provider):
     repository = provide(SqlAOrderRepository, provides=OrderRepository)
 
     reader = provide(SqlAOrderReader, provides=OrderReader)
+
+    notifier = provide(AiogdOrderNotifier, provides=OrderNotifier, scope=Scope.APP)

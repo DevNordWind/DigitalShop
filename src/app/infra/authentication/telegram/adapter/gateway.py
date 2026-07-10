@@ -41,6 +41,22 @@ class SqlATelegramContextGateway(TelegramContextGateway):
         return TelegramContextData(ctx=row[0], role=row[1])
 
     @override
+    async def get_data_by_user_id(self, user_id: UserId) -> TelegramContextData | None:
+        stmt = (
+            select(TelegramContext, user_table.c.role)
+            .where(
+                user_table.c.id == user_id,
+            )
+            .join(user_table, user_table.c.id == telegram_context_table.c.user_id)
+        )
+        result = await self._session.execute(stmt)
+        row = result.first()
+        if not row:
+            return None
+
+        return TelegramContextData(ctx=row[0], role=row[1])
+
+    @override
     async def get(self, telegram_id: TelegramId) -> TelegramContext | None:
         stmt = select(TelegramContext).where(
             telegram_context_table.c.id == telegram_id,

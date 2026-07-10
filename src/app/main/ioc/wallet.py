@@ -6,14 +6,14 @@ from app.app.wallet.cmd import (
     CreateTopUpPayment,
     TopUpWalletManually,
 )
-from app.app.wallet.port import WalletReader
+from app.app.wallet.port import WalletNotifier, WalletReader
 from app.app.wallet.query import (
     GetWalletsByUserId,
     GetWalletsByUserIdWithTotal,
     ListWalletsByUserId,
 )
 from app.domain.wallet.port import WalletRepository
-from app.infra.wallet import SqlAWalletReader, SqlAWalletRepository
+from app.infra.wallet import AiogdWalletNotifier, SqlAWalletReader, SqlAWalletRepository
 
 
 class WalletHandlersProvider(Provider):
@@ -37,3 +37,5 @@ class WalletAdaptersProvider(Provider):
     reader = provide(SqlAWalletReader, provides=WalletReader)
 
     repository = provide(SqlAWalletRepository, provides=WalletRepository)
+
+    notifier = provide(AiogdWalletNotifier, provides=WalletNotifier, scope=Scope.APP)

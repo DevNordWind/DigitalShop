@@ -1,9 +1,7 @@
-import asyncio
-from asyncio import Task
 from dataclasses import dataclass
-from typing import Any
 from uuid import UUID
 
+from app.app.common.background import BackgroundTasks
 from app.app.common.port.session import DatabaseSession
 from app.app.common.port.telegram_notification import (
     NotificationRequest,
@@ -31,13 +29,14 @@ class ConfirmPayment:
         clock: Clock,
         handlers_registry: PaymentPurposeHandlersRegistry,
         notification: TelegramNotification,
+        background: BackgroundTasks,
     ):
-        self._repo: PaymentRepository = repo
-        self._session: DatabaseSession = session
-        self._clock: Clock = clock
-        self._handlers_registry: PaymentPurposeHandlersRegistry = handlers_registry
-        self._notification: TelegramNotification = notification
-        self._tasks: set[Task[Any]] = set()
+        self._repo = repo
+        self._session = session
+        self._clock = clock
+        self._handlers_registry = handlers_registry
+        self._notification = notification
+        self._background = background
 
     async def __call__(self, cmd: ConfirmPaymentCmd) -> None:
         payment: Payment | None = await self._repo.acquire(
@@ -50,24 +49,20 @@ class ConfirmPayment:
 
         payment_dto = PaymentMapper.to_dto(src=payment)
 
-        await self._session.commit()
-
-        handler: PaymentPurposeHandler | None = await self._handlers_registry.get(
+        handler: PaymentPurposeHandler = await self._handlers_registry.get(
             purpose_type=payment_dto.purpose.type,
         )
-        if handler:
-            await handler(payment=payment_dto)
+        await handler.apply(payment=payment_dto)
 
-        self._tasks.add(
-            asyncio.create_task(
-                self._notification.send_admins(
-                    request=NotificationRequest(
-                        key="payment-confirmed-admin-notification"
-                    ),
-                    payment_id=payment_dto.id,
-                    method=payment_dto.method,
-                    amount=payment_dto.to_pay.amount,
-                    currency=payment_dto.to_pay.currency,
-                )
+        await self._session.commit()
+        self._background.spawn(handler.notify(payment=payment_dto))
+
+        self._background.spawn(
+            self._notification.send_admins(
+                request=NotificationRequest(key="payment-confirmed-admin-notification"),
+                payment_id=payment_dto.id,
+                method=payment_dto.method,
+                amount=payment_dto.to_pay.amount,
+                currency=payment_dto.to_pay.currency,
             )
         )

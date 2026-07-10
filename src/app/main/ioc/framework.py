@@ -14,6 +14,7 @@ from aiogram.fsm.storage.base import (
     KeyBuilder,
 )
 from aiogram.fsm.storage.redis import RedisEventIsolation, RedisStorage
+from aiogram_dialog import BgManagerFactory
 from dishka import Provider, Scope, provide
 from dishka.integrations.aiogram import (
     AiogramProvider as DefaultAiogramProvider,
@@ -41,6 +42,7 @@ from app.infra.framework.taskiq import (
     get_schedule_source,
 )
 from app.infra.framework.taskiq.tp import PriorityBroker
+from app.presentation.aiogram import DispatcherBundle
 from app.presentation.aiogram.dp import make_dispatcher
 
 
@@ -129,12 +131,20 @@ class AiogramProvider(DefaultAiogramProvider):
         return RedisEventIsolation(redis, key_builder)
 
     @provide(scope=Scope.APP)
-    async def get_dp(
+    async def get_dp_bundle(
         self,
         storage: BaseStorage,
         events_isolation: BaseEventIsolation,
-    ) -> Dispatcher:
+    ) -> DispatcherBundle:
         return make_dispatcher(storage, events_isolation)
+
+    @provide(scope=Scope.APP)
+    async def get_dp(self, bundle: DispatcherBundle) -> Dispatcher:
+        return bundle.dp
+
+    @provide(scope=Scope.APP)
+    async def get_bg_factory(self, bundle: DispatcherBundle) -> BgManagerFactory:
+        return bundle.bg_factory
 
 
 class GoogleTranslatorProvider(Provider):

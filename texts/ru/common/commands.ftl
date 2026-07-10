@@ -1,6 +1,6 @@
 bot-commands = commands
     .start = ♻️ Перезапустить бота
-    .buy = 🛒 Купить
+    .buy = 🛍 Купить
     .profile = 👤 Профиль
     .wallet = { -wallet-emoji } Кошелёк
     .info = ℹ️ Информация
