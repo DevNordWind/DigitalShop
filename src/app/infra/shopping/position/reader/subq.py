@@ -3,6 +3,7 @@ from typing import Any
 
 from sqlalchemy import ColumnElement, Label, ScalarSelect, exists, func, or_, select
 
+from app.domain.shopping.position.item.enums import FixedItemStatus, StockItemStatus
 from app.infra.framework.sql_alchemy.table.position import (
     fixed_item_table,
     position_table,
@@ -30,10 +31,10 @@ ITEMS_COUNT_SUBQ: Label[int | float | Decimal | Any] = (
 ITEM_EXISTS_SUBQ: ColumnElement[bool] = or_(
     exists().where(
         fixed_item_table.c.position_id == position_table.c.id,
-        fixed_item_table.c.status == "AVAILABLE",
+        fixed_item_table.c.status == FixedItemStatus.AVAILABLE,
     ),
     exists().where(
         stock_item_table.c.position_id == position_table.c.id,
-        stock_item_table.c.status == "AVAILABLE",
+        stock_item_table.c.status == StockItemStatus.AVAILABLE,
     ),
 )

@@ -1,7 +1,10 @@
 user-orders = <b>{ -order-emoji } Заказы</b>
     .filters-btn = { -filter-emoji } Фильтры
-    .btn =
-        Заказ от { -date-emoji } { DATETIME($created_at, dateStyle: "short") }
+    .btn = { $count ->
+        [1] { $position_name } | { -date-emoji } { DATETIME($created_at, dateStyle: "short") }
+        [0] { $position_name } | { -date-emoji } { DATETIME($created_at, dateStyle: "short") }
+        *[other] { $position_name }| { $count }шт. | { -date-emoji} { DATETIME($created_at, dateStyle: "short") }
+    }
 
 user-orders-filters = <b>{ -filter-emoji } Фильтры</b>
     .order-btn = { -current } { sorting-order } { -current }
@@ -16,8 +19,12 @@ user-order-coupon = <code>{ $code }</code> - скидка составила <co
 
 user-order = <b>{ -order-emoji } Заказ <code>{ $order_id }</code></b>
 
-    <b>{ -position-emoji } Всего позиций: <code>{ $positions_amount }щт.</code></b>
-    { $lines }
+    { $items_amount ->
+        [0] { user-order-default-position }
+        [1] { user-order-default-position }
+        *[other] { user-order-default-position }
+            └ Кол-во товаров: <code>{ $items_amount }</code>
+    }
     ➖➖➖➖➖➖➖➖➖➖
     <b>{ -current } Сумма:</b> <code>{ $total_amount }{ currency.symbol }</code>
     ├ Купон: { $is_applied_coupon ->
@@ -30,11 +37,12 @@ user-order = <b>{ -order-emoji } Заказ <code>{ $order_id }</code></b>
     }
 
     <blockquote>{ $status ->
-        [CREATED] ℹ️ Заказ ожидает оплату
-        [PENDING] ℹ️ Заказ ожидает оплату
+        [NEW] ℹ️ Заказ ожидает оплату
+        [AWAITING_PAYMENT] ℹ️ Заказ ожидает оплату
         [CONFIRMED] { order-status.emoji } Заказ подтверждён { $confirmed_at }
         [CANCELLED] { order-status.emoji } Заказ отменён { $cancelled_at }
         [FAILED] { status.emoji } Заказ отменён { $failed_at }
+        [EXPIRED] { status.emoji } Заказ истёк
         *[other] { unknown }
     }</blockquote>
     .upload-items = 💾 Выгрузить

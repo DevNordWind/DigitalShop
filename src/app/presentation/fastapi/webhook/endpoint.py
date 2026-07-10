@@ -8,7 +8,6 @@ from dishka import FromDishka
 from dishka.integrations.fastapi import inject
 from starlette.responses import Response
 
-from app.app.common.exception import AppError
 from app.app.payment.cmd import ConfirmPayment, ConfirmPaymentCmd
 from app.domain.common.exception import DomainError
 from fastapi import APIRouter, Depends, Header, HTTPException, Request
@@ -32,7 +31,7 @@ async def verify_crypto_pay_signature(
 
 
 @payments_router.post(
-    "/crypto_pay", dependencies=[Depends(verify_crypto_pay_signature)]
+    "/crypto-pay", dependencies=[Depends(verify_crypto_pay_signature)]
 )
 @inject
 async def handle_crypto_pay_update(
@@ -52,7 +51,7 @@ async def handle_crypto_pay_update(
 
     try:
         await handler(ConfirmPaymentCmd(id=UUID(crypto_pay_update.payload.payload)))
-    except (DomainError, AppError) as e:
+    except DomainError as e:
         logger.info(e)
     except Exception as e:
         logger.exception(e)

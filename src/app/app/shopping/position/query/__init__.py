@@ -13,6 +13,10 @@ from .list_short_by_category import (
     ListPositionsShortByCategory,
     ListPositionsShortByCategoryQuery,
 )
+from .list_short_with_items_amount_by_ids import (
+    ListPositionsShortWithItemsAmountByIds,
+    ListPositionsShortWithItemsAmountByIdsQuery,
+)
 from .list_with_items_amount import (
     ListPositionsWithItemsAmountByCategory,
     ListPositionsWithItemsAmountByCategoryQuery,
@@ -31,6 +35,8 @@ __all__ = (
     "ListPositionsByCategoryQuery",
     "ListPositionsShortByCategory",
     "ListPositionsShortByCategoryQuery",
+    "ListPositionsShortWithItemsAmountByIds",
+    "ListPositionsShortWithItemsAmountByIdsQuery",
     "ListPositionsWithItemsAmountByCategory",
     "ListPositionsWithItemsAmountByCategoryQuery",
 )

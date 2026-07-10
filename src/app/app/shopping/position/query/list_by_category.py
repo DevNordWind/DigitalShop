@@ -16,6 +16,7 @@ class ListPositionsByCategoryQuery:
     category_id: UUID
     pagination: OffsetPaginationParams
     sorting: PositionSortingParams
+
     status: PositionStatus | None
     show_with_no_items: bool | None
 
@@ -35,7 +36,7 @@ class ListPositionsByCategory:
             )
         )
 
-        return await self._reader.read_all_by_category_id(
+        return await self._reader.read_by_category_id(
             category_id=CategoryId(query.category_id),
             pagination=query.pagination,
             sorting=query.sorting,

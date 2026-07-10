@@ -11,7 +11,7 @@ from redis.asyncio import Redis
 from app.config import Configuration
 from app.infra.common.bootstrap import Bootstrap
 from app.infra.framework.sql_alchemy.table import map_all
-from app.main.ioc import PROVIDERS
+from app.main.ioc import PROVIDERS, DishkaFastAPIActorProvider
 from app.presentation.fastapi import make_main_router
 
 
@@ -32,7 +32,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, Any]:
 def main() -> FastAPI:
     map_all()
 
-    container = make_async_container(*PROVIDERS)
+    container = make_async_container(*(*PROVIDERS, DishkaFastAPIActorProvider()))
 
     app = FastAPI(lifespan=lifespan)
     app.include_router(make_main_router(app))

@@ -26,7 +26,6 @@ async def on_switch_tech_work_status(
     container: FromDishka[AsyncContainer],
 ) -> None:
     await handler.execute()
-    await container.close()
 
 
 @inject
@@ -39,7 +38,6 @@ async def on_input_support_contact(
     container: FromDishka[AsyncContainer],
 ) -> None:
     await handler.execute(SetSupportUsernameCmd(username=contact))
-    await container.close()
     await event.delete()
 
     await dialog_manager.switch_to(
@@ -61,6 +59,5 @@ async def on_input_referral_percent(
             coefficient=CoefficientDTO.from_percent(percent=percent)
         )
     )
-    await container.close()
     await event.delete()
     await dialog_manager.switch_to(state=GeneralSettingsState.general_settings)

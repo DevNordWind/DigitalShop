@@ -5,15 +5,16 @@ from dishka.integrations.aiogram_dialog import inject
 
 from app.app.common.dto.coefficient import CoefficientDTO
 from app.app.referral.query import GetReferralCoefficient
-from app.presentation.aiogram.setting.general.model import GeneralBotSettings
+from app.presentation.aiogram.setting.general import GeneralBotSettingsGateway
 
 
 @inject
 async def general_settings_getter(
-    general_settings: FromDishka[GeneralBotSettings],
+    general_settings_gw: FromDishka[GeneralBotSettingsGateway],
     query_handler: FromDishka[GetReferralCoefficient],
     **_: Any,
 ) -> dict[str, Any]:
+    general_settings = await general_settings_gw.get()
     referral_coefficient: CoefficientDTO = await query_handler()
 
     return {

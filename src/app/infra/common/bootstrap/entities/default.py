@@ -25,6 +25,6 @@ POSITION_SETTINGS: Final[PositionSettings] = PositionSettings(
     show_with_no_items=False,
 )
 
-PAYMENT_SETTINGS: tuple[PaymentSettings, ...] = tuple(
-    PaymentSettings(method=method, is_active=False) for method in PaymentMethod
-)
+
+def make_payment_settings(method: PaymentMethod) -> PaymentSettings:
+    return PaymentSettings(method=method, is_active=False)

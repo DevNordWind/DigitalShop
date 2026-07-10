@@ -1,12 +1,11 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from app.app.common.dto.query_params import OffsetPaginationParams
+from app.app.common.dto.query_params import OffsetPaginationParams, SortingOrder
 from app.app.common.port.actor_provider import ActorProvider
 from app.app.shopping.position.dto.item import ItemStatus
 from app.app.shopping.position.dto.paginated import PositionItemsPaginated
-from app.app.shopping.position.dto.sorting import PositionItemsSortingParams
-from app.app.shopping.position.port import PositionReader
+from app.app.shopping.position.port import PositionItemReader
 from app.domain.shopping.position.service import PositionAccessService
 from app.domain.shopping.position.value_object import PositionId
 
@@ -14,7 +13,7 @@ from app.domain.shopping.position.value_object import PositionId
 @dataclass(slots=True, frozen=True)
 class ListPositionItemsQuery:
     id: UUID
-    sorting: PositionItemsSortingParams
+    sorting_order: SortingOrder
     pagination: OffsetPaginationParams
     status: ItemStatus | None
 
@@ -22,11 +21,11 @@ class ListPositionItemsQuery:
 class ListPositionItems:
     def __init__(
         self,
-        reader: PositionReader,
+        reader: PositionItemReader,
         actor_provider: ActorProvider,
     ):
-        self._reader: PositionReader = reader
-        self._actor_provider: ActorProvider = actor_provider
+        self._reader = reader
+        self._actor_provider = actor_provider
 
     async def __call__(
         self,
@@ -36,9 +35,9 @@ class ListPositionItems:
             actor=await self._actor_provider.get()
         )
 
-        return await self._reader.read_items(
+        return await self._reader.read_by_position_id(
             position_id=PositionId(query.id),
-            sorting=query.sorting,
+            sorting_order=query.sorting_order,
             pagination=query.pagination,
             status=query.status,
         )

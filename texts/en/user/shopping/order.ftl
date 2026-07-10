@@ -3,10 +3,8 @@ order-payment-method = { $method ->
     *[other] { payment-method }
 }
 
-user-shopping-order-line = { $is_last ->
-    [False] ├ <b>{ $position_name }:</b> { $items_amount } pcs. <code>{ $total_price }{ currency.symbol }</code>
-    *[True] └ <b>{ $position_name }:</b> { $items_amount } pcs. <code>{ $total_price }{ currency.symbol }</code>
-}
+user-shopping-position-default = <b>{ -position-emoji } Position:</b> <code>{ $position_name }</code>
+
 
 user-shopping-order = <b>{ -order-emoji } Order <code>#{ $order_id }</code> has been created</b>
     { $items_amount ->

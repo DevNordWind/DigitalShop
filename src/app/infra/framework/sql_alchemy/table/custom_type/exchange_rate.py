@@ -40,7 +40,7 @@ class ExchangeRateType(TypeDecorator[ExchangeRate]):
         return ExchangeRate(
             pair=CurrencyPair(
                 source=Currency(value["source_currency"]),
-                target=Currency("target_currency"),
+                target=Currency(value["target_currency"]),
             ),
             rate=Decimal(value["rate"]),
             timestamp=value["timestamp"],

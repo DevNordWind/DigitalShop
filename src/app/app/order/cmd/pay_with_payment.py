@@ -92,11 +92,9 @@ class PayOrderWithPayment:
             items: tuple[ItemSnapshot, ...] = await self._fulfillment_service.hold(
                 position=position, ctx=HoldContext(now=now, amount=order.items_amount)
             )
-        except OutOfStockError as e:
-            if e.available == 0:
-                order.cancel(now)
-                await self._session.commit()
-
+        except OutOfStockError:
+            order.cancel(now)
+            await self._session.commit()
             raise
 
         total: Money = order.total

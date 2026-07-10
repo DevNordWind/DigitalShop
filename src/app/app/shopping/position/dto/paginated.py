@@ -4,6 +4,7 @@ from app.app.shopping.position.dto.item import ItemDTO
 from app.app.shopping.position.dto.position import (
     PositionDTO,
     PositionShortDTO,
+    PositionShortWithItemsAmount,
     PositionWithItemsAmount,
 )
 
@@ -17,6 +18,12 @@ class PositionsPaginated:
 @dataclass(slots=True, frozen=True)
 class PositionWithItemsAmountPaginated:
     positions: list[PositionWithItemsAmount]
+    total: int
+
+
+@dataclass(slots=True, frozen=True)
+class PositionShortWithItemsAmountPaginated:
+    positions: list[PositionShortWithItemsAmount]
     total: int
 
 

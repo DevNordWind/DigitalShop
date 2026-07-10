@@ -12,7 +12,7 @@ from app.infra.authentication.telegram.model import TelegramContext, TelegramId
 from app.infra.authentication.telegram.port import TelegramContextGateway
 
 _CURRENCY_TABLE: frozendict[Language, Currency] = frozendict(
-    {Language.RU: Currency.RUB, Language.EN: Currency.USD}
+    {Language.RU: Currency.RUB, Language.EN: Currency.USD, Language.UK: Currency.UAH}
 )
 _FALLBACK_CURRENCY: Final[Currency] = Currency.RUB
 

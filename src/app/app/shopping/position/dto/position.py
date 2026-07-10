@@ -57,3 +57,9 @@ class PositionShortDTO:
     archived_at: datetime | None
 
     status: PositionStatus
+
+
+@dataclass(slots=True, frozen=True)
+class PositionShortWithItemsAmount:
+    position: PositionShortDTO
+    items_amount: int

@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from uuid import UUID
+from collections.abc import Sequence
 
 from app.app.common.dto.query_params import OffsetPaginationParams
-from app.app.shopping.position.dto.item import ItemDTO, ItemStatus
+from app.app.shopping.position.dto.item import ItemStatus
 from app.app.shopping.position.dto.paginated import (
-    PositionItemsPaginated,
+    PositionShortWithItemsAmountPaginated,
     PositionsPaginated,
     PositionsShortPaginated,
     PositionWithItemsAmountPaginated,
@@ -15,7 +15,6 @@ from app.app.shopping.position.dto.position import (
     PositionWithItemsAmount,
 )
 from app.app.shopping.position.dto.sorting import (
-    PositionItemsSortingParams,
     PositionSortingParams,
 )
 from app.domain.shopping.category.value_object import CategoryId
@@ -53,7 +52,7 @@ class PositionReader(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def read_all_by_category_id(
+    async def read_by_category_id(
         self,
         category_id: CategoryId,
         sorting: PositionSortingParams,
@@ -76,15 +75,11 @@ class PositionReader(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def read_item(self, item_id: UUID) -> ItemDTO | None:
-        raise NotImplementedError
-
-    @abstractmethod
-    async def read_items(
+    async def read_short_with_items_amount_by_ids(
         self,
-        position_id: PositionId,
-        sorting: PositionItemsSortingParams,
+        position_ids: Sequence[PositionId],
+        sorting: PositionSortingParams,
         pagination: OffsetPaginationParams,
-        status: ItemStatus | None,
-    ) -> PositionItemsPaginated:
+        item_status: ItemStatus | None,
+    ) -> PositionShortWithItemsAmountPaginated:
         raise NotImplementedError

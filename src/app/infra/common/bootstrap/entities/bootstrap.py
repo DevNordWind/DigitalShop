@@ -12,8 +12,8 @@ from app.domain.referral.port import ReferralPolicyRepository
 from app.infra.common.bootstrap.entities.default import (
     CATEGORY_SETTINGS,
     GENERAL_SETTINGS,
-    PAYMENT_SETTINGS,
     POSITION_SETTINGS,
+    make_payment_settings,
 )
 from app.presentation.aiogram.setting.category import (
     CategorySettingsGateway,
@@ -86,10 +86,11 @@ class DefaultEntitiesBootstrap:
             await self._position_gateway.save(settings=POSITION_SETTINGS)
 
     async def check_payment(self) -> None:
-        try:
-            await self._payment_settings_gw.get()
-        except PaymentSettingsNotCreatedError:
-            for settings in PAYMENT_SETTINGS:
+        for method in PaymentMethod:
+            try:
+                await self._payment_settings_gw.get_by_method(method=method)
+            except PaymentSettingsNotCreatedError:
+                settings = make_payment_settings(method=method)
                 await self._payment_settings_gw.save(settings=settings)
 
     async def check_category(self) -> None:

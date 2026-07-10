@@ -1,4 +1,5 @@
 from typing import override
+from uuid import UUID
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,5 +22,12 @@ class SqlAReferralAwardRepository(ReferralAwardRepository):
     async def get(self, award_id: ReferralAwardId) -> ReferralAward | None:
         stmt = select(ReferralAward).where(
             referral_award_table.c.id == award_id,
+        )
+        return await self._session.scalar(stmt)
+
+    @override
+    async def get_by_reference_id(self, reference_id: UUID) -> ReferralAward | None:
+        stmt = select(ReferralAward).where(
+            referral_award_table.c.source_reference_id == reference_id,
         )
         return await self._session.scalar(stmt)

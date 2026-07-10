@@ -55,7 +55,7 @@ class ConfirmPayment:
         await handler.apply(payment=payment_dto)
 
         await self._session.commit()
-        self._background.spawn(handler.notify(payment=payment_dto))
+        await handler.notify(payment=payment_dto)
 
         self._background.spawn(
             self._notification.send_admins(

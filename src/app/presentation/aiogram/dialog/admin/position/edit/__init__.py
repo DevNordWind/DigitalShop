@@ -14,12 +14,12 @@ from .window import (
 
 def get_position_edit_dialog() -> Dialog:
     return Dialog(
-        change_price_base_currency,
-        change_description_default_lang,
-        change_name_default_lang,
+        edit_price,
         edit_description,
         edit_media,
         edit_name,
-        edit_price,
+        change_description_default_lang,
+        change_name_default_lang,
+        change_price_base_currency,
         on_start=on_start,
     )

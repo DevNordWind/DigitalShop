@@ -83,6 +83,7 @@ from app.presentation.aiogram.util.error_translator import (
     ErrorTranslatorConfig,
 )
 from app.presentation.aiogram.util.timezone_processor import TimeZoneProcessor
+from app.presentation.fastapi.adapter import FastAPIActorProvider
 
 
 class TelegramAdaptersProvider(Provider):
@@ -245,3 +246,11 @@ class TelegramAuthenticationHandlersProvider(Provider):
         EnsureTelegramContextHandler,
         DeactivateTelegramContext,
     )
+
+
+class DishkaFastAPIActorProvider(Provider):
+    scope = Scope.APP
+
+    @provide
+    async def get_actor_provider(self) -> ActorProvider:
+        return FastAPIActorProvider()

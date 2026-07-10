@@ -152,7 +152,7 @@ class SqlAPositionRepository(PositionRepository):
             )
 
         result = await self._session.execute(stmt)
-        return tuple(row[0] for row in result.all())
+        return tuple(row[0].value for row in result.all())
 
     async def _get_fixed_item_ids(
         self,
@@ -168,4 +168,4 @@ class SqlAPositionRepository(PositionRepository):
             )
 
         result = await self._session.execute(stmt)
-        return tuple(row[0] for row in result.all())
+        return tuple(row[0].value for row in result.all())

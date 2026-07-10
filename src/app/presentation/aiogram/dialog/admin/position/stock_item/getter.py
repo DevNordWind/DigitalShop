@@ -11,7 +11,6 @@ from dishka.integrations.aiogram_dialog import inject
 from app.app.common.dto.query_params import OffsetPaginationParams
 from app.app.shopping.position.dto.item import ItemDTO, StockItemDTO
 from app.app.shopping.position.dto.paginated import PositionItemsPaginated
-from app.app.shopping.position.dto.sorting import PositionItemsSortingParams
 from app.app.shopping.position.query import (
     GetPositionItem,
     GetPositionItemQuery,
@@ -61,10 +60,7 @@ async def items_getter(
     paginated: PositionItemsPaginated = await query_handler(
         ListPositionItemsQuery(
             id=ctx.position_id,
-            sorting=PositionItemsSortingParams(
-                field="created_at",
-                order=ctx.filters.order,
-            ),
+            sorting_order=ctx.filters.order,
             pagination=OffsetPaginationParams(
                 limit=ITEMS_HEIGHT,
                 offset=offset,

@@ -3,7 +3,7 @@ from uuid import UUID
 
 from app.app.common.port.actor_provider import ActorProvider
 from app.app.shopping.position.dto.item import ItemDTO
-from app.app.shopping.position.port import PositionReader
+from app.app.shopping.position.port import PositionItemReader
 from app.domain.shopping.position.exception import PositionItemNotFoundError
 from app.domain.shopping.position.service import PositionAccessService
 
@@ -16,18 +16,18 @@ class GetPositionItemQuery:
 class GetPositionItem:
     def __init__(
         self,
-        reader: PositionReader,
+        reader: PositionItemReader,
         actor_provider: ActorProvider,
     ):
-        self._reader: PositionReader = reader
-        self._actor_provider: ActorProvider = actor_provider
+        self._reader = reader
+        self._actor_provider = actor_provider
 
     async def __call__(self, query: GetPositionItemQuery) -> ItemDTO:
         PositionAccessService.ensure_can_view_item(
             actor=await self._actor_provider.get()
         )
 
-        item: ItemDTO | None = await self._reader.read_item(
+        item: ItemDTO | None = await self._reader.read(
             item_id=query.item_id,
         )
         if not item:

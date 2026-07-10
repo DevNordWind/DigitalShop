@@ -52,7 +52,7 @@ from app.app.shopping.position.cmd import (
     TranslatePositionDescriptionToOthers,
     TranslatePositionNameToOthers,
 )
-from app.app.shopping.position.port import PositionReader
+from app.app.shopping.position.port import PositionItemReader, PositionReader
 from app.app.shopping.position.query import (
     GetPosition,
     GetPositionItem,
@@ -100,7 +100,10 @@ from app.infra.shopping.position import (
     DishkaFulfillmentStrategyFactory,
     DishkaWarehouseFactory,
 )
-from app.infra.shopping.position.reader import SqlAPositionReader
+from app.infra.shopping.position.reader import (
+    SqlAPositionItemReader,
+    SqlAPositionReader,
+)
 
 
 class ShoppingDomainServicesProvider(Provider):
@@ -200,8 +203,10 @@ class ShoppingAdaptersProvider(Provider):
         provide(SqlAStockItemRepository, provides=StockItemRepository),
         provide(SqlAPositionRepository, provides=PositionRepository),
     )
-    position_repository = provide(SqlAPositionReader, provides=PositionReader)
-
+    position_readers = provide_all(
+        provide(SqlAPositionReader, provides=PositionReader),
+        provide(SqlAPositionItemReader, provides=PositionItemReader),
+    )
     position_factories = provide_all(
         provide(PositionMediaKeyFactory, scope=Scope.APP),
         provide(DishkaWarehouseFactory, provides=WarehouseFactory),

@@ -27,6 +27,7 @@ from .payment import (
 )
 from .presentation import (
     AiogramAdaptersProvider,
+    DishkaFastAPIActorProvider,
     TelegramAdaptersProvider,
     TelegramAuthenticationHandlersProvider,
 )
@@ -55,6 +56,7 @@ __all__ = (
     "CouponDomainServicesProvider",
     "CouponHandlersProvider",
     "CryptoBotProvider",
+    "DishkaFastAPIActorProvider",
     "DishkaTaskIqActorProvider",
     "GoogleTranslatorProvider",
     "OrderAdaptersProvider",

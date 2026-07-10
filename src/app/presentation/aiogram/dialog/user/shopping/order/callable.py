@@ -214,8 +214,8 @@ async def on_to_order(
 ) -> None:
     ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
 
-    await dialog_manager.done()
     await dialog_manager.start(
         state=OrdersState.order,
         data={"order_id": ctx.order_id},
+        mode=StartMode.RESET_STACK,
     )

@@ -87,11 +87,9 @@ class ConfirmOrderWithDiscount:
             items: tuple[ItemSnapshot, ...] = await self._fulfillment_service.hold(
                 position=position, ctx=HoldContext(now=now, amount=order.items_amount)
             )
-        except OutOfStockError as e:
-            if e.available == 0:
-                order.cancel(now)
-                await self._session.commit()
-
+        except OutOfStockError:
+            order.cancel(now)
+            await self._session.commit()
             raise
 
         await self._fulfillment_service.sell(
@@ -106,10 +104,10 @@ class ConfirmOrderWithDiscount:
 
         redemption.confirm(now=now)
         await self._create_award.apply(order=order)
-
+        order_id = order.id
         await self._session.commit()
 
-        order_dto = await self._order_reader.read_by_id(order_id=order.id)
+        order_dto = await self._order_reader.read_by_id(order_id=order_id)
         if not order_dto:
             raise DataCorruptionError
 
