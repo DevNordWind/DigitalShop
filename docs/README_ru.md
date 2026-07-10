@@ -4,13 +4,13 @@
 
 **Платформа для продажи цифровых товаров**
 
-[![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](https://python.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-4169E1?logo=postgresql&logoColor=white)](https://postgresql.org)
-[![Redis](https://img.shields.io/badge/Redis-latest-DC382D?logo=redis&logoColor=white)](https://redis.io)
+[![Python](https://img.shields.io/badge/Python-3.14.6-3776AB?logo=python&logoColor=white)](https://python.org)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.4-4169E1?logo=postgresql&logoColor=white)](https://postgresql.org)
+[![Redis](https://img.shields.io/badge/Redis-8.8.0-DC382D?logo=redis&logoColor=white)](https://redis.io)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)](https://docker.com)
 [![License](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![mypy](https://img.shields.io/badge/mypy-checked-2A6DB2?logo=python&logoColor=white)](https://mypy-lang.org)
+[![Pyrefly](https://img.shields.io/badge/Pyrefly-1F425F?logo=python&logoColor=white)](https://github.com/facebook/pyrefly)
 
 [🇷🇺 Русский](docs/README_ru.md) | [🇬🇧 English](README.en.md)
 
@@ -22,7 +22,7 @@
 
 - [О проекте](#-о-проекте)
 - [Todo](#-todo)
-- [Возможности](#-возможности)
+- [Возможности](#-бизнес-фишки)
 - [Стек технологий](#-стек-технологий)
 - [Установка](#-установка)
 - [Запуск](#-запуск)
@@ -32,16 +32,18 @@
 
 ## 💡 О проекте
 
-**DigitalShop** — платформа для продажи цифровых товаров. Поддерживает гибкую иерархию товаров, платёжную систему Crypto Pay от <a href="https://t.me/send">@send</a>, реферальную программу и массовые рассылки. На данный момент, в презентационном слое реализован полноценный Telegram-бот.
+**DigitalShop** — платформа для продажи цифровых товаров. Поддерживает гибкую иерархию товаров, платёжную систему Crypto
+Pay от <a href="https://t.me/send">@send</a>, реферальную программу и массовые рассылки. На данный момент, в
+презентационном слое реализован полноценный Telegram-бот.
 
 ---
 
-## ✨ Возможности
+## ✨ Бизнес-фишки
 
 <details>
-<summary><b>🌐 Мультиязычность и мультивалютность</b></summary>
+<summary><b>🇷🇺🇬🇧🇺🇦 Мультиязычность и мультивалютность</b></summary>
 
-- **Языки:** русский, английский
+- **Языки:** русский, английский, украинский
 - **Валюты:** USD, RUB, UAH, KZT
 
 </details>
@@ -50,8 +52,8 @@
 <summary><b>📦 Гибкое управление товарами</b></summary>
 
 - Трёхуровневая иерархия: **Категория** → **Позиция** → **Товар**
-  *(например: Подписки → Netflix → конкретный ключ активации)*
-- Фиксированные товары и исчерпаемые (инвентарь)
+  *(например: 🎮 Аккаунты Steam → Half-Life 2 → ключ активации)*
+- Фиксированные товары и исчерпаемые (склад)
 - Медиавложения к категориям и позициям — до 10 файлов (фото, видео, GIF)
 
 </details>
@@ -86,11 +88,8 @@
 
 Иерархия ролей: **Супер-администратор** → **Администратор** → **Пользователь**
 
-Администраторам доступны:
-- Поиск пользователей
-- Повышение и понижение роли
-- Просмотр всех заказов пользователя
-- Пополнение баланса
+- Каждая роль наследует права нижестоящей роли(например, `Супер-администратор` может пользоваться всеми правами
+  `Администратора`) и имеет собственные права.
 
 </details>
 
@@ -103,12 +102,14 @@
 
 </details>
 
+> [!NOTE]
+> Прочитать подробнее об устройстве бота и бизнес-фишках можно [здесь](docs/features/ru.md)
 ---
 
 ## 📌 Todo
 
+- [ ] Написание unit и integration тестов
 - [ ] Настройка CI
-- [ ] Написание unit и integration тестов для доменного и сервисного слоя
 - [ ] Обзор архитектурных решений
 - [ ] Написание REST API
 
@@ -116,35 +117,38 @@
 
 ## 🛠 Стек технологий
 
-| Категория | Технологии |
-|-----------|------------|
-| **Язык / пакетный менеджер** | Python 3.14, uv |
-| **Telegram** | Aiogram, Aiogram-Dialog |
-| **Web** | FastAPI |
-| **Очереди и планировщик** | TaskIQ |
-| **DI / Сериализация** | Dishka, Adaptix |
-| **База данных** | PostgreSQL 18, SQLAlchemy, Alembic |
-| **Кэш / Брокер** | Redis |
-| **Линтинг** | Ruff, mypy |
-| **Инфраструктура** | Docker |
+| Категория                    | Технологии                         |
+|------------------------------|------------------------------------|
+| **Язык / пакетный менеджер** | Python 3.14, uv                    |
+| **Telegram**                 | Aiogram, Aiogram-Dialog            |
+| **Web**                      | FastAPI                            |
+| **Очереди и планировщик**    | TaskIQ                             |
+| **DI / Сериализация**        | Dishka, Adaptix                    |
+| **База данных**              | PostgreSQL 18, SQLAlchemy, Alembic |
+| **Кэш / Брокер**             | Redis                              |
+| **Линтинг**                  | Ruff, Pyrefly                      |
+| **Инфраструктура**           | Docker                             |
 
 ---
 
 ## 📦 Установка
 
 **1. Клонируйте репозиторий:**
+
 ```bash
 git clone https://github.com/your-username/digitalshop.git
 cd digitalshop
 ```
 
 **2. Заполните конфигурационный файл:**
+
 ```bash
 cp config.yaml.example config.yaml
 # Отредактируйте config.yaml под своё окружение
 ```
 
 **3. Соберите Docker-образы:**
+
 ```bash
 make build
 ```
@@ -170,24 +174,27 @@ make payment-up   # FastAPI-сервер для получения вебхук�
 
 ### Сервисы TaskIQ
 
-| Entrypoint | Назначение |
-|---|---|
-| `taskiq.broker` | Обработка Telegram-рассылок |
+| Entrypoint               | Назначение                                             |
+|--------------------------|--------------------------------------------------------|
+| `taskiq.broker`          | Обработка Telegram-рассылок                            |
 | `taskiq.priority_broker` | Уведомления и фоновые задачи (например, отмена заказа) |
-| `taskiq.scheduler` | Планировщик задач |
+| `taskiq.scheduler`       | Планировщик задач                                      |
 
 ---
 
 ## ⚙️ Конфигурация
 
-Все настройки хранятся в `config.yaml`. Пример со всеми доступными параметрами — в [`config.yaml.example`](config.yaml.example).
+Все настройки хранятся в `config.yaml`. Пример со всеми доступными параметрами — в [
+`config.yaml.example`](config.yaml.example).
 
 > [!IMPORTANT]
-> Перед первым запуском обязательно заполните `config.yaml`. Бот не запустится без корректно заданных токена и параметров базы данных.
+> Перед первым запуском обязательно заполните `config.yaml`. Бот не запустится без корректно заданных токена и
+> параметров базы данных.
 
 > [!NOTE]
 > Для webhook-режима необходимо дополнительно заполнить секцию `webhook` в конфигурационном файле.
 >
 
 > [!WARNING]
-> Это пет-проект, созданный в учебных целях. Я не несу ответственности за любые убытки, потерю данных или иные последствия, возникшие в результате использования в продакшен-среде. **Используйте на свой страх и риск.**
+> Это пет-проект, созданный в учебных целях. Я не несу ответственности за любые убытки, потерю данных или иные
+> последствия, возникшие в результате использования в продакшен-среде. **Используйте на свой страх и риск.**
