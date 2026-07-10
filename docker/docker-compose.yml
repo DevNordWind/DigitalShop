@@ -110,7 +110,7 @@ services:
 
   taskiq-worker-priority:
     !!merge <<: *app-base
-    command: taskiq worker main.taskiq.priority_broker:priority_broker --workers ${TASKIQ_PRIORITY_WORKERS}
+    command: taskiq worker scr.app.main.taskiq.priority_broker:priority_broker --workers ${TASKIQ_PRIORITY_WORKERS}
     deploy:
       resources:
         limits:
@@ -164,7 +164,7 @@ services:
           cpus: '1.0'
           memory: 1024M
     command: >
-      uvicorn main.payment:main
+      uvicorn src.app.main.payment:main
       --factory
       --host 0.0.0.0
       --port 8080

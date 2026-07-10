@@ -1,6 +1,5 @@
 http:
   middlewares:
-
     security-headers:
       headers:
         stsSeconds: 31536000
@@ -13,17 +12,13 @@ http:
         customResponseHeaders:
           Server: ""
           X-Powered-By: ""
-
     rate-limit:
       rateLimit:
         average: 20
         period: 1s
         burst: 50
-
     compress:
-      compression: {}
-
-
+      compress: {}
 tls:
   options:
     modern:
