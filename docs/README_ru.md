@@ -2,7 +2,7 @@
 
 # 🛒 DigitalShop
 
-**Платформа для продажи цифровых товаров**
+**Гибкое решение для запуска магазина цифровых товаров в Telegram**
 
 [![Python](https://img.shields.io/badge/Python-3.14.6-3776AB?logo=python&logoColor=white)](https://python.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.4-4169E1?logo=postgresql&logoColor=white)](https://postgresql.org)
@@ -10,7 +10,7 @@
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)](https://docker.com)
 [![License](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Pyrefly](https://img.shields.io/badge/Pyrefly-1F425F?logo=python&logoColor=white)](https://github.com/facebook/pyrefly)
+[![Pyrefly](https://img.shields.io/badge/Pyrefly-checked-1F425F?logo=python&logoColor=white)](https://github.com/facebook/pyrefly)
 
 [🇷🇺 Русский](README_ru.md) | [🇬🇧 English](../README.md)
 
@@ -21,8 +21,8 @@
 ## 📋 Содержание
 
 - [О проекте](#-о-проекте)
+- [Бизнес-фишки](#-бизнес-фишки)
 - [Todo](#-todo)
-- [Возможности](#-бизнес-фишки)
 - [Стек технологий](#-стек-технологий)
 - [Установка](#-установка)
 - [Запуск](#-запуск)
@@ -32,9 +32,12 @@
 
 ## 💡 О проекте
 
-**DigitalShop** — платформа для продажи цифровых товаров. Поддерживает гибкую иерархию товаров, платёжную систему Crypto
-Pay от <a href="https://t.me/send">@send</a>, реферальную программу и массовые рассылки. На данный момент, в
-презентационном слое реализован полноценный Telegram-бот.
+**DigitalShop** — платформа для продажи цифровых товаров. Поддерживает гибкую иерархию товаров, платёжную систему
+Crypto Pay от <a href="https://t.me/send">@CryptoBot</a>, реферальную программу и массовые рассылки. На данный момент
+в презентационном слое реализован полноценный Telegram-бот.
+<p align="center">
+  <img src="screenshots/root.png" width="320">
+</p>
 
 ---
 
@@ -54,7 +57,7 @@ Pay от <a href="https://t.me/send">@send</a>, реферальную прог�
 - Трёхуровневая иерархия: **Категория** → **Позиция** → **Товар**
   *(например: 🎮 Аккаунты Steam → Half-Life 2 → ключ активации)*
 - Фиксированные товары и исчерпаемые (склад)
-- Медиавложения к категориям и позициям — до 10 файлов (фото, видео, GIF)
+- Медиа-вложения к категориям и позициям — до 10 файлов (фото, видео, GIF)
 
 </details>
 
@@ -77,7 +80,7 @@ Pay от <a href="https://t.me/send">@send</a>, реферальную прог�
 <details>
 <summary><b>💳 Платёжные системы</b></summary>
 
-- Встроенная интеграция с **CryptoBot**
+- Встроенная интеграция с **Crypto Pay**
 - Возможность включать и отключать отдельные платёжные системы
 - Индивидуальная комиссия для каждой платёжной системы
 
@@ -86,10 +89,9 @@ Pay от <a href="https://t.me/send">@send</a>, реферальную прог�
 <details>
 <summary><b>👤 Управление пользователями</b></summary>
 
-Иерархия ролей: **Супер-администратор** → **Администратор** → **Пользователь**
-
-- Каждая роль наследует права нижестоящей роли(например, `Супер-администратор` может пользоваться всеми правами
-  `Администратора`) и имеет собственные права.
+Иерархия ролей: **Супер-администратор** → **Администратор** → **Пользователь**. Каждая роль наследует права
+нижестоящей (например, `Супер-администратор` может пользоваться всеми правами `Администратора`) и имеет
+собственные права.
 
 </details>
 
@@ -104,6 +106,7 @@ Pay от <a href="https://t.me/send">@send</a>, реферальную прог�
 
 > [!NOTE]
 > Прочитать подробнее об устройстве бота и бизнес-фишках можно [здесь](features/ru.md)
+
 ---
 
 ## 📌 Todo
@@ -118,16 +121,16 @@ Pay от <a href="https://t.me/send">@send</a>, реферальную прог�
 ## 🛠 Стек технологий
 
 | Категория                    | Технологии                         |
-|------------------------------|------------------------------------|
-| **Язык / пакетный менеджер** | Python 3.14, uv                    |
-| **Telegram**                 | Aiogram, Aiogram-Dialog            |
-| **Web**                      | FastAPI                            |
-| **Очереди и планировщик**    | TaskIQ                             |
-| **DI / Сериализация**        | Dishka, Adaptix                    |
-| **База данных**              | PostgreSQL 18, SQLAlchemy, Alembic |
-| **Кэш / Брокер**             | Redis                              |
-| **Линтинг**                  | Ruff, Pyrefly                      |
-| **Инфраструктура**           | Docker                             |
+|-------------------------------|-------------------------------------|
+| **Язык / пакетный менеджер**  | Python 3.14, uv                    |
+| **Telegram**                   | Aiogram, Aiogram-Dialog            |
+| **Web**                        | FastAPI                            |
+| **Очереди и планировщик**      | TaskIQ                             |
+| **DI / Сериализация**          | Dishka, Adaptix                    |
+| **База данных**                | PostgreSQL 18, SQLAlchemy, Alembic |
+| **Кэш / Брокер**               | Redis                              |
+| **Линтинг**                    | Ruff, Pyrefly                      |
+| **Инфраструктура**             | Docker                             |
 
 ---
 
@@ -136,8 +139,8 @@ Pay от <a href="https://t.me/send">@send</a>, реферальную прог�
 **1. Клонируйте репозиторий:**
 
 ```bash
-git clone https://github.com/your-username/digitalshop.git
-cd digitalshop
+git clone https://github.com/DevNordWind/DigitalShop.git
+cd DigitalShop
 ```
 
 **2. Заполните конфигурационный файл:**
@@ -169,23 +172,22 @@ make webhook-up   # Webhook-режим (требует заполнения се
 ### Платёжные вебхуки
 
 ```bash
-make payment-up   # FastAPI-сервер для получения вебхуков от CryptoPay
+make payment-up   # FastAPI-сервер для получения вебхуков от Crypto Pay
 ```
 
 ### Сервисы TaskIQ
 
-| Entrypoint               | Назначение                                             |
-|--------------------------|--------------------------------------------------------|
-| `taskiq.broker`          | Обработка Telegram-рассылок                            |
-| `taskiq.priority_broker` | Уведомления и фоновые задачи (например, отмена заказа) |
-| `taskiq.scheduler`       | Планировщик задач                                      |
+| Entrypoint               | Назначение                                              |
+|---------------------------|-----------------------------------------------------------|
+| `taskiq.broker`           | Обработка Telegram-рассылок                              |
+| `taskiq.priority_broker`  | Уведомления и фоновые задачи (например, отмена заказа)   |
+| `taskiq.scheduler`        | Планировщик задач                                        |
 
 ---
 
 ## ⚙️ Конфигурация
 
-Все настройки хранятся в `config.yaml`. Пример со всеми доступными параметрами — в [
-`config.yaml.example`](config.yaml.example).
+Все настройки хранятся в `config.yaml`. Пример со всеми доступными параметрами — в [`config.yaml.example`](config.yaml.example).
 
 > [!IMPORTANT]
 > Перед первым запуском обязательно заполните `config.yaml`. Бот не запустится без корректно заданных токена и
@@ -193,7 +195,6 @@ make payment-up   # FastAPI-сервер для получения вебхук�
 
 > [!NOTE]
 > Для webhook-режима необходимо дополнительно заполнить секцию `webhook` в конфигурационном файле.
->
 
 > [!WARNING]
 > Это пет-проект, созданный в учебных целях. Я не несу ответственности за любые убытки, потерю данных или иные
