@@ -32,4 +32,4 @@ ENV PATH="/app/.venv/bin:$PATH" \
 
 USER nonroot
 
-CMD ["python", "-m", "src.main.bot.polling"]
+CMD ["python", "-m", "src.app.main.bot.polling"]
