@@ -12,7 +12,7 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Pyrefly](https://img.shields.io/badge/Pyrefly-1F425F?logo=python&logoColor=white)](https://github.com/facebook/pyrefly)
 
-[🇷🇺 Русский](docs/README_ru.md) | [🇬🇧 English](README.en.md)
+[🇷🇺 Русский](README_ru.md) | [🇬🇧 English](../README.md)
 
 </div>
 
