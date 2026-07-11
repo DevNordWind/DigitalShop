@@ -35,7 +35,7 @@
 **DigitalShop** is a platform for selling digital goods. It supports a flexible product hierarchy, **Crypto Pay** integration by <a href="https://t.me/send">@CryptoBot</a>, a referral program, and bulk messaging. At the moment, the presentation layer is implemented as a fully functional Telegram bot.
 
 <p align="center">
-  <img src="screenshots/root.png" width="320">
+  <img src="docs/screenshots/root.png" width="320">
 </p>
 
 ---
