@@ -123,9 +123,6 @@ The financial system is designed for multiple markets and supports four currenci
 
 ### 💳 Payment Systems
 
-* Two payment providers are currently supported:
-
-  * **Crypto Pay** (@CryptoBot)
-  * **LolzTeam**
+* The payment system from @CryptoBot is supported.
 * Each payment provider can be enabled or disabled independently.
 * A separate processing fee can be configured for each payment provider.

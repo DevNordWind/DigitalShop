@@ -63,6 +63,11 @@ class FluentTranslatorHub(TranslatorHub):
                 filenames=self.get_files(Language.EN),
                 use_isolating=False,
             ),
+            Language.UK: FluentBundle.from_files(
+                locale="uk-UA",
+                filenames=self.get_files(Language.UK),
+                use_isolating=False,
+            ),
         }
 
     @override
