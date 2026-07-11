@@ -38,7 +38,7 @@ Crypto Pay от <a href="https://t.me/send">@CryptoBot</a>, реферальну
 <p align="center">
   <img src="screenshots/root.png" width="320">
 </p>
-
+<p align="center"><i>📸 Больше скриншотов — <a href="screenshots.md">здесь</a></i></p>
 ---
 
 ## ✨ Бизнес-фишки

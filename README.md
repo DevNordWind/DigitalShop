@@ -37,6 +37,7 @@
 <p align="center">
   <img src="docs/screenshots/root.png" width="320">
 </p>
+<p align="center"><i>📸 More screenshots — <a href="docs/screenshots.md">here</a></i></p>
 
 ---
 
