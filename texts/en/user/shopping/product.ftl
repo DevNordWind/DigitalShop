@@ -1,10 +1,10 @@
 user-shopping-category = { $has_categories ->
     [True] <b>{ -category-emoji } Categories</b>
-    *[False] <b>🛒 Shopping temporarily unavailable</b>
+    *[False] <b>🛒 Shopping is temporarily unavailable</b>
 }
     .btn = { $name }
 
-default-position-btn = { $name } | { $amount }{ currency.symbol } | { $items_amount } pcs
+default-position-btn = { $name } | { $amount }{ currency.symbol } | { $items_amount} pcs
 
 user-shopping-position = <b>{ -position-emoji } Positions</b>
 
@@ -22,13 +22,14 @@ user-shopping-position = <b>{ -position-emoji } Positions</b>
         }
     }
 
+
 default-user-position =
-    { -current } Quantity: { $items_amount ->
-        [0] <code>{ $items_amount } pcs</code>
+    { -current } Items quantity: { $items_amount ->
+        [0] <code>{ $items_amount } pcs.</code>
         *[other] { $type ->
-            [STOCK] <code>{ $items_amount } pcs</code>
+            [STOCK] <code>{ $items_amount } pcs.</code>
             [FIXED] ♾️
-            *[other] <code>{ $items_amount } pcs</code>
+            *[other] <code>{ $items_amount } pcs.</code>
         }
     }
     { -current } Price: <code>{ $amount }{ currency.symbol }</code>
@@ -42,7 +43,6 @@ user-position = <b>{ -position-emoji } { $name }</b>
     }
     .buy-btn = Buy
 
+user-position-items-amount-stock = <b>✏️ Enter the quantity of items</b>
 
-user-position-items-amount-stock = <b>✏️ Enter quantity</b>
-
-    { -current } Available: <code>{ $count } pcs</code>
+    { -current } Available: <code>{ $count } pcs.</code>

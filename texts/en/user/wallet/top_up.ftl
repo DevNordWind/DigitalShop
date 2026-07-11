@@ -30,3 +30,7 @@ top-up-payment = <b>📥 Top up balance</b>
     }
     .cancel-btn = ❌ Cancel
     .cancel = ❌ Order cancelled
+
+top-up-payment-confirmed = <b>✅ Balance successfully topped up by <code>{ $amount }{ currency.symbol }</code></b>
+
+    🧾 Payment <code>{ $payment_id }</code>

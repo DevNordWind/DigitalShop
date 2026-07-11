@@ -1,9 +1,9 @@
 [project]
 name = "DigitalShop"
-version = "0.1"
+version = "0.2"
 description = "Digital Shop"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.14, <3.15"
 license = "MIT"
 authors = [
   { name = "NordWind", email = "dev.ivanzakharov@gmail.com" },
@@ -12,10 +12,10 @@ dependencies = [
   "adaptix>=3.0.0b12",
   "aiocryptopay>=0.4.8",
   "aiofile>=3.9.0",
-  "aiogram>=3.27.0",
   "aiogram-dialog>=2.6.0",
+  "aiogram[fast]>=3.27.0",
   "alembic>=1.18.4",
-  "colorlog>=6.10.1",
+  "asgi-correlation-id>=5.0.1",
   "dishka>=1.9.1",
   "fastapi>=0.136.0",
   "fluent-compiler>=1.1",
@@ -24,9 +24,9 @@ dependencies = [
   "orjson>=3.11.8",
   "psycopg[binary]>=3.3.3",
   "pyaml>=26.2.1",
-  "redis>=7.4.0",
+  "redis[hiredis]>=8.0.1",
   "sqlalchemy>=2.0.49",
-  "sulguk>=0.11.1",
+  "structlog>=26.1.0",
   "taskiq-redis>=1.2.2",
   "uvicorn>=0.44.0",
   "uvloop>=0.22.1",
@@ -34,11 +34,11 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "mypy[faster-cache]>=1.20.1",
   "pre-commit>=4.6.0",
+  "pyrefly>=1.1.1",
   "pytest>=9.0.2",
+  "pytest-asyncio>=1.4.0",
   "ruff>=0.15.1",
-  "sqlalchemy[mypy]>=2.0.49",
   "tombi>=0.9.22",
   "types-pyyaml>=6.0.12.20250915",
   "typos>=1.45.1",
@@ -49,30 +49,36 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/digital_shop"]
+packages = ["src/app"]
 
-[tool.mypy]
-mypy_path = ["src/digital_shop"]
-exclude = ["^.*migration.*$"]
-explicit_package_bases = true
-python_version = "3.14"
-strict = true
-pretty = true
-warn_unreachable = true
-plugins = [
-  "sqlalchemy.ext.mypy.plugin",
-  "pydantic.mypy",
-]
+[tool.pyrefly]
+search-path = ["src/"]
+python-version = "3.14"
+project-excludes = ["**/migration*/**", "**/migration*"]
+preset = "strict"
+
+[[tool.pyrefly.sub-config]]
+matches = "**/dialog/**/window.py"
+
+[tool.pyrefly.sub-config.errors]
+bad-argument-type = false
+
+[[tool.pyrefly.sub-config]]
+matches = "**/dialog/**/__init__.py"
+
+[tool.pyrefly.sub-config.errors]
+bad-argument-type = false
 
 [tool.pytest]
 addopts = ["--color=yes", "-mnot(slow)", "-pno:cacheprovider"]
 filterwarnings = []
 markers = ["slow"]
-pythonpath = ["src/digital_shop"]
 testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.ruff]
-line-length = 79
+line-length = 88
 target-version = "py314"
 
 [tool.ruff.lint]
@@ -127,16 +133,9 @@ ignore = [
   "TC002",  # typing-only-third-party-import
   "TC003",  # typing-only-standard-library-import
   "TC006",  # runtime-cast-value
-  "N818",
-  "G004"
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"src/digital_shop/presentation/aiogram/dialog**" = ["ARG002"]
-"src/digital_shop/presentation/aiogram/filter**" = ["ARG002"]
-"src/digital_shop/presentation/aiogram/router**" = ["ARG002"]
-"src/digital_shop/infra/framework/sql_alchemy/migration/versions/**" = ["ALL"]
-"src/digital_shop/infra/framework/sql_alchemy/table/custom_type/**" = ["ARG002"]
 "tests/**" = [
   "ARG002",  # unused-method-argument
   "PLC2801",  # unnecessary-dunder-call

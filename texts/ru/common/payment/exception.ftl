@@ -1,59 +1,59 @@
-CommissionCoefficientRequired =
-    <b>❌ Коэффициент комиссии не указан</b>
+PaymentNotFoundError =
+    <b>❌ Платёж не найден</b>
 
-    <blockquote>ℹ️ Для данного типа комиссии необходимо указать коэффициент</blockquote>
-    .call = ❌ Коэффициент комиссии не указан
+    <blockquote>ℹ️ Запрашиваемый платёж не найден.</blockquote>
+    .call = ❌ Платёж не найден
 
-PaymentCancellationForbidden =
-    <b>❌ Отмена платежа невозможна</b>
+PaymentPermissionDeniedError =
+    <b>❌ Недостаточно прав</b>
 
-    <blockquote>ℹ️ Платёж нельзя отменить на текущем этапе</blockquote>
-    .call = ❌ Отмена платежа невозможна
+    <blockquote>ℹ️ У вас нет прав для выполнения этого действия с платежом.</blockquote>
+    .call = ❌ Недостаточно прав
 
-PaymentCheckForbidden =
-    <b>❌ Проверка платежа невозможна</b>
+PaymentStartForbiddenError =
+    <b>❌ Запуск платежа запрещён</b>
 
-    <blockquote>ℹ️ Платёж нельзя проверить на текущем этапе</blockquote>
-    .call = ❌ Проверка платежа невозможна
+    <blockquote>ℹ️ Запустить данный платёж невозможно.</blockquote>
+    .call = ❌ Запуск запрещён
 
-PaymentCommissionRuleAlreadyExists =
-    <b>❌ Правило комиссии уже существует</b>
+PaymentCancellationForbiddenError =
+    <b>❌ Отмена платежа запрещена</b>
 
-    <blockquote>ℹ️ Правило комиссии для данного метода оплаты уже создано</blockquote>
-    .call = ❌ Правило комиссии уже существует
+    <blockquote>ℹ️ Данный платёж нельзя отменить.</blockquote>
+    .call = ❌ Отмена запрещена
 
-PaymentCommissionRuleNotCreated =
-    <b>❌ Правило комиссии не найдено</b>
+PaymentCheckForbiddenError =
+    <b>❌ Проверка платежа запрещена</b>
 
-    <blockquote>ℹ️ Для данного метода оплаты правило комиссии ещё не создано</blockquote>
-    .call = ❌ Правило комиссии не найдено
+    <blockquote>ℹ️ Проверка данного платежа недоступна.</blockquote>
+    .call = ❌ Проверка запрещена
 
-PaymentConfirmationForbidden =
-    <b>❌ Подтверждение платежа невозможно</b>
+PaymentConfirmationForbiddenError =
+    <b>❌ Подтверждение платежа запрещено</b>
 
-    <blockquote>ℹ️ Платёж нельзя подтвердить на текущем этапе</blockquote>
-    .call = ❌ Подтверждение платежа невозможно
+    <blockquote>ℹ️ Данный платёж нельзя подтвердить.</blockquote>
+    .call = ❌ Подтверждение запрещено
 
-PaymentFailureForbidden =
-    <b>❌ Отклонение платежа невозможно</b>
+PaymentFailureForbiddenError =
+    <b>❌ Перевод в статус «Ошибка» запрещён</b>
 
-    <blockquote>ℹ️ Платёж нельзя отклонить на текущем этапе</blockquote>
-    .call = ❌ Отклонение платежа невозможно
+    <blockquote>ℹ️ Нельзя перевести данный платёж в состояние ошибки.</blockquote>
+    .call = ❌ Перевод в ошибку запрещён
 
-PaymentPermissionDenied =
-    <b>❌ Доступ запрещён</b>
+PaymentMethodGatewayError =
+    <b>❌ Ошибка платёжного сервиса</b>
 
-    <blockquote>ℹ️ Вы не можете просматривать или изменять этот платёж</blockquote>
-    .call = ❌ Доступ запрещён
+    <blockquote>ℹ️ Не удалось обработать способ оплаты. Попробуйте позже или выберите другой метод.</blockquote>
+    .call = ❌ Ошибка оплаты
 
-PaymentStartForbidden =
-    <b>❌ Запуск платежа невозможен</b>
+UnsupportedPaymentMethodError =
+    <b>❌ Способ оплаты не поддерживается</b>
 
-    <blockquote>ℹ️ Платёж нельзя запустить на текущем этапе</blockquote>
-    .call = ❌ Запуск платежа невозможен
+    <blockquote>ℹ️ Выбранный способ оплаты недоступен для данного платёжного сервиса.</blockquote>
+    .call = ❌ Не поддерживается
 
-PaymentNotFound =
-    <b>❌ Платеж не найден</b>
+CommissionCoefficientRequiredError =
+    <b>❌ Процент комиссии не указан</b>
 
-    <blockquote>ℹ️ Запрашиваемый платеж не существует или был удалён</blockquote>
-    .call = ❌ Платеж не найден
+    <blockquote>ℹ️ Для данного типа комиссии необходимо указать Процент</blockquote>
+    .call = ❌ Процент комиссии не указан

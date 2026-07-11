@@ -43,7 +43,6 @@ user-position = <b>{ -position-emoji } { $name }</b>
     }
     .buy-btn = Купить
 
-
 user-position-items-amount-stock = <b>✏️ Введите количество товаров</b>
 
     { -current } Доступно: <code>{ $count }шт.</code>

@@ -37,11 +37,12 @@ user-order = <b>{ -order-emoji } Заказ <code>{ $order_id }</code></b>
     }
 
     <blockquote>{ $status ->
-        [CREATED] ℹ️ Заказ ожидает оплату
-        [PENDING] ℹ️ Заказ ожидает оплату
+        [NEW] ℹ️ Заказ ожидает оплату
+        [AWAITING_PAYMENT] ℹ️ Заказ ожидает оплату
         [CONFIRMED] { order-status.emoji } Заказ подтверждён { $confirmed_at }
         [CANCELLED] { order-status.emoji } Заказ отменён { $cancelled_at }
         [FAILED] { status.emoji } Заказ отменён { $failed_at }
+        [EXPIRED] { status.emoji } Заказ истёк
         *[other] { unknown }
     }</blockquote>
     .upload-items = 💾 Выгрузить

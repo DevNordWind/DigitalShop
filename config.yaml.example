@@ -43,7 +43,7 @@ redis:
 
 log:
   # Logging settings | 10 - DEBUG; 20 - INFO; 30 - WARNING; 40 - ERROR; 50 - CRITICAL
-  console_level: 20
-  file_level: 30
+  prod: false
+  log_level: 20
 
-  path_log: ./data/logs
+  use_async_queue: true

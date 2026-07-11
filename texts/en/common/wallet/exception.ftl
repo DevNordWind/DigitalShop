@@ -1,11 +1,17 @@
-WalletCurrencyMismatchError =
-    <b>❌ Wallet currency mismatch</b>
+WalletPermissionDeniedError =
+    <b>❌ Access denied</b>
 
-    <blockquote>ℹ️ Expected currency: { $expected }, actual currency: { $actual }.</blockquote>
-    .call = ❌ Currency mismatch
+    <blockquote>ℹ️ You do not have permission to view or manage this wallet</blockquote>
+    .call = ❌ Access denied
 
-InsufficientFunds =
-    <b>❌ Insufficient funds on wallet</b>
+WalletNotFoundError =
+    <b>❌ Wallet not found</b>
 
-    <blockquote>ℹ️ Available balance: <code>{ $available_balance }{ currency.symbol }</code>.</blockquote>
-    .call = ❌ Insufficient funds
+    <blockquote>ℹ️ The requested wallet does not exist or has been deleted</blockquote>
+    .call = ❌ Wallet not found
+
+InsufficientFundsError =
+    <b>❌ Insufficient wallet funds</b>
+
+    <blockquote>ℹ️ Available balance: <code>{ $available_amount }{ currency.symbol }</code>.</blockquote>
+    .call = ❌ Insufficient funds. Available: { $available_amount }{ currency.symbol }

@@ -28,10 +28,10 @@ payment-logs:
 	$(COMPOSE) logs -f payment-webhook
 
 full-up:
-	$(COMPOSE) --profile webhook --profile payment up -d
+	$(COMPOSE) --profile '*' up -d
 
 full-down:
-	$(COMPOSE) --profile webhook --profile payment down
+	$(COMPOSE) --profile '*' down
 
 build:
 	$(COMPOSE) build
@@ -39,13 +39,19 @@ build:
 ps:
 	$(COMPOSE) ps
 
+db-shell:
+	$(COMPOSE) exec -it postgres sh
+
+db-logs:
+	$(COMPOSE) logs -f postgres
+
 check:
 	ruff check --fix
 	ruff format
 	typos
 	tombi format
 	tombi lint
-	mypy .
+	pyrefly check src/
 	pytest -v
 
 
@@ -55,4 +61,5 @@ check:
 	payment-up payment-down payment-logs \
 	full-up full-down \
 	build ps \
-	check
+	check db-logs \
+	db-shell

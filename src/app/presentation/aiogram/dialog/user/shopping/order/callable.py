@@ -1,0 +1,221 @@
+from typing import Any
+
+from adaptix import Retort
+from aiogram_dialog import DialogManager, ShowMode, StartMode
+from aiogram_dialog.widgets.input import ManagedTextInput
+from aiogram_dialog.widgets.kbd import Button, Select
+from dishka import AsyncContainer, FromDishka
+from dishka.integrations.aiogram_dialog import inject
+
+from aiogram.types import CallbackQuery, Message
+from app.app.order.cmd import (
+    ApplyCouponToOrder,
+    ApplyCouponToOrderCmd,
+    CancelOrder,
+    CancelOrderCmd,
+    ConfirmOrderWithDiscount,
+    ConfirmOrderWithDiscountCmd,
+    PayOrderWithPayment,
+    PayOrderWithPaymentCmd,
+    PayOrderWithWallet,
+    PayOrderWithWalletCmd,
+)
+from app.app.payment.cmd import CheckPayment, CheckPaymentCmd
+from app.app.payment.port.payment import Invoice
+from app.app.payment.port.payment.dto import InvoiceStatus
+from app.domain.order.exception import (
+    OrderCancellationForbiddenError,
+    OrderConfirmationForbiddenError,
+)
+from app.domain.payment.enums import PaymentMethod
+from app.domain.payment.exception import PaymentConfirmationForbiddenError
+from app.domain.shopping.position.exception import OutOfStockError
+from app.presentation.aiogram.dialog.user.shopping.order.ctx import (
+    CTX_KEY,
+    OrderCtx,
+)
+from app.presentation.aiogram.port import Text
+from app.presentation.aiogram.state import OrdersState, OrderState
+
+
+@inject
+async def on_start(
+    data: Any,
+    dialog_manager: DialogManager,
+    retort: FromDishka[Retort],
+) -> None:
+    if isinstance(data, dict):
+        ctx = OrderCtx(order_id=data["order_id"])
+        dialog_manager.dialog_data[CTX_KEY] = retort.dump(ctx)
+
+
+@inject
+async def on_cancel(
+    event: CallbackQuery,
+    widget: Button,
+    dialog_manager: DialogManager,
+    handler: FromDishka[CancelOrder],
+    retort: FromDishka[Retort],
+    text: FromDishka[Text],
+) -> None:
+    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+
+    try:
+        await handler(CancelOrderCmd(id=ctx.order_id))
+    except OrderCancellationForbiddenError as e:
+        await event.answer(text=text(f"{e.__class__.__name__}.call"), show_alert=True)
+        return await dialog_manager.done()
+
+    await event.answer(
+        text=text("user-shopping-order.order-cancelled-call"),
+        show_alert=True,
+    )
+    await dialog_manager.done()
+
+
+@inject
+async def on_input_coupon_code(
+    event: Message,
+    widget: ManagedTextInput[str],
+    dialog_manager: DialogManager,
+    code: str,
+    handler: FromDishka[ApplyCouponToOrder],
+    retort: FromDishka[Retort],
+) -> None:
+    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+
+    await handler(
+        ApplyCouponToOrderCmd(order_id=ctx.order_id, coupon_code=code),
+    )
+
+    await event.delete()
+    await dialog_manager.switch_to(
+        state=OrderState.order,
+        show_mode=ShowMode.EDIT,
+    )
+
+
+@inject
+async def on_pay_with_wallet(
+    event: CallbackQuery,
+    widget: Button,
+    dialog_manager: DialogManager,
+    handler: FromDishka[PayOrderWithWallet],
+    retort: FromDishka[Retort],
+    text: FromDishka[Text],
+) -> None:
+    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+
+    try:
+        await handler(cmd=PayOrderWithWalletCmd(order_id=ctx.order_id))
+    except OutOfStockError:
+        await dialog_manager.done()
+        raise
+
+    return await dialog_manager.start(
+        state=OrdersState.order,
+        data={"order_id": ctx.order_id},
+        mode=StartMode.RESET_STACK,
+    )
+
+
+@inject
+async def on_select_payment_method(
+    event: CallbackQuery,
+    widget: Select[PaymentMethod],
+    dialog_manager: DialogManager,
+    method: PaymentMethod,
+    handler: FromDishka[PayOrderWithPayment],
+    retort: FromDishka[Retort],
+) -> None:
+    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+
+    try:
+        invoice: Invoice = await handler(
+            PayOrderWithPaymentCmd(order_id=ctx.order_id, method=method),
+        )
+    except OutOfStockError:
+        await dialog_manager.done()
+        raise
+
+    ctx.invoice = invoice
+    dialog_manager.dialog_data[CTX_KEY] = retort.dump(ctx)
+
+    return await dialog_manager.switch_to(
+        state=OrderState.payment,
+    )
+
+
+@inject
+async def on_check(
+    event: CallbackQuery,
+    widget: Button,
+    dialog_manager: DialogManager,
+    retort: FromDishka[Retort],
+    handler: FromDishka[CheckPayment],
+    text: FromDishka[Text],
+    container: FromDishka[AsyncContainer],
+) -> None:
+    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+    if ctx.invoice is None:
+        return None
+
+    try:
+        invoice: Invoice = await handler(
+            CheckPaymentCmd(id=ctx.invoice.payment_id),
+        )
+    except (OrderConfirmationForbiddenError, PaymentConfirmationForbiddenError) as e:
+        await event.answer(text=text(f"{e.__class__.__name__}.call"), show_alert=True)
+        await event.message.delete()  # type: ignore[union-attr]
+        return await dialog_manager.start(
+            state=OrdersState.order,
+            data={"order_id": ctx.order_id},
+            mode=StartMode.RESET_STACK,
+        )
+
+    await event.answer(
+        text=text("user-shopping-order-payment.check", status=invoice.status),
+    )
+    if invoice.status == InvoiceStatus.PAID:
+        await event.message.delete()  # type: ignore[union-attr]
+        await container.close()
+        return await dialog_manager.start(
+            state=OrdersState.order,
+            data={"order_id": ctx.order_id},
+            mode=StartMode.RESET_STACK,
+        )
+
+    return None
+
+
+@inject
+async def on_confirm_order_with_discount(
+    event: CallbackQuery,
+    widget: Button,
+    dialog_manager: DialogManager,
+    handler: FromDishka[ConfirmOrderWithDiscount],
+    retort: FromDishka[Retort],
+) -> None:
+    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+    await handler(ConfirmOrderWithDiscountCmd(order_id=ctx.order_id))
+    await dialog_manager.start(
+        state=OrdersState.order,
+        data={"order_id": ctx.order_id},
+        mode=StartMode.RESET_STACK,
+    )
+
+
+@inject
+async def on_to_order(
+    event: CallbackQuery,
+    widget: Button,
+    dialog_manager: DialogManager,
+    retort: FromDishka[Retort],
+) -> None:
+    ctx: OrderCtx = retort.load(dialog_manager.dialog_data[CTX_KEY], OrderCtx)
+
+    await dialog_manager.start(
+        state=OrdersState.order,
+        data={"order_id": ctx.order_id},
+        mode=StartMode.RESET_STACK,
+    )

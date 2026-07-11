@@ -1,9 +1,10 @@
-user-shopping-position-default = <b>{ -position-emoji } Позиция:</b> <code>{ $position_name }</code>
-
 order-payment-method = { $method ->
     [None] С баланса
     *[other] { payment-method }
 }
+
+user-shopping-position-default = <b>{ -position-emoji } Позиция:</b> <code>{ $position_name }</code>
+
 
 user-shopping-order = <b>{ -order-emoji } Сформирован заказ <code>#{ $order_id }</code></b>
 
@@ -49,12 +50,10 @@ user-shopping-order-payment = <b>{ -order-emoji } Заказ <code>#{ $order_id 
 
 user-shopping-order-coupon-code = <b>✏️ Введите код активации купона</b>
 
-user-shopping-order-new-items = <b>❌ Товаров недостаточно</b>
+user-shopping-order-payment-confirmed = <b>✅ Заказ подтверждён</b>
 
-    <b>{ -current } Доступно:</b> <code>{ $available }шт.</code>
+    <b>{ -current } ID заказа:</b> <code>{ $order_id }</code>
+    <b>{ -current } Сумма заказа:</b> <code>{ $amount } { currency.symbol }</code>
 
-    <blockquote>ℹ️ Введи новое кол-во товаров, либо отмени заказ</blockquote>
-    .cancel-btn = ❌ Отменить
-    .cancel-msg = <b>{ -item-emoji } Товаров нет в наличии.</b>
-
-            <blockquote>❌ Заказ отменён</blockquote>
+    <blockquote>♥️ Спасибо за покупку</blockquote>
+    .to-order-btn = 🛒 К заказу

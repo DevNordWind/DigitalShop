@@ -1,17 +1,17 @@
-WalletError =
-    <b>❌ Ошибка кошелька</b>
+WalletPermissionDeniedError =
+    <b>❌ Доступ запрещён</b>
 
-    <blockquote>ℹ️ Произошла ошибка при работе с кошельком. Проверьте данные и попробуйте снова.</blockquote>
-    .call = ❌ Ошибка кошелька
+    <blockquote>ℹ️ Вы не можете просматривать или управлять этим кошельком</blockquote>
+    .call = ❌ Доступ запрещён
 
-WalletCurrencyMismatchError =
-    <b>❌ Несовпадение валюты кошелька</b>
+WalletNotFoundError =
+    <b>❌ Кошелёк не найден</b>
 
-    <blockquote>ℹ️ Ожидаемая валюта: { $expected }, фактическая валюта: { $actual }.</blockquote>
-    .call = ❌ Несовпадение валюты
+    <blockquote>ℹ️ Запрашиваемый кошелёк не существует или был удален</blockquote>
+    .call = ❌ Кошелёк не найден
 
-InsufficientFunds =
+InsufficientFundsError =
     <b>❌ Недостаточно средств на кошельке</b>
 
-    <blockquote>ℹ️ Доступный баланс: <code>{ $available_balance }{ currency.symbol }</code>.</blockquote>
-    .call = ❌ Недостаточно средств
+    <blockquote>ℹ️ Доступный баланс: <code>{ $available_amount }{ currency.symbol }</code>.</blockquote>
+    .call = ❌ Недостаточно средств. Доступно: { $available_amount }{ currency.symbol }

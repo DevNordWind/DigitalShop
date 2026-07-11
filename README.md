@@ -2,17 +2,17 @@
 
 # 🛒 DigitalShop
 
-**A platform for selling digital goods**
+**A flexible solution for launching a digital goods store on Telegram**
 
-[![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](https://python.org)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-4169E1?logo=postgresql&logoColor=white)](https://postgresql.org)
-[![Redis](https://img.shields.io/badge/Redis-latest-DC382D?logo=redis&logoColor=white)](https://redis.io)
-[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)](https://docker.com)
+[![Python](https://img.shields.io/badge/Python-3.14.6-3776AB?logo=python\&logoColor=white)](https://python.org)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18.4-4169E1?logo=postgresql\&logoColor=white)](https://postgresql.org)
+[![Redis](https://img.shields.io/badge/Redis-8.8.0-DC382D?logo=redis\&logoColor=white)](https://redis.io)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker\&logoColor=white)](https://docker.com)
 [![License](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![mypy](https://img.shields.io/badge/mypy-checked-2A6DB2?logo=python&logoColor=white)](https://mypy-lang.org)
+[![Pyrefly](https://img.shields.io/badge/Pyrefly-checked-1F425F?logo=python\&logoColor=white)](https://github.com/facebook/pyrefly)
 
-[🇷🇺 Russian](docs/README_ru.md) | [🇬🇧 English](#)
+[🇬🇧 English](README.md) | [🇷🇺 Russian](docs/README_ru.md)
 
 </div>
 
@@ -20,131 +20,135 @@
 
 ## 📋 Table of Contents
 
-- [About](#-about)
-- [Todo](#-todo)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Installation](#-installation)
-- [Running](#-running)
-- [Configuration](#-configuration)
+* [About the Project](#-about-the-project)
+* [Business Features](#-business-features)
+* [Todo](#-todo)
+* [Technology Stack](#-technology-stack)
+* [Installation](#-installation)
+* [Running](#-running)
+* [Configuration](#-configuration)
 
 ---
 
-## 💡 About
+## 💡 About the Project
 
-**DigitalShop** is a platform for selling digital goods. It supports a flexible product hierarchy, Crypto Pay integration via <a href="https://t.me/send">@send</a>, a referral program, and bulk messaging. The presentation layer is currently implemented as a fully functional Telegram bot.
+**DigitalShop** is a platform for selling digital goods. It supports a flexible product hierarchy, **Crypto Pay** integration by <a href="https://t.me/send">@CryptoBot</a>, a referral program, and bulk messaging. At the moment, the presentation layer is implemented as a fully functional Telegram bot.
+
+<p align="center">
+  <img src="docs/screenshots/root.png" width="320">
+</p>
 
 ---
 
-## ✨ Features
+## ✨ Business Features
 
 <details>
-<summary><b>🌐 Multi-language & Multi-currency</b></summary>
+<summary><b>🇷🇺🇬🇧🇺🇦 Multi-language & Multi-currency Support</b></summary>
 
-- **Languages:** Russian, English
-- **Currencies:** USD, RUB, UAH, KZT
+* **Languages:** Russian, English, Ukrainian
+* **Currencies:** USD, RUB, UAH, KZT
 
 </details>
 
 <details>
 <summary><b>📦 Flexible Product Management</b></summary>
 
-- Three-level hierarchy: **Category** → **Item** → **Product**
-  *(e.g. Subscriptions → Netflix → specific activation key)*
-- Fixed products and exhaustible inventory
-- Media attachments for categories and items — up to 10 files (photos, videos, GIFs)
+* Three-level hierarchy: **Category** → **Item** → **Product**
+  *(e.g. 🎮 Steam Accounts → Half-Life 2 → Activation Key)*
+* Support for both unlimited (fixed) and stock-based products
+* Media attachments for categories and items — up to 10 files (photos, videos, GIFs)
 
 </details>
 
 <details>
 <summary><b>👥 Referral System</b></summary>
 
-- Configurable percentage reward based on the referred user's order amount
+* Reward users with a configurable percentage of each referred customer's order amount
 
 </details>
 
 <details>
 <summary><b>🎟️ Coupons</b></summary>
 
-- Applied at checkout
-- Two discount types: fixed amount or percentage off the order total
-- Configurable start and expiration dates
+* Applied during checkout
+* Two discount types: fixed amount or percentage
+* Configurable start and expiration dates
 
 </details>
 
 <details>
 <summary><b>💳 Payment Systems</b></summary>
 
-- Built-in **CryptoBot** integration
-- Enable or disable individual payment methods
-- Custom commission rate per payment method
+* Built-in **Crypto Pay** integration
+* Enable or disable individual payment methods
+* Custom commission for each payment method
 
 </details>
 
 <details>
 <summary><b>👤 User Management</b></summary>
 
-Role hierarchy: **Super Admin** → **Admin** → **User**
-
-Admins can:
-- Search for users
-- Promote and demote roles
-- View a user's full order history
-- Top up user balance
+Role hierarchy: **Super Administrator** → **Administrator** → **User**. Each role inherits the permissions of the lower role (for example, a `Super Administrator` has access to all `Administrator` permissions) while also having its own exclusive permissions.
 
 </details>
 
 <details>
-<summary><b>📣 Broadcasting</b></summary>
+<summary><b>📣 Broadcast Messaging</b></summary>
 
-- Send broadcasts in multiple languages simultaneously
-- Attach URL buttons to broadcast messages
-- Real-time progress notifications
+* Send broadcasts in multiple languages simultaneously
+* Attach URL buttons to messages
+* Real-time progress notifications
 
 </details>
+
+> [!NOTE]
+> You can read more about the bot's architecture and business features [here](docs/features/en.md).
 
 ---
 
 ## 📌 Todo
 
-- [ ] CI setup
-- [ ] Unit and integration tests for the domain and service layers
-- [ ] Architectural decisions overview
-- [ ] REST API
+* [ ] Write unit and integration tests
+* [ ] Set up CI
+* [ ] Document architectural decisions
+* [ ] Implement a REST API
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Technology Stack
 
-| Category | Technologies |
-|----------|--------------|
-| **Language / Package Manager** | Python 3.14, uv |
-| **Telegram** | Aiogram, Aiogram-Dialog |
-| **Web** | FastAPI |
-| **Queues & Scheduler** | TaskIQ |
-| **DI / Serialization** | Dishka, Adaptix |
-| **Database** | PostgreSQL 18, SQLAlchemy, Alembic |
-| **Cache / Broker** | Redis |
-| **Linting** | Ruff, mypy |
-| **Infrastructure** | Docker |
+| Category                                 | Technologies                       |
+| ---------------------------------------- | ---------------------------------- |
+| **Language / Package Manager**           | Python 3.14, uv                    |
+| **Telegram**                             | Aiogram, Aiogram-Dialog            |
+| **Web**                                  | FastAPI                            |
+| **Task Queue & Scheduler**               | TaskIQ                             |
+| **Dependency Injection / Serialization** | Dishka, Adaptix                    |
+| **Database**                             | PostgreSQL 18, SQLAlchemy, Alembic |
+| **Cache / Message Broker**               | Redis                              |
+| **Linting**                              | Ruff, Pyrefly                      |
+| **Infrastructure**                       | Docker                             |
 
 ---
 
 ## 📦 Installation
 
 **1. Clone the repository:**
+
 ```bash
-https://github.com/DevNordWind/DigitalShop.git
+git clone https://github.com/DevNordWind/DigitalShop.git
 cd DigitalShop
 ```
 
-**2. Fill in the configuration file:**
+**2. Create and configure the configuration file:**
+
 ```bash
 cp config.yaml.example config.yaml
-# Edit config.yaml for your environment
+# Edit config.yaml to match your environment
 ```
 
-**3. Build Docker images:**
+**3. Build the Docker images:**
+
 ```bash
 make build
 ```
@@ -153,40 +157,40 @@ make build
 
 ## 🚀 Running
 
-DigitalShop consists of several independent services. Run only the ones you need.
+DigitalShop consists of several independent services. Start only the ones you need.
 
 ### Telegram Bot
 
 ```bash
 make polling-up   # Polling mode (recommended for development)
-make webhook-up   # Webhook mode (requires the webhook section to be filled in the config)
+make webhook-up   # Webhook mode (requires the webhook section to be configured)
 ```
 
 ### Payment Webhooks
 
 ```bash
-make payment-up   # FastAPI server for receiving CryptoPay webhooks
+make payment-up   # FastAPI server for receiving Crypto Pay webhooks
 ```
 
 ### TaskIQ Services
 
-| Entrypoint | Purpose |
-|---|---|
-| `taskiq.broker` | Processes Telegram broadcasts |
-| `taskiq.priority_broker` | Notifications and background tasks (e.g. order cancellation) |
-| `taskiq.scheduler` | Task scheduler |
+| Entrypoint               | Purpose                                                                |
+| ------------------------ | ---------------------------------------------------------------------- |
+| `taskiq.broker`          | Processes Telegram broadcast messages                                  |
+| `taskiq.priority_broker` | Notifications and background tasks (e.g. automatic order cancellation) |
+| `taskiq.scheduler`       | Task scheduler                                                         |
 
 ---
 
 ## ⚙️ Configuration
 
-All settings are stored in `config.yaml`. A full example with all available parameters can be found in [`config.yaml.example`](config.yaml.example).
+All settings are stored in `config.yaml`. A complete example with all available options can be found in [`config.yaml.example`](config.yaml.example).
 
 > [!IMPORTANT]
-> Fill in `config.yaml` before the first run. The bot will not start without a valid bot token and database credentials.
+> Before running the project for the first time, make sure to configure `config.yaml`. The bot will not start without a valid bot token and database configuration.
 
 > [!NOTE]
-> Webhook mode requires the `webhook` section to be filled in the configuration file.
+> To use webhook mode, you must also configure the `webhook` section in `config.yaml`.
 
 > [!WARNING]
-> This is a pet project built for learning purposes. I am not responsible for any losses, data corruption, or other consequences resulting from use in a production environment. **Use at your own risk.**
+> This is a pet project created for educational purposes. I am not responsible for any losses, data corruption, or other consequences resulting from its use in a production environment. **Use it at your own risk.**
