@@ -67,6 +67,7 @@ class SqlAlchemyProvider(Provider):
             pool_pre_ping=configuration.sql_alchemy.pool_pre_ping,
             max_overflow=configuration.sql_alchemy.max_overflow,
             pool_size=configuration.sql_alchemy.pool_size,
+            # pyrefly: ignore [implicit-any-lambda]
             json_serializer=lambda obj: orjson.dumps(obj).decode(),
             json_deserializer=orjson.loads,
         )
@@ -110,6 +111,7 @@ class AiogramProvider(DefaultAiogramProvider):
             redis=redis,
             key_builder=key_builder,
             json_loads=orjson.loads,
+            # pyrefly: ignore [implicit-any-lambda]
             json_dumps=lambda obj: orjson.dumps(obj).decode(),
         )
 
@@ -119,6 +121,7 @@ class AiogramProvider(DefaultAiogramProvider):
             token=config.token,
             session=AiohttpSession(
                 json_loads=orjson.loads,
+                # pyrefly: ignore [implicit-any-lambda]
                 json_dumps=lambda obj: orjson.dumps(obj).decode(),
             ),
             default=DefaultBotProperties(parse_mode=ParseMode.HTML),

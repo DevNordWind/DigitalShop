@@ -138,7 +138,7 @@ async def on_input_description(
     dialog_manager: DialogManager,
     description: str,
     retort: FromDishka[Retort],
-) -> None | Message:
+) -> Message | None:
     ctx = retort.load(dialog_manager.dialog_data[CTX_KEY], PositionCreationCtx)
     ctx.description.translations[ctx.description_current_lang] = description
 
@@ -220,7 +220,7 @@ async def on_confirm(
     retort: FromDishka[Retort],
     handler: FromDishka[CreatePosition],
     file_factory: FromDishka[FileDTOFactory],
-) -> None | bool:
+) -> bool | None:
     ctx: PositionCreationCtx = retort.load(
         dialog_manager.dialog_data[CTX_KEY],
         PositionCreationCtx,

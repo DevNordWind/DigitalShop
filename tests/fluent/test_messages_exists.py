@@ -42,6 +42,7 @@ def _extract_keys_and_errors(path: Path) -> tuple[frozenset[str], tuple[str, ...
 
     for entry in resource.body:
         if isinstance(entry, Junk):
+            # pyrefly: ignore [no-matching-overload]
             reasons = ", ".join(ann.message for ann in entry.annotations)
             errors.append(f"{path}: {reasons or 'invalid syntax'}")
             continue

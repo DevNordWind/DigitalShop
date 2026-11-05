@@ -66,8 +66,6 @@ __all__ = (
     "ArchiveAllPositionsByCategory",
     "ArchiveAllPositionsByCategoryCmd",
     "ArchivePosition",
-    "ArchivePosition",
-    "ArchivePositionCmd",
     "ArchivePositionCmd",
     "ArchivePositionItem",
     "ArchivePositionItemCmd",
