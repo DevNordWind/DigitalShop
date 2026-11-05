@@ -45,11 +45,8 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/app"]
+requires = ["uv_build>=0.13,<0.14"]
+build-backend = "uv_build"
 
 [tool.pyrefly]
 search-path = ["src/"]
@@ -147,3 +144,6 @@ ignore = [
   "S107",  # hardcoded-password-default
   "SIM300",  # yoda-conditions
 ]
+
+[tool.uv.build-backend]
+module-name = "app"
