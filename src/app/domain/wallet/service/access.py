@@ -19,7 +19,7 @@ class WalletAccessService:
     def ensure_can_cancel_top_up_payment(
         cls,
         actor: Actor,
-        user_id: UserId,
+        payment_creator_id: UserId,
     ) -> None:
         if isinstance(actor, SystemActor):
             return
@@ -27,7 +27,7 @@ class WalletAccessService:
         if actor.role >= UserRole.ADMIN:
             return
 
-        if actor.id == user_id:
+        if actor.id == payment_creator_id:
             return
 
         raise WalletPermissionDeniedError

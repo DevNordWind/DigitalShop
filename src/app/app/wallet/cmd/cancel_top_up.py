@@ -36,6 +36,7 @@ class CancelTopUp:
             data=CancelPaymentData(id=cmd.payment_id)
         )
         WalletAccessService.ensure_can_cancel_top_up_payment(
-            actor=await self._actor_provider.get(), user_id=payment.creator_id
+            actor=await self._actor_provider.get(),
+            payment_creator_id=payment.creator_id,
         )
         await self._session.commit()

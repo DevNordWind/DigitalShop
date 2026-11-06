@@ -51,7 +51,7 @@ class CreateTopUpPayment:
         wallet: Wallet | None = await self._repo.get_by_user_id_currency(
             user_id=actor.id, currency=amount.currency
         )
-        if not wallet:
+        if wallet is None:
             raise DataCorruptionError(
                 f"User {actor.id} exists but its wallet was not found",
             )

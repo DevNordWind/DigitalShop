@@ -1,19 +1,9 @@
-from typing import Final
-from uuid import UUID
-
 import pytest
 
-from app.domain.common.actor import UserActor
 from app.domain.user.enums import UserRole
 from app.domain.user.exception import UserPermissionDeniedError
 from app.domain.user.service import UserAccessService
-from app.domain.user.value_object import UserId
-
-FIXED_UUID: Final[UUID] = UUID("019f20ff-62b9-720b-8e19-3171139ddd0d")
-
-
-def make_user_actor(role: UserRole) -> UserActor:
-    return UserActor(id=UserId(value=FIXED_UUID), role=role)
+from tests.factory import UserActorFactory
 
 
 class TestUserAccessService:
@@ -47,7 +37,7 @@ class TestUserAccessService:
         target_role: UserRole,
     ) -> None:
         UserAccessService.ensure_can_assign_role(
-            actor=make_user_actor(role=actor_role),
+            actor=UserActorFactory.build(role=actor_role),
             target_current_role=target_current_role,
             target_role=target_role,
         )
@@ -119,7 +109,7 @@ class TestUserAccessService:
     ) -> None:
         with pytest.raises(UserPermissionDeniedError):
             UserAccessService.ensure_can_assign_role(
-                actor=make_user_actor(role=actor_role),
+                actor=UserActorFactory.build(role=actor_role),
                 target_current_role=target_current_role,
                 target_role=target_role,
             )
