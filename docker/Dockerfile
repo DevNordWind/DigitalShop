@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
 
-FROM python:3.14.6-slim-trixie
+FROM python:3.14.10-slim-trixie
 
 RUN groupadd --system --gid 999 nonroot \
  && useradd --system --gid 999 --uid 999 --create-home nonroot
@@ -32,4 +32,4 @@ ENV PATH="/app/.venv/bin:$PATH" \
 
 USER nonroot
 
-CMD ["python", "-m", "src.app.main.bot.polling"]
+CMD ["python", "-m", "app.main.bot.polling"]

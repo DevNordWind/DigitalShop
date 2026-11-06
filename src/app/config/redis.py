@@ -7,8 +7,8 @@ class RedisConfig:
     db: int
     host: str
     port: int
-    password: None | str
-    username: None | str
+    password: str | None
+    username: str | None
 
     @property
     def url(self) -> str:

@@ -21,11 +21,18 @@ class Money:
         if self.amount < MIN_VALUE:
             raise NegativeMoneyAmountError
 
-        normalized: Decimal = self.amount.quantize(
-            PRECISION_EXPONENT,
-            rounding=ROUND_HALF_EVEN,
+        object.__setattr__(
+            self,
+            "amount",
+            self.amount.quantize(
+                PRECISION_EXPONENT,
+                rounding=ROUND_HALF_EVEN,
+            ),
         )
-        object.__setattr__(self, "amount", normalized)
+
+    @classmethod
+    def zero(cls, currency: Currency) -> Money:
+        return cls(currency=currency, amount=MIN_VALUE)
 
     def __add__(self, other: Money) -> Money:
         if not isinstance(other, Money):
@@ -70,28 +77,28 @@ class Money:
 
         return self.amount == other.amount and self.currency == other.currency
 
-    def __lt__(self, other: object) -> bool:
+    def __lt__(self, other: Money) -> bool:
         if not isinstance(other, Money):
             return NotImplemented
 
         self._ensure_same_currency(other)
         return self.amount < other.amount
 
-    def __le__(self, other: object) -> bool:
+    def __le__(self, other: Money) -> bool:
         if not isinstance(other, Money):
             return NotImplemented
 
         self._ensure_same_currency(other)
         return self.amount <= other.amount
 
-    def __gt__(self, other: object) -> bool:
+    def __gt__(self, other: Money) -> bool:
         if not isinstance(other, Money):
             return NotImplemented
 
         self._ensure_same_currency(other)
         return self.amount > other.amount
 
-    def __ge__(self, other: object) -> bool:
+    def __ge__(self, other: Money) -> bool:
         if not isinstance(other, Money):
             return NotImplemented
 
@@ -100,10 +107,6 @@ class Money:
 
     def __hash__(self) -> int:
         return hash((self.amount, self.currency))
-
-    @classmethod
-    def zero(cls, currency: Currency) -> Money:
-        return cls(currency=currency, amount=MIN_VALUE)
 
     def _ensure_same_currency(self, other: Money) -> None:
         if self.currency != other.currency:

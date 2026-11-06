@@ -51,7 +51,7 @@ check:
 	typos
 	tombi format
 	tombi lint
-	pyrefly check src/
+	pyrefly check --no-progress-bar
 	pytest -v
 
 

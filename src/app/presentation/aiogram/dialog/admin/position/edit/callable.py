@@ -396,7 +396,7 @@ async def on_change_description_default_lang(
     handler: FromDishka[ChangePositionDescriptionDefaultLang],
     text: FromDishka[Text],
     retort: FromDishka[Retort],
-) -> None | bool:
+) -> bool | None:
     ctx: PositionEditingCtx = retort.load(
         dialog_manager.dialog_data[CTX_KEY],
         PositionEditingCtx,

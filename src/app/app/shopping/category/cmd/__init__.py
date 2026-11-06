@@ -34,7 +34,6 @@ __all__ = (
     "ArchiveAllCategories",
     "ArchiveCategory",
     "ArchiveCategoryCmd",
-    "ArchiveCategoryCmd",
     "ChangeCategoryDescriptionDefaultLang",
     "ChangeCategoryDescriptionDefaultLangCmd",
     "ChangeCategoryNameDefaultLang",

@@ -110,7 +110,7 @@ services:
 
   taskiq-worker-priority:
     !!merge <<: *app-base
-    command: taskiq worker src.app.main.taskiq.priority_broker:priority_broker --workers ${TASKIQ_PRIORITY_WORKERS}
+    command: taskiq worker app.main.taskiq.priority_broker:priority_broker --workers ${TASKIQ_PRIORITY_WORKERS}
     deploy:
       resources:
         limits:
@@ -126,7 +126,7 @@ services:
 
   taskiq-worker:
     !!merge <<: *app-base
-    command: taskiq worker src.app.main.taskiq.broker:broker --workers ${TASKIQ_BROKER_WORKERS}
+    command: taskiq worker app.main.taskiq.broker:broker --workers ${TASKIQ_BROKER_WORKERS}
     deploy:
       resources:
         limits:
@@ -142,7 +142,7 @@ services:
 
   taskiq-scheduler:
     !!merge <<: *app-base
-    command: taskiq scheduler src.app.main.taskiq.scheduler:scheduler
+    command: taskiq scheduler app.main.taskiq.scheduler:scheduler
     deploy:
       resources:
         limits:
@@ -164,7 +164,7 @@ services:
           cpus: '1.0'
           memory: 1024M
     command: >
-      uvicorn src.app.main.payment:main
+      uvicorn app.main.payment:main
       --factory
       --host 0.0.0.0
       --port 8080
@@ -199,7 +199,7 @@ services:
         limits:
           cpus: '1.0'
           memory: 1024M
-    command: python -m src.app.main.bot.polling
+    command: python -m app.main.bot.polling
     depends_on:
       postgres:
         condition: service_healthy
@@ -217,7 +217,7 @@ services:
           memory: 1024M
     profiles: [webhook]
     command: >
-      python -m uvicorn src.app.main.bot.webhook:main
+      python -m uvicorn app.main.bot.webhook:main
       --factory
       --host 0.0.0.0
       --port 8090

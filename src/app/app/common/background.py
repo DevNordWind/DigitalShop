@@ -19,4 +19,4 @@ class BackgroundTasks:
     def _on_done(self, task: Task[Any]) -> None:
         self._tasks.discard(task)
         if not task.cancelled() and (exc := task.exception()) is not None:
-            logger.exception("Background task failed", exc_info=exc)
+            logger.error("Background task failed", exc_info=exc)

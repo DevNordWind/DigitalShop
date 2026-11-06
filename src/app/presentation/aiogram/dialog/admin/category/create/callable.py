@@ -78,7 +78,7 @@ async def on_input_name(
     dialog_manager: DialogManager,
     name: str,
     retort: FromDishka[Retort],
-) -> None | Message:
+) -> Message | None:
     ctx = retort.load(
         dialog_manager.dialog_data[CTX_KEY],
         CategoryCreationContext,
@@ -118,7 +118,7 @@ async def on_input_description(
     dialog_manager: DialogManager,
     description: str,
     retort: FromDishka[Retort],
-) -> None | Message:
+) -> Message | None:
     ctx = retort.load(
         dialog_manager.dialog_data[CTX_KEY],
         CategoryCreationContext,
@@ -210,7 +210,7 @@ async def on_confirm(
     retort: FromDishka[Retort],
     handler: FromDishka[CreateCategory],
     file_factory: FromDishka[FileDTOFactory],
-) -> None | bool:
+) -> bool | None:
     ctx: CategoryCreationContext = retort.load(
         dialog_manager.dialog_data[CTX_KEY],
         CategoryCreationContext,

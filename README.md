@@ -109,7 +109,9 @@ Role hierarchy: **Super Administrator** → **Administrator** → **User**. Each
 
 ## 📌 Todo
 
-* [ ] Write unit and integration tests
+* [ ] Write unit tests
+* [ ] Write integration tests
+* [ ] Use cases/adapters refactor
 * [ ] Set up CI
 * [ ] Document architectural decisions
 * [ ] Implement a REST API
